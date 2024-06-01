@@ -1,0 +1,5 @@
+<div class="board">
+    <div class="tile-row" *ngFor="let i of [0, 1, 2]; index as _i">
+        <button (click)="tileClick($event)" type="button" class="tile" *ngFor="let j of [0, 1, 2]; index as _j" id="tile-{{ _i }}-{{ _j }}">{{ board[_i][_j] }}</button>
+    </div>
+</div>

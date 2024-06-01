@@ -1,0 +1,5 @@
+<app-board></app-board>
+<button type="button" (click)="startGame()">Start</button>
+<h1 *ngIf="this.getGameStatus()">Turn: {{ this.getTurn() }}</h1>
+<h1 *ngIf="this.isGameWinned()">Winner: {{ this.getTurn() }}</h1>
+<h1 *ngIf="this.isGameTied()">Tie</h1>

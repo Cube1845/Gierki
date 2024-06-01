@@ -1,0 +1,33 @@
+:host {
+    $board-size: 500px;
+    $hover-transition-time: .1s;
+
+    .tile {
+        flex: 1;
+        font-size: 100px;
+        text-align: center;
+        color: darkslategrey;
+        transition: background-color $hover-transition-time ease, transform $hover-transition-time;
+        background-color: rgb(115, 168, 201);
+        border: 0px;
+        margin: calc($board-size/200);
+
+        &:hover {
+            transition: background-color $hover-transition-time ease, transform $hover-transition-time;
+            background-color: rgb(95, 148, 181);
+        }
+    }
+
+    .tile-row {
+        margin: 0px;
+        display: flex;
+        width: $board-size;
+        height: calc($board-size/3);
+    }
+
+    .board {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+}
