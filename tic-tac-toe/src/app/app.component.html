@@ -1,5 +1,8 @@
-<app-board></app-board>
-<button type="button" (click)="startGame()">Start</button>
-<h1 *ngIf="this.getGameStatus()">Turn: {{ this.getTurn() }}</h1>
-<h1 *ngIf="this.isGameWinned()">Winner: {{ this.getTurn() }}</h1>
-<h1 *ngIf="this.isGameTied()">Tie</h1>
+<div class="container">
+    <h1 class="header">Tic Tac Toe Game</h1>
+    <app-board></app-board>
+    <h1 class="info-text" *ngIf="this.isGameWinned()">Winner: {{ this.getTurn() }}</h1>
+    <h1 class="info-text" *ngIf="this.isGameTied()">Tie</h1>
+    <button type="button" (click)="startGame()" class="start-button" *ngIf="!this.getGameStatus()">Start</button>
+    <h1 class="info-text" *ngIf="this.getGameStatus()">Turn: {{ this.getTurn() }}</h1>
+</div>

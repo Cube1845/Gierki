@@ -27,6 +27,10 @@ export class BoardService {
     this.isGameStarted = boolean;
   }
 
+  setTurn(turn: string): void {
+    this.turn = turn;
+  }
+
   getBoard(): string[][] {
     return this.board;
   }

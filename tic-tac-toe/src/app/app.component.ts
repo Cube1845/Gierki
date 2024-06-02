@@ -17,7 +17,7 @@ export class AppComponent {
   startGame(): void {
     this.boardService.clearBoard();
     this.boardService.setGameStatus(true);
-    this.boardService.turn = "O";
+    this.boardService.setTurn("O");
   }
 
   getTurn(): string {
