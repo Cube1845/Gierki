@@ -31,3 +31,4 @@ C:\Users\Jakub\Desktop\Projektik\Gierki\Backend\TicTacToe\obj\Debug\net8.0\refin
 C:\Users\Jakub\Desktop\Projektik\Gierki\Backend\TicTacToe\obj\Debug\net8.0\TicTacToe.pdb
 C:\Users\Jakub\Desktop\Projektik\Gierki\Backend\TicTacToe\obj\Debug\net8.0\TicTacToe.genruntimeconfig.cache
 C:\Users\Jakub\Desktop\Projektik\Gierki\Backend\TicTacToe\obj\Debug\net8.0\ref\TicTacToe.dll
+C:\Users\Jakub\Desktop\Projektik\Gierki\Backend\TicTacToe\bin\Debug\net8.0\game.json
