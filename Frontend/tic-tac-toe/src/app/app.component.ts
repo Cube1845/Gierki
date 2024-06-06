@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { BoardComponent } from './components/board/board.component';
-import { BoardService } from './services/board.service';
 import { NgIf } from '@angular/common';
+import { BoardApiService } from './services/board-api.service';
+import { tap } from 'rxjs';
+import { BoardService } from './services/board.service';
 
 @Component({
   selector: 'app-root',
@@ -12,30 +14,36 @@ import { NgIf } from '@angular/common';
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  constructor(private readonly boardService: BoardService) {}
+  constructor(private readonly boardApiService: BoardApiService, private readonly boardService: BoardService) {}
+
+  responseText: string = "";
 
   startGame(): void {
+    this.boardService.setGameState(true);
+    this.boardApiService.startGame().subscribe((text) => this.responseText = text);
     this.boardService.clearBoard();
-    this.boardService.setGameStatus(true);
     this.boardService.setTurn("O");
+    this.boardService.updateBoard([["","",""],["","",""],["","",""]]);
+    this.boardService.resetStateVariables();
+  }
+
+  getGameState(): boolean {
+    return this.boardService.getGameState();
   }
 
   getTurn(): string {
     return this.boardService.getTurn();
   }
 
-  getGameStatus(): boolean {
-    return this.boardService.getGameStatus();
-  }
-
   isGameWinned(): boolean {
-    if (this.boardService.getWinningTiles() == null) {
-      return false;
-    }
-    return true;
+    return (this.boardService.getWinner() != null)
   }
 
   isGameTied(): boolean {
     return this.boardService.isGameTied();
+  }
+
+  getWinner(): string | null {
+    return this.boardService.getWinner();
   }
 }

@@ -4,39 +4,43 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class BoardService {
-
-  winningCases: any  = [[[0, 0], [0, 1], [0, 2]],
-                        [[1, 0], [1, 1], [1, 2]],
-                        [[2, 0], [2, 1], [2, 2]],
-                        [[0, 0], [1, 0], [2, 0]],
-                        [[0, 1], [1, 1], [2, 1]],
-                        [[0, 2], [1, 2], [2, 2]],
-                        [[0, 0], [1, 1], [2, 2]],
-                        [[0, 2], [1, 1], [2, 0]],];
   isGameStarted: boolean = false;
+  gameWinnedBy: string | null = null;
+  gameTied: boolean = false;
   turn: string = "";
-  board: string[][] = [["", "", ""], 
-                       ["", "", ""], 
-                       ["", "", ""]]
+  board: string[][] = [["","",""],["","",""],["","",""]];
 
-  getGameStatus(): boolean {
-    return this.isGameStarted;
+  isGameTied(): boolean {
+    return this.gameTied;
   }
 
-  setGameStatus(boolean: boolean): void {
-    this.isGameStarted = boolean;
+  getWinner(): string | null {
+    return this.gameWinnedBy;
   }
 
-  setTurn(turn: string): void {
-    this.turn = turn;
+  resetStateVariables(): void {
+    this.gameTied = false;
+    this.gameWinnedBy = null;
+  }
+
+  gameWin(symbol: string): void {
+    this.gameWinnedBy = symbol;
+    this.setGameState(false);
+    this.setTurn("");
+  }
+
+  gameTie(): void {
+    this.gameTied = true;
+    this.setGameState(false);
+    this.setTurn("");
+  }
+
+  updateBoard(board: string[][]): void {
+    this.board = board;
   }
 
   getBoard(): string[][] {
     return this.board;
-  }
-                              
-  getTurn(): string {
-    return this.turn;
   }
 
   clearBoard(): void {
@@ -47,57 +51,28 @@ export class BoardService {
     }
   }
 
+  getTurn(): string {
+    return this.turn;
+  }
+
+  setTurn(symbol: string): void {
+    this.turn = symbol;
+  }
+
   changeTurn(): void {
     if (this.getTurn() == "O") {
-      this.turn = "X";
+      this.setTurn("X");
     } else {
-      this.turn = "O";
+      this.setTurn("O");
     }
   }
 
-  endGame(winningTilesNumber: number): void {
-    this.clearBoard();
-    for (let i = 0; i < 3; i++) {
-      this.board[this.winningCases[winningTilesNumber][i][0]][this.winningCases[winningTilesNumber][i][1]] = this.turn;
-    }
-    this.setGameStatus(false);
+  setGameState(bool: boolean): void {
+    this.isGameStarted = bool;
   }
 
-  isGameTied(): boolean {
-    for (let i = 0; i < 3; i++) {
-      for (let j = 0; j < 3; j++) {
-        if (this.board[i][j] == "") {
-          return false;
-        }
-      }
-    }
-    return true;
-  }
-
-  tie(): void {
-    this.setGameStatus(false);
-  }
-
-  makeMove(tile: number[]): void {
-    this.board[tile[0]][tile[1]] = this.turn;
-    if (this.getWinningTiles() != null) {
-      this.endGame(this.getWinningTiles()!);
-    } else if (this.isGameTied()) {
-      this.tie();
-    } else {
-      this.changeTurn();
-    }
-  } 
-
-  getWinningTiles(): number | null {
-    for (let i = 0; i < 8; i++) {
-      if (this.board[this.winningCases[i][0][0]][this.winningCases[i][0][1]] == this.board[this.winningCases[i][1][0]][this.winningCases[i][1][1]] &&
-          this.board[this.winningCases[i][1][0]][this.winningCases[i][1][1]] == this.board[this.winningCases[i][2][0]][this.winningCases[i][2][1]] && 
-          this.board[this.winningCases[i][0][0]][this.winningCases[i][0][1]] != "") {
-            return i;
-          }
-    }
-    return null;
+  getGameState(): boolean {
+    return this.isGameStarted;
   }
 }
 

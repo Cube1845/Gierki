@@ -1,6 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NgFor } from '@angular/common';
 import { BoardService } from '../../services/board.service';
+import { BoardApiService } from '../../services/board-api.service';
+import { Move } from '../../models/move';
+import { map, tap } from 'rxjs';
+import { response } from 'express';
 
 @Component({
   selector: 'app-board',
@@ -11,16 +15,41 @@ import { BoardService } from '../../services/board.service';
 })
 
 export class BoardComponent {
-  constructor(private readonly boardService: BoardService) {}
+  constructor(private readonly boardService: BoardService, private readonly boardApiService: BoardApiService) {}
 
   board: string[][] = this.boardService.board;
-  
+  responseText: string = "";
+
+  getBoard(): string[][] {
+    return this.boardService.getBoard();
+  }
+
   tileClick(event: any): void {
-    if (this.boardService.getGameStatus() && event.srcElement.firstChild.data == "") {
-      var id = event.srcElement.id;
-      var x: number = Number(id[7]);
-      var y: number = Number(id[5]);
-      this.boardService.makeMove([y, x]);
+    var symbol = event.srcElement.innerHTML;
+    if (symbol != "X" && symbol != "O") {
+      var y = event.srcElement.id[5]
+      var x = event.srcElement.id[7]
+      var turn = this.boardService.getTurn();
+      this.boardApiService.sendMove(new Move(turn, [y, x])).subscribe(
+        (response) => {
+          switch (response.responseText) {
+            case "Successfully made a move":
+              this.boardService.changeTurn();
+              break;
+            case "Game ended":
+              this.boardService.gameWin(this.boardService.getTurn());
+              break;
+            case "Tie":
+              this.boardService.gameTie();
+              break;
+            default:
+              break;
+          }
+          if (response.board != null) {
+            this.boardService.updateBoard(response.board);
+          }
+        }
+      );
     }
   }
 }

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Runtime.CompilerServices;
 using System.Text.Json;
+using System.Web.Http.Cors;
 using TicTacToe.Models;
 using TicTacToe.Repositories;
 
@@ -9,15 +10,16 @@ namespace TicTacToe.Controllers
 {
     [Route("[controller]")]
     [ApiController]
+    [EnableCors(origins: "http://localhost:4200", headers: "*", methods: "*")]
     public class MoveController : Controller
     {
         [HttpGet("[action]")]
-        public IActionResult StartGameAndGetBoard()
+        public IActionResult StartGame()
         {
             var board = BoardRepository.getEmptyBoard();
             string jsonString = JsonSerializer.Serialize(board);
             BoardRepository.setBoardFileData(jsonString);
-            return Ok(jsonString + BoardRepository.getWinningTiles());
+            return Ok(new Response("Game started"));
         }
 
         [HttpPost("[action]")]
@@ -34,18 +36,18 @@ namespace TicTacToe.Controllers
                 BoardRepository.setBoardFileData(jsonString);
                 if (BoardRepository.getWinningTiles() != null)
                 {
-                    return Ok("Game ended");
+                    return Ok(new Response("Game ended", board));
                 }
                 if (BoardRepository.isGameTied())
                 {
                     if (BoardRepository.getWinningTiles() == null)
                     {
-                        return Ok("Tie");
+                        return Ok(new Response("Tie", board));
                     }
                 }
-                return Ok("Successfully made a move");
+                return Ok(new Response("Successfully made a move", board));
             }
-            return Ok("Error");
+            return Ok(new Response("Error"));
         }
     }
 }

@@ -32,3 +32,9 @@ C:\Users\Jakub\Desktop\Projektik\Gierki\Backend\TicTacToe\obj\Debug\net8.0\TicTa
 C:\Users\Jakub\Desktop\Projektik\Gierki\Backend\TicTacToe\obj\Debug\net8.0\TicTacToe.genruntimeconfig.cache
 C:\Users\Jakub\Desktop\Projektik\Gierki\Backend\TicTacToe\obj\Debug\net8.0\ref\TicTacToe.dll
 C:\Users\Jakub\Desktop\Projektik\Gierki\Backend\TicTacToe\bin\Debug\net8.0\game.json
+C:\Users\Jakub\Desktop\Projektik\Gierki\Backend\TicTacToe\bin\Debug\net8.0\System.Web.Cors.dll
+C:\Users\Jakub\Desktop\Projektik\Gierki\Backend\TicTacToe\bin\Debug\net8.0\System.Net.Http.Formatting.dll
+C:\Users\Jakub\Desktop\Projektik\Gierki\Backend\TicTacToe\bin\Debug\net8.0\System.Web.Http.dll
+C:\Users\Jakub\Desktop\Projektik\Gierki\Backend\TicTacToe\bin\Debug\net8.0\System.Web.Http.Cors.dll
+C:\Users\Jakub\Desktop\Projektik\Gierki\Backend\TicTacToe\bin\Debug\net8.0\Newtonsoft.Json.dll
+C:\Users\Jakub\Desktop\Projektik\Gierki\Backend\TicTacToe\bin\Debug\net8.0\Newtonsoft.Json.Bson.dll
