@@ -1,8 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Collections;
-using System.Runtime.CompilerServices;
 using System.Text.Json;
-using System.Web.Http.Cors;
 using TicTacToe.Models;
 using TicTacToe.Repositories;
 
@@ -10,7 +7,6 @@ namespace TicTacToe.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    [EnableCors(origins: "http://localhost:4200", headers: "*", methods: "*")]
     public class MoveController : Controller
     {
         [HttpGet("[action]")]

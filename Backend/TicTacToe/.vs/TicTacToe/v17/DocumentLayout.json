@@ -1,30 +1,14 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\Jakub\\Desktop\\Projektik\\Gierki\\Backend\\TicTacToe\\",
+  "WorkspaceRootPath": "C:\\Users\\mihax\\OneDrive\\Documents\\GitHub\\Gierki\\Backend\\TicTacToe\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{27462ADD-AD9C-45AD-AAB3-3F88E5D18251}|TicTacToe.csproj|c:\\users\\jakub\\desktop\\projektik\\gierki\\backend\\tictactoe\\controllers\\movecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{27462ADD-AD9C-45AD-AAB3-3F88E5D18251}|TicTacToe.csproj|solutionrelative:controllers\\movecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{27462ADD-AD9C-45AD-AAB3-3F88E5D18251}|TicTacToe.csproj|c:\\users\\jakub\\desktop\\projektik\\gierki\\backend\\tictactoe\\repositories\\boardrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{27462ADD-AD9C-45AD-AAB3-3F88E5D18251}|TicTacToe.csproj|c:\\users\\mihax\\onedrive\\documents\\github\\gierki\\backend\\tictactoe\\repositories\\boardrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{27462ADD-AD9C-45AD-AAB3-3F88E5D18251}|TicTacToe.csproj|solutionrelative:repositories\\boardrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{27462ADD-AD9C-45AD-AAB3-3F88E5D18251}|TicTacToe.csproj|c:\\users\\jakub\\desktop\\projektik\\gierki\\backend\\tictactoe\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{27462ADD-AD9C-45AD-AAB3-3F88E5D18251}|TicTacToe.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{27462ADD-AD9C-45AD-AAB3-3F88E5D18251}|TicTacToe.csproj|c:\\users\\jakub\\desktop\\projektik\\gierki\\backend\\tictactoe\\game.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{27462ADD-AD9C-45AD-AAB3-3F88E5D18251}|TicTacToe.csproj|solutionrelative:game.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{27462ADD-AD9C-45AD-AAB3-3F88E5D18251}|TicTacToe.csproj|c:\\users\\jakub\\desktop\\projektik\\gierki\\backend\\tictactoe\\models\\response.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{27462ADD-AD9C-45AD-AAB3-3F88E5D18251}|TicTacToe.csproj|solutionrelative:models\\response.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{27462ADD-AD9C-45AD-AAB3-3F88E5D18251}|TicTacToe.csproj|c:\\users\\jakub\\desktop\\projektik\\gierki\\backend\\tictactoe\\models\\move.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{27462ADD-AD9C-45AD-AAB3-3F88E5D18251}|TicTacToe.csproj|solutionrelative:models\\move.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{27462ADD-AD9C-45AD-AAB3-3F88E5D18251}|TicTacToe.csproj|c:\\users\\mihax\\onedrive\\documents\\github\\gierki\\backend\\tictactoe\\controllers\\movecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{27462ADD-AD9C-45AD-AAB3-3F88E5D18251}|TicTacToe.csproj|solutionrelative:controllers\\movecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -37,76 +21,49 @@
           "SelectedChildIndex": 5,
           "Children": [
             {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "Response.cs",
-              "DocumentMoniker": "C:\\Users\\Jakub\\Desktop\\Projektik\\Gierki\\Backend\\TicTacToe\\Models\\Response.cs",
-              "RelativeDocumentMoniker": "Models\\Response.cs",
-              "ToolTip": "C:\\Users\\Jakub\\Desktop\\Projektik\\Gierki\\Backend\\TicTacToe\\Models\\Response.cs",
-              "RelativeToolTip": "Models\\Response.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA0AAAAgAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-06T14:06:32.065Z"
+              "$type": "Bookmark",
+              "Name": "ST:129:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
             },
             {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "game.json",
-              "DocumentMoniker": "C:\\Users\\Jakub\\Desktop\\Projektik\\Gierki\\Backend\\TicTacToe\\game.json",
-              "RelativeDocumentMoniker": "game.json",
-              "ToolTip": "C:\\Users\\Jakub\\Desktop\\Projektik\\Gierki\\Backend\\TicTacToe\\game.json",
-              "RelativeToolTip": "game.json",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAiAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2024-06-05T21:36:09.563Z"
+              "$type": "Bookmark",
+              "Name": "ST:130:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
             },
             {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Users\\Jakub\\Desktop\\Projektik\\Gierki\\Backend\\TicTacToe\\Program.cs",
-              "RelativeDocumentMoniker": "Program.cs",
-              "ToolTip": "C:\\Users\\Jakub\\Desktop\\Projektik\\Gierki\\Backend\\TicTacToe\\Program.cs",
-              "RelativeToolTip": "Program.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAABQAAAAyAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-05T14:07:35.642Z"
+              "$type": "Bookmark",
+              "Name": "ST:129:0:{13b12e3e-c1b4-4539-9371-4fe9a0d523fc}"
             },
             {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "BoardRepository.cs",
-              "DocumentMoniker": "C:\\Users\\Jakub\\Desktop\\Projektik\\Gierki\\Backend\\TicTacToe\\Repositories\\BoardRepository.cs",
-              "RelativeDocumentMoniker": "Repositories\\BoardRepository.cs",
-              "ToolTip": "C:\\Users\\Jakub\\Desktop\\Projektik\\Gierki\\Backend\\TicTacToe\\Repositories\\BoardRepository.cs",
-              "RelativeToolTip": "Repositories\\BoardRepository.cs",
-              "ViewState": "AQIAABoAAAAAAAAAAAAQwFEAAAAYAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-05T14:37:36.073Z"
+              "$type": "Bookmark",
+              "Name": "ST:130:0:{13b12e3e-c1b4-4539-9371-4fe9a0d523fc}"
             },
             {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "Move.cs",
-              "DocumentMoniker": "C:\\Users\\Jakub\\Desktop\\Projektik\\Gierki\\Backend\\TicTacToe\\Models\\Move.cs",
-              "RelativeDocumentMoniker": "Models\\Move.cs",
-              "ToolTip": "C:\\Users\\Jakub\\Desktop\\Projektik\\Gierki\\Backend\\TicTacToe\\Models\\Move.cs",
-              "RelativeToolTip": "Models\\Move.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAMAAAAFAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-05T14:05:51.52Z"
+              "$type": "Bookmark",
+              "Name": "ST:323948898:0:{81164725-9a96-4ece-a4cb-440d8fd285e5}"
             },
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "MoveController.cs",
-              "DocumentMoniker": "C:\\Users\\Jakub\\Desktop\\Projektik\\Gierki\\Backend\\TicTacToe\\Controllers\\MoveController.cs",
-              "RelativeDocumentMoniker": "Controllers\\MoveController.cs",
-              "ToolTip": "C:\\Users\\Jakub\\Desktop\\Projektik\\Gierki\\Backend\\TicTacToe\\Controllers\\MoveController.cs",
-              "RelativeToolTip": "Controllers\\MoveController.cs",
-              "ViewState": "AQIAABIAAAAAAAAAAAAgwCUAAAARAAAA",
+              "Title": "BoardRepository.cs",
+              "DocumentMoniker": "C:\\Users\\mihax\\OneDrive\\Documents\\GitHub\\Gierki\\Backend\\TicTacToe\\Repositories\\BoardRepository.cs",
+              "RelativeDocumentMoniker": "Repositories\\BoardRepository.cs",
+              "ToolTip": "C:\\Users\\mihax\\OneDrive\\Documents\\GitHub\\Gierki\\Backend\\TicTacToe\\Repositories\\BoardRepository.cs",
+              "RelativeToolTip": "Repositories\\BoardRepository.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAkAAAANAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-05T14:00:54.41Z",
+              "WhenOpened": "2024-06-06T17:52:47.278Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "MoveController.cs",
+              "DocumentMoniker": "C:\\Users\\mihax\\OneDrive\\Documents\\GitHub\\Gierki\\Backend\\TicTacToe\\Controllers\\MoveController.cs",
+              "RelativeDocumentMoniker": "Controllers\\MoveController.cs",
+              "ToolTip": "C:\\Users\\mihax\\OneDrive\\Documents\\GitHub\\Gierki\\Backend\\TicTacToe\\Controllers\\MoveController.cs",
+              "RelativeToolTip": "Controllers\\MoveController.cs",
+              "ViewState": "AQIAABAAAAAAAAAAAAAgwCIAAABBAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-06T17:47:57Z",
               "EditorCaption": ""
             }
           ]
