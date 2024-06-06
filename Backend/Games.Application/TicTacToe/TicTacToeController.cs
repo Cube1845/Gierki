@@ -1,4 +1,5 @@
-﻿using Games.Application.TicTacToe.Models;
+﻿using Games.Application.Infrastructure;
+using Games.Application.TicTacToe.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 
@@ -18,7 +19,8 @@ public class TicTacToeController(TicTacToeService ticTacToeService) : Controller
 
         _ticTacToeService.SetBoardFileData(jsonString);
 
-        return Ok(new Response("Game started"));
+        var response = Result.Success("Game started");
+        return Ok(response);
     }
 
     [HttpPost("[action]")]
@@ -39,20 +41,26 @@ public class TicTacToeController(TicTacToeService ticTacToeService) : Controller
 
             if (_ticTacToeService.GetWinningTiles() != null)
             {
-                return Ok(new Response("Game ended", board));
+                var result = Result<List<List<string>>>.Success(board, "Game ended");
+                return Ok(result);
             }
 
             if (_ticTacToeService.IsGameTied())
             {
                 if (_ticTacToeService.GetWinningTiles() == null)
                 {
-                    return Ok(new Response("Tie", board));
+                    var result = Result<List<List<string>>>.Success(board, "Tie");
+                    return Ok(result);
                 }
             }
-
-            return Ok(new Response("Successfully made a move", board));
+            else
+            {
+                var result = Result<List<List<string>>>.Success(board, "Successfully made a move");
+                return Ok(result);
+            }
         }
 
-        return Ok(new Response("Error"));
+        var response = Result<List<List<string>>>.Error("Error");
+        return Ok(response);
     }
 }

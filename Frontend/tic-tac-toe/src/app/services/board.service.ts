@@ -1,14 +1,18 @@
 import { Injectable } from '@angular/core';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class BoardService {
   isGameStarted: boolean = false;
   gameWinnedBy: string | null = null;
   gameTied: boolean = false;
-  turn: string = "";
-  board: string[][] = [["","",""],["","",""],["","",""]];
+  turn: string = '';
+  board: string[][] = [
+    ['', '', ''],
+    ['', '', ''],
+    ['', '', ''],
+  ];
 
   isGameTied(): boolean {
     return this.gameTied;
@@ -26,13 +30,13 @@ export class BoardService {
   gameWin(symbol: string): void {
     this.gameWinnedBy = symbol;
     this.setGameState(false);
-    this.setTurn("");
+    this.setTurn('');
   }
 
   gameTie(): void {
     this.gameTied = true;
     this.setGameState(false);
-    this.setTurn("");
+    this.setTurn('');
   }
 
   updateBoard(board: string[][]): void {
@@ -46,7 +50,7 @@ export class BoardService {
   clearBoard(): void {
     for (let i = 0; i < 3; i++) {
       for (let j = 0; j < 3; j++) {
-        this.board[i][j] = "";
+        this.board[i][j] = '';
       }
     }
   }
@@ -60,19 +64,18 @@ export class BoardService {
   }
 
   changeTurn(): void {
-    if (this.getTurn() == "O") {
-      this.setTurn("X");
+    if (this.getTurn() == 'O') {
+      this.setTurn('X');
     } else {
-      this.setTurn("O");
+      this.setTurn('O');
     }
   }
 
-  setGameState(bool: boolean): void {
-    this.isGameStarted = bool;
+  setGameState(isStarted: boolean): void {
+    this.isGameStarted = isStarted;
   }
 
   getGameState(): boolean {
     return this.isGameStarted;
   }
 }
-
