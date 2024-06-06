@@ -22,7 +22,7 @@ public class Result
     }
 }
 
-public class Result<T> : Result where T : class
+public sealed class Result<T> : Result where T : class
 {
     public T? Value { get; private set; }
 

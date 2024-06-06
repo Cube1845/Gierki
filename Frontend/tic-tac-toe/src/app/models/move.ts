@@ -1,9 +1,6 @@
-export class Move {
-    symbol: string;
-    position: number[];
+import { Position } from './position';
 
-    constructor(symbol: string, position: number[]) {
-        this.symbol = symbol;
-        this.position = position;
-    }
-}
+export type Move = {
+  symbol: string;
+  position: Position;
+};

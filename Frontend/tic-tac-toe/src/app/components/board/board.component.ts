@@ -1,6 +1,6 @@
 import { NgFor } from '@angular/common';
 import { Component } from '@angular/core';
-import { Move } from '../../models/move';
+import { take } from 'rxjs';
 import { BoardApiService } from '../../services/board-api.service';
 import { BoardService } from '../../services/board.service';
 
@@ -30,8 +30,13 @@ export class BoardComponent {
       var y = event.srcElement.id[5];
       var x = event.srcElement.id[7];
       var turn = this.boardService.getTurn();
+
       this.boardApiService
-        .sendMove(new Move(turn, [y, x]))
+        .sendMove({
+          symbol: turn,
+          position: { y, x },
+        })
+        .pipe(take(1))
         .subscribe((response) => {
           switch (response.message) {
             case 'Successfully made a move':
