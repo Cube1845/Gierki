@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Cors;
 using System.Web.Http;
+using TicTacToe.Repositories;
 
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
@@ -11,6 +12,8 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddScoped<BoardRepository>();
 
 builder.Services.AddCors(options =>
 {
