@@ -3,12 +3,23 @@
   "WorkspaceRootPath": "C:\\Users\\mihax\\OneDrive\\Documents\\GitHub\\Gierki\\Backend\\TicTacToe\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{27462ADD-AD9C-45AD-AAB3-3F88E5D18251}|TicTacToe.csproj|c:\\users\\mihax\\onedrive\\documents\\github\\gierki\\backend\\tictactoe\\repositories\\boardrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{27462ADD-AD9C-45AD-AAB3-3F88E5D18251}|TicTacToe.csproj|solutionrelative:repositories\\boardrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{27462ADD-AD9C-45AD-AAB3-3F88E5D18251}|TicTacToe.csproj|c:\\users\\mihax\\onedrive\\documents\\github\\gierki\\backend\\tictactoe\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{27462ADD-AD9C-45AD-AAB3-3F88E5D18251}|TicTacToe.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{27462ADD-AD9C-45AD-AAB3-3F88E5D18251}|TicTacToe.csproj|C:\\Users\\mihax\\OneDrive\\Documents\\GitHub\\Gierki\\Backend\\TicTacToe\\controllers\\movecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{27462ADD-AD9C-45AD-AAB3-3F88E5D18251}|TicTacToe.csproj|solutionrelative:controllers\\movecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{3EF02A13-03A2-4226-8208-53CD8D6ADD94}|..\\Games.Application\\Games.Application.csproj|c:\\users\\mihax\\onedrive\\documents\\github\\gierki\\backend\\games.application\\tictactoe\\tictactoecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3EF02A13-03A2-4226-8208-53CD8D6ADD94}|..\\Games.Application\\Games.Application.csproj|c:\\users\\mihax\\onedrive\\documents\\github\\gierki\\backend\\games.application\\tictactoe\\tictactoeservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3EF02A13-03A2-4226-8208-53CD8D6ADD94}|..\\Games.Application\\Games.Application.csproj|c:\\users\\mihax\\onedrive\\documents\\github\\gierki\\backend\\games.application\\tictactoe\\models\\move.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3EF02A13-03A2-4226-8208-53CD8D6ADD94}|..\\Games.Application\\Games.Application.csproj|c:\\users\\mihax\\onedrive\\documents\\github\\gierki\\backend\\games.application\\tictactoe\\models\\response.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3EF02A13-03A2-4226-8208-53CD8D6ADD94}|..\\Games.Application\\Games.Application.csproj|c:\\users\\mihax\\onedrive\\documents\\github\\gierki\\backend\\games.application\\games.application.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
     }
   ],
   "DocumentGroupContainers": [
@@ -18,8 +29,34 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 5,
+          "SelectedChildIndex": 10,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Response.cs",
+              "DocumentMoniker": "C:\\Users\\mihax\\OneDrive\\Documents\\GitHub\\Gierki\\Backend\\Games.Application\\TicTacToe\\Models\\Response.cs",
+              "RelativeDocumentMoniker": "..\\Games.Application\\TicTacToe\\Models\\Response.cs",
+              "ToolTip": "C:\\Users\\mihax\\OneDrive\\Documents\\GitHub\\Gierki\\Backend\\Games.Application\\TicTacToe\\Models\\Response.cs",
+              "RelativeToolTip": "..\\Games.Application\\TicTacToe\\Models\\Response.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABEAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-06T18:27:00.639Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Move.cs",
+              "DocumentMoniker": "C:\\Users\\mihax\\OneDrive\\Documents\\GitHub\\Gierki\\Backend\\Games.Application\\TicTacToe\\Models\\Move.cs",
+              "RelativeDocumentMoniker": "..\\Games.Application\\TicTacToe\\Models\\Move.cs",
+              "ToolTip": "C:\\Users\\mihax\\OneDrive\\Documents\\GitHub\\Gierki\\Backend\\Games.Application\\TicTacToe\\Models\\Move.cs",
+              "RelativeToolTip": "..\\Games.Application\\TicTacToe\\Models\\Move.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAgAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-06T18:26:26.541Z",
+              "EditorCaption": ""
+            },
             {
               "$type": "Bookmark",
               "Name": "ST:129:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
@@ -42,28 +79,55 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "BoardRepository.cs",
-              "DocumentMoniker": "C:\\Users\\mihax\\OneDrive\\Documents\\GitHub\\Gierki\\Backend\\TicTacToe\\Repositories\\BoardRepository.cs",
-              "RelativeDocumentMoniker": "Repositories\\BoardRepository.cs",
-              "ToolTip": "C:\\Users\\mihax\\OneDrive\\Documents\\GitHub\\Gierki\\Backend\\TicTacToe\\Repositories\\BoardRepository.cs",
-              "RelativeToolTip": "Repositories\\BoardRepository.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAkAAAANAAAA",
+              "DocumentIndex": 2,
+              "Title": "TicTacToeService.cs",
+              "DocumentMoniker": "C:\\Users\\mihax\\OneDrive\\Documents\\GitHub\\Gierki\\Backend\\Games.Application\\TicTacToe\\TicTacToeService.cs",
+              "RelativeDocumentMoniker": "..\\Games.Application\\TicTacToe\\TicTacToeService.cs",
+              "ToolTip": "C:\\Users\\mihax\\OneDrive\\Documents\\GitHub\\Gierki\\Backend\\Games.Application\\TicTacToe\\TicTacToeService.cs",
+              "RelativeToolTip": "..\\Games.Application\\TicTacToe\\TicTacToeService.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAkAAAAXAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-06T17:52:47.278Z",
+              "WhenOpened": "2024-06-06T18:23:50.149Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Games.Application",
+              "DocumentMoniker": "C:\\Users\\mihax\\OneDrive\\Documents\\GitHub\\Gierki\\Backend\\Games.Application\\Games.Application.csproj",
+              "RelativeDocumentMoniker": "..\\Games.Application\\Games.Application.csproj",
+              "ToolTip": "C:\\Users\\mihax\\OneDrive\\Documents\\GitHub\\Gierki\\Backend\\Games.Application\\Games.Application.csproj",
+              "RelativeToolTip": "..\\Games.Application\\Games.Application.csproj",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAsAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2024-06-06T18:22:38.933Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "MoveController.cs",
-              "DocumentMoniker": "C:\\Users\\mihax\\OneDrive\\Documents\\GitHub\\Gierki\\Backend\\TicTacToe\\Controllers\\MoveController.cs",
-              "RelativeDocumentMoniker": "Controllers\\MoveController.cs",
-              "ToolTip": "C:\\Users\\mihax\\OneDrive\\Documents\\GitHub\\Gierki\\Backend\\TicTacToe\\Controllers\\MoveController.cs",
-              "RelativeToolTip": "Controllers\\MoveController.cs",
-              "ViewState": "AQIAABAAAAAAAAAAAAAgwCIAAABBAAAA",
+              "Title": "TicTacToeController.cs",
+              "DocumentMoniker": "C:\\Users\\mihax\\OneDrive\\Documents\\GitHub\\Gierki\\Backend\\Games.Application\\TicTacToe\\TicTacToeController.cs",
+              "RelativeDocumentMoniker": "..\\Games.Application\\TicTacToe\\TicTacToeController.cs",
+              "ToolTip": "C:\\Users\\mihax\\OneDrive\\Documents\\GitHub\\Gierki\\Backend\\Games.Application\\TicTacToe\\TicTacToeController.cs",
+              "RelativeToolTip": "..\\Games.Application\\TicTacToe\\TicTacToeController.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABcAAAAaAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-06T17:47:57Z"
+              "WhenOpened": "2024-06-06T18:21:59.468Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\mihax\\OneDrive\\Documents\\GitHub\\Gierki\\Backend\\TicTacToe\\Program.cs",
+              "RelativeDocumentMoniker": "Program.cs",
+              "ToolTip": "C:\\Users\\mihax\\OneDrive\\Documents\\GitHub\\Gierki\\Backend\\TicTacToe\\Program.cs",
+              "RelativeToolTip": "Program.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAUAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-06T17:58:19.562Z",
+              "EditorCaption": ""
             }
           ]
         }

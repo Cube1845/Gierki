@@ -1,6 +1,4 @@
-using Microsoft.AspNetCore.Cors;
-using System.Web.Http;
-using TicTacToe.Repositories;
+using Games.Application.TicTacToe;
 
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
@@ -13,7 +11,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddScoped<BoardRepository>();
+builder.Services.AddScoped<TicTacToeService>();
 
 builder.Services.AddCors(options =>
 {
