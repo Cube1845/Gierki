@@ -1,32 +1,36 @@
 ﻿using Games.Application.Infrastructure;
+using Games.Application.Persistence;
 using Games.Application.TicTacToe.Models;
+using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
 
 namespace Games.Application.TicTacToe;
 
-public class TicTacToeService
+public class TicTacToeService(GamesDbContext context)
 {
+    private readonly GamesDbContext _context = context;
+
     private readonly List<PositionCollection> WinningCases =
     [
-        new([0,0], [0,1], [0, 2]),
-        new([1,0], [1,1], [1, 2]),
-        new([2,0], [2,1], [2, 2]),
-        new([0,0], [1,0], [2, 0]),
-        new([0,1], [1,1], [2, 1]),
-        new([0,2], [1,2], [2, 2]),
-        new([0,0], [1,1], [2, 2]),
-        new([0,2], [1,1], [2, 0]),
+        new([0, 0], [0, 1], [0, 2]),
+        new([1, 0], [1, 1], [1, 2]),
+        new([2, 0], [2, 1], [2, 2]),
+        new([0, 0], [1, 0], [2, 0]),
+        new([0, 1], [1, 1], [2, 1]),
+        new([0, 2], [1, 2], [2, 2]),
+        new([0, 0], [1, 1], [2, 2]),
+        new([0, 2], [1, 1], [2, 0]),
     ];
 
     private readonly string _fileName = "game.json";
 
-    public void StartGame()
+    public async Task StartGame()
     {
         var board = GetEmptyBoard();
-        SaveBoard(board);
+        await SaveBoard(board);
     }
 
-    public Result<List<List<string>>> MakeMove(Move move)
+    public async Task<Result<List<List<string>>>> MakeMove(Move move)
     {
         var board = LoadBoardFromFile();
 
@@ -34,14 +38,14 @@ public class TicTacToeService
         {
             board[move.Position.Y][move.Position.X] = move.Symbol;
 
-            SaveBoard(board);
+            await SaveBoard(board);
 
             if (GetWinningTiles() != null)
             {
                 return Result<List<List<string>>>.Success(board, "Game ended");
             }
 
-            if (IsGameTied() && IsWinSituation())
+            if (IsGameTied() && !IsWinSituation())
             {
                 return Result<List<List<string>>>.Success(board, "Tie");
             }
@@ -62,10 +66,26 @@ public class TicTacToeService
         ];
     }
 
-    private void SaveBoard(List<List<string>> board)
+    private async Task SaveBoard(List<List<string>> board)
     {
         var serializedBoard = JsonSerializer.Serialize(board);
-        File.WriteAllText(_fileName, serializedBoard);
+        var boardDb = await _context.TicTacToe.FirstOrDefaultAsync();
+
+        if (boardDb is not null)
+        {
+            boardDb.Board = serializedBoard;
+        }
+        else
+        {
+            var ticTacToe = new Application.Persistence.TicTacToe() 
+            {
+                Board = serializedBoard,
+            };
+
+            await _context.TicTacToe.AddAsync(ticTacToe);
+        }
+
+        await _context.SaveChangesAsync();
     }
 
     private bool IsGameTied()

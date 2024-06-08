@@ -11,18 +11,18 @@ public class TicTacToeController(TicTacToeService ticTacToeService) : Controller
     private readonly TicTacToeService _ticTacToeService = ticTacToeService;
 
     [HttpGet("[action]")]
-    public IActionResult StartGame()
+    public async Task<IActionResult> StartGame()
     {
-        _ticTacToeService.StartGame();
+        await _ticTacToeService.StartGame();
 
         var response = Result.Success("Game started");
         return Ok(response);
     }
 
     [HttpPost("[action]")]
-    public IActionResult MakeMoveAndCheckGameStatus([FromBody] Move move)
+    public async Task<IActionResult> MakeMoveAndCheckGameStatus([FromBody] Move move)
     {
-        var response = _ticTacToeService.MakeMove(move);
+        var response = await _ticTacToeService.MakeMove(move);
         return Ok(response);
     }
 }

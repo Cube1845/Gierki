@@ -1,4 +1,6 @@
+using Games.Application.Persistence;
 using Games.Application.TicTacToe;
+using Microsoft.EntityFrameworkCore;
 
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
@@ -12,6 +14,11 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<TicTacToeService>();
+
+builder.Services.AddDbContext<GamesDbContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer"));
+});
 
 builder.Services.AddCors(options =>
 {
@@ -32,6 +39,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
 
 app.UseCors(MyAllowSpecificOrigins);
 
