@@ -27,48 +27,49 @@ public class TicTacToeService(GamesDbContext context)
     public async Task StartGame()
     {
         var board = GetEmptyBoard();
-        await SaveBoard(board);
+        await SaveBoardToDatabase(board);
     }
 
-    public async Task<Result<List<List<string>>>> MakeMove(Move move)
+    public async Task<Result<Board>> MakeMove(Move move)
     {
-        var board = LoadBoardFromFile();
+        var board = await LoadBoardFromDatabase();
 
         if (move.Symbol is "O" || move.Symbol is "X")
         {
-            board[move.Position.Y][move.Position.X] = move.Symbol;
+            board.BoardData[move.Position.Y].Positions[move.Position.X] = move.Symbol;
 
-            await SaveBoard(board);
+            await SaveBoardToDatabase(board);
 
-            if (GetWinningTiles() != null)
+            if (IsWinSituation())
             {
-                return Result<List<List<string>>>.Success(board, "Game ended");
+                return Result<Board>.Success(board, "Game ended");
             }
 
-            if (IsGameTied() && !IsWinSituation())
+            if (await IsGameTied() && !IsWinSituation())
             {
-                return Result<List<List<string>>>.Success(board, "Tie");
+                return Result<Board>.Success(board, "Tie");
             }
 
-            return Result<List<List<string>>>.Success(board, "Successfully made a move");
+            return Result<Board>.Success(board, "Successfully made a move");
         }
 
-        return Result<List<List<string>>>.Error("Error"); ;
+        return Result<Board>.Error("Error"); ;
     }
 
-    private List<List<string>> GetEmptyBoard()
+    private Board GetEmptyBoard()
     {
-        return
-        [
-            ["", "", ""],
-            ["", "", ""],
-            ["", "", ""],
-        ];
+        return 
+        new([
+            new(["", "", ""]), 
+            new(["", "", ""]), 
+            new(["", "", ""])
+        ]);
     }
 
-    private async Task SaveBoard(List<List<string>> board)
+    private async Task SaveBoardToDatabase(Board board)
     {
-        var serializedBoard = JsonSerializer.Serialize(board);
+        var listedBoard = Board.ConvertFromBoardModelToMultiList(board);
+        var serializedBoard = JsonSerializer.Serialize(listedBoard);
         var boardDb = await _context.TicTacToe.FirstOrDefaultAsync();
 
         if (boardDb is not null)
@@ -88,13 +89,13 @@ public class TicTacToeService(GamesDbContext context)
         await _context.SaveChangesAsync();
     }
 
-    private bool IsGameTied()
+    private async Task<bool> IsGameTied()
     {
-        var board = LoadBoardFromFile();
+        var board = await LoadBoardFromDatabase();
 
-        foreach (List<string> row in board)
+        foreach (BoardRow row in board.BoardData)
         {
-            if (row.Any(x => x is ""))
+            if (row.Positions.Any(x => x is ""))
             {
                 return false;
             }
@@ -103,15 +104,15 @@ public class TicTacToeService(GamesDbContext context)
         return true;
     }
 
-    private PositionCollection? GetWinningTiles()
+    private async Task<PositionCollection?> GetWinningTiles()
     {
-        var board = LoadBoardFromFile();
+        var board = await LoadBoardFromDatabase();
 
         foreach (var winningCase in WinningCases)
         {
-            var tile1 = board[winningCase.T1.Y][winningCase.T1.X];
-            var tile2 = board[winningCase.T2.Y][winningCase.T2.X];
-            var tile3 = board[winningCase.T3.Y][winningCase.T3.X];
+            var tile1 = board.BoardData[winningCase.T1.Y].Positions[winningCase.T1.X];
+            var tile2 = board.BoardData[winningCase.T2.Y].Positions[winningCase.T2.X];
+            var tile3 = board.BoardData[winningCase.T3.Y].Positions[winningCase.T3.X];
 
             string[] tiles = [tile1, tile2, tile3];
 
@@ -133,9 +134,21 @@ public class TicTacToeService(GamesDbContext context)
         return GetWinningTiles() != null;
     }
 
-    private List<List<string>> LoadBoardFromFile()
+    private async Task<Board> LoadBoardFromDatabase()
     {
-        var fileText = File.ReadAllText(_fileName);
-        return JsonSerializer.Deserialize<List<List<string>>>(fileText)!;
+        var boardDb = await _context.TicTacToe.FirstOrDefaultAsync();
+        string jsonText = "";
+
+        if (boardDb is not null)
+        {
+            jsonText = boardDb.Board;
+        }
+        else
+        {
+            throw new ArgumentException("Got no data from database");
+        }
+
+        var list = JsonSerializer.Deserialize<List<List<string>>>(jsonText)!;
+        return Board.ConvertFromMultiListToBoardModel(list);
     }
 }

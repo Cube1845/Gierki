@@ -1,68 +1,12 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "C:\\Users\\Jakub\\Desktop\\games project\\Gierki\\Backend\\TicTacToe\\",
-  "Documents": [
-    {
-      "AbsoluteMoniker": "D:0:0:{3EF02A13-03A2-4226-8208-53CD8D6ADD94}|..\\Games.Application\\Games.Application.csproj|c:\\users\\jakub\\desktop\\games project\\gierki\\backend\\games.application\\persistence\\tictactoe.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{3EF02A13-03A2-4226-8208-53CD8D6ADD94}|..\\Games.Application\\Games.Application.csproj|c:\\users\\jakub\\desktop\\games project\\gierki\\backend\\games.application\\tictactoe\\tictactoecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{3EF02A13-03A2-4226-8208-53CD8D6ADD94}|..\\Games.Application\\Games.Application.csproj|c:\\users\\jakub\\desktop\\games project\\gierki\\backend\\games.application\\tictactoe\\tictactoeservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    }
-  ],
+  "Documents": [],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
       "VerticalTabListWidth": 256,
-      "DocumentGroups": [
-        {
-          "DockedWidth": 200,
-          "SelectedChildIndex": 0,
-          "Children": [
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "TicTacToe.cs",
-              "DocumentMoniker": "C:\\Users\\Jakub\\Desktop\\games project\\Gierki\\Backend\\Games.Application\\Persistence\\TicTacToe.cs",
-              "RelativeDocumentMoniker": "..\\Games.Application\\Persistence\\TicTacToe.cs",
-              "ToolTip": "C:\\Users\\Jakub\\Desktop\\games project\\Gierki\\Backend\\Games.Application\\Persistence\\TicTacToe.cs",
-              "RelativeToolTip": "..\\Games.Application\\Persistence\\TicTacToe.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAABIAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-08T21:50:39.797Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "TicTacToeController.cs",
-              "DocumentMoniker": "C:\\Users\\Jakub\\Desktop\\games project\\Gierki\\Backend\\Games.Application\\TicTacToe\\TicTacToeController.cs",
-              "RelativeDocumentMoniker": "..\\Games.Application\\TicTacToe\\TicTacToeController.cs",
-              "ToolTip": "C:\\Users\\Jakub\\Desktop\\games project\\Gierki\\Backend\\Games.Application\\TicTacToe\\TicTacToeController.cs",
-              "RelativeToolTip": "..\\Games.Application\\TicTacToe\\TicTacToeController.cs",
-              "ViewState": "AQIAAAYAAAAAAAAAAAAAABoAAAAFAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-08T21:36:04.693Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "TicTacToeService.cs",
-              "DocumentMoniker": "C:\\Users\\Jakub\\Desktop\\games project\\Gierki\\Backend\\Games.Application\\TicTacToe\\TicTacToeService.cs",
-              "RelativeDocumentMoniker": "..\\Games.Application\\TicTacToe\\TicTacToeService.cs",
-              "ToolTip": "C:\\Users\\Jakub\\Desktop\\games project\\Gierki\\Backend\\Games.Application\\TicTacToe\\TicTacToeService.cs",
-              "RelativeToolTip": "..\\Games.Application\\TicTacToe\\TicTacToeService.cs",
-              "ViewState": "AQIAABAAAAAAAAAAAAAAwBwAAAAkAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-06T20:49:32.373Z",
-              "EditorCaption": ""
-            }
-          ]
-        }
-      ]
+      "DocumentGroups": []
     }
   ]
 }
