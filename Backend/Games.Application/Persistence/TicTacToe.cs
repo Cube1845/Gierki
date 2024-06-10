@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Games.Application.TicTacToe.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -15,4 +16,5 @@ public class TicTacToe
     public string? GameWinnedBy { get; set; }
     public bool IsGameTied { get; set; }
     public string Turn { get; set; } = "";
+    public string WinningTiles { get; set; } = "";
 }

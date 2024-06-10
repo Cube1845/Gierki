@@ -31,30 +31,14 @@ export class BoardComponent {
       var x = event.srcElement.id[7];
       var turn = this.boardService.getTurn();
 
-      this.boardApiService
-        .sendMove({
-          symbol: turn,
-          position: { y, x },
-        })
-        .pipe(take(1))
-        .subscribe((response) => {
-          switch (response.message) {
-            case 'Successfully made a move':
-              this.boardService.changeTurn();
-              break;
-            case 'Game ended':
-              this.boardService.gameWin(this.boardService.getTurn());
-              break;
-            case 'Tie':
-              this.boardService.gameTie();
-              break;
-            default:
-              break;
-          }
-          if (response.value != null) {
-            this.boardService.updateBoard(response.value);
-          }
-        });
+      this.boardApiService.makeMoveAndGetGameStatus(
+        {
+        symbol: "O", 
+        position: {
+          x: x,
+          y: y
+        }
+      });
     }
   }
 }

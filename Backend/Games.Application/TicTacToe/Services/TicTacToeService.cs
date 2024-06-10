@@ -2,9 +2,10 @@
 using Games.Application.Persistence;
 using Games.Application.TicTacToe.Models;
 using Microsoft.EntityFrameworkCore;
-using System.Text.Json;
+using Newtonsoft.Json;
+using System.Collections.Generic;
 
-namespace Games.Application.TicTacToe;
+namespace Games.Application.TicTacToe.Services;
 
 public class TicTacToeService(GamesDbContext context)
 {
@@ -22,15 +23,43 @@ public class TicTacToeService(GamesDbContext context)
         new([0, 2], [1, 1], [2, 0]),
     ];
 
-    private readonly string _fileName = "game.json";
-
     public async Task StartGame()
     {
         var board = GetEmptyBoard();
         await SaveBoardToDatabase(board);
     }
 
-    public async Task<Result<Board>> MakeMove(Move move)
+    public async Task<GameData> GetGameData()
+    {
+        GameData GameData;
+        var boardDb = await _context.TicTacToe.FirstOrDefaultAsync();
+
+        if (boardDb is not null)
+        {
+            GameData = new(
+                JsonConvert.DeserializeObject<Board>(boardDb.Board)!,
+                boardDb.IsGameStarted,
+                boardDb.GameWinnedBy,
+                boardDb.IsGameTied,
+                boardDb.Turn,
+                JsonConvert.DeserializeObject<PositionCollection>(boardDb.WinningTiles)
+            );
+        }
+        else
+        {
+            throw new ArgumentException("Got no data from database");
+        }
+
+        return GameData;
+    }
+
+    public async Task<Result<Board>> DeserializeStringAndMakeMove(string text)
+    {
+        var move = JsonConvert.DeserializeObject<Move>(text);
+        return await MakeMove(move!);
+    }
+
+    private async Task<Result<Board>> MakeMove(Move move)
     {
         var board = await LoadBoardFromDatabase();
 
@@ -40,12 +69,12 @@ public class TicTacToeService(GamesDbContext context)
 
             await SaveBoardToDatabase(board);
 
-            if (IsWinSituation())
+            if (await IsWinSituation())
             {
                 return Result<Board>.Success(board, "Game ended");
             }
 
-            if (await IsGameTied() && !IsWinSituation())
+            if (await IsGameTied() && ! await IsWinSituation())
             {
                 return Result<Board>.Success(board, "Tie");
             }
@@ -58,18 +87,17 @@ public class TicTacToeService(GamesDbContext context)
 
     private Board GetEmptyBoard()
     {
-        return 
+        return
         new([
-            new(["", "", ""]), 
-            new(["", "", ""]), 
+            new(["", "", ""]),
+            new(["", "", ""]),
             new(["", "", ""])
         ]);
     }
 
     private async Task SaveBoardToDatabase(Board board)
     {
-        var listedBoard = Board.ConvertFromBoardModelToMultiList(board);
-        var serializedBoard = JsonSerializer.Serialize(listedBoard);
+        var serializedBoard = JsonConvert.SerializeObject(board);
         var boardDb = await _context.TicTacToe.FirstOrDefaultAsync();
 
         if (boardDb is not null)
@@ -78,7 +106,7 @@ public class TicTacToeService(GamesDbContext context)
         }
         else
         {
-            var ticTacToe = new Application.Persistence.TicTacToe() 
+            var ticTacToe = new Persistence.TicTacToe()
             {
                 Board = serializedBoard,
             };
@@ -87,6 +115,8 @@ public class TicTacToeService(GamesDbContext context)
         }
 
         await _context.SaveChangesAsync();
+
+        return;
     }
 
     private async Task<bool> IsGameTied()
@@ -129,9 +159,9 @@ public class TicTacToeService(GamesDbContext context)
         return null;
     }
 
-    private bool IsWinSituation()
+    private async Task<bool> IsWinSituation()
     {
-        return GetWinningTiles() != null;
+        return await GetWinningTiles() != null;
     }
 
     private async Task<Board> LoadBoardFromDatabase()
@@ -148,7 +178,6 @@ public class TicTacToeService(GamesDbContext context)
             throw new ArgumentException("Got no data from database");
         }
 
-        var list = JsonSerializer.Deserialize<List<List<string>>>(jsonText)!;
-        return Board.ConvertFromMultiListToBoardModel(list);
+        return JsonConvert.DeserializeObject<Board>(jsonText)!;
     }
 }

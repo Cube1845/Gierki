@@ -20,7 +20,8 @@ namespace Games.Application.Migrations
                     IsGameStarted = table.Column<bool>(type: "bit", nullable: false),
                     GameWinnedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IsGameTied = table.Column<bool>(type: "bit", nullable: false),
-                    Turn = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Turn = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    WinningTiles = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {

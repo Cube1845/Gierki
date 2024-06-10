@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Games.Application.Migrations
 {
     [DbContext(typeof(GamesDbContext))]
-    [Migration("20240608213115_Initial")]
+    [Migration("20240610160214_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -46,6 +46,10 @@ namespace Games.Application.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Turn")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("WinningTiles")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

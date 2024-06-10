@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { BoardComponent } from './components/board/board.component';
 import { NgIf } from '@angular/common';
@@ -13,18 +13,23 @@ import { BoardService } from './services/board.service';
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   constructor(private readonly boardApiService: BoardApiService, private readonly boardService: BoardService) {}
+
+  ngOnInit(): void {
+    this.boardApiService.startConnection();
+  }
 
   responseText: string = "";
 
-  startGame(): void {
-    this.boardService.setGameState(true);
-    this.boardApiService.startGame().subscribe((text) => this.responseText = text);
-    this.boardService.clearBoard();
-    this.boardService.setTurn("O");
-    this.boardService.updateBoard([["","",""],["","",""],["","",""]]);
-    this.boardService.resetStateVariables();
+  async startGame(): Promise<void> {
+    // this.boardService.setGameState(true);
+    // this.boardApiService.startGame().subscribe((text) => this.responseText = text);
+    // this.boardService.clearBoard();
+    // this.boardService.setTurn("O");
+    // this.boardService.updateBoard([["","",""],["","",""],["","",""]]);
+    // this.boardService.resetStateVariables();
+    this.boardApiService.startGame();
   }
 
   getGameState(): boolean {

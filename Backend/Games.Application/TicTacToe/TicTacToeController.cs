@@ -1,13 +1,15 @@
 ﻿using Games.Application.Infrastructure;
 using Games.Application.TicTacToe.Models;
+using Games.Application.TicTacToe.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Games.Application.TicTacToe;
 
 [ApiController]
 [Route("Move")]
-public class TicTacToeController(TicTacToeService ticTacToeService) : Controller
+public class TicTacToeController(/*TicTacToeService ticTacToeService*/) : Controller
 {
+    /*
     private readonly TicTacToeService _ticTacToeService = ticTacToeService;
 
     [HttpGet("[action]")]
@@ -25,4 +27,5 @@ public class TicTacToeController(TicTacToeService ticTacToeService) : Controller
         var response = await _ticTacToeService.MakeMove(move);
         return Ok(response);
     }
+    */
 }

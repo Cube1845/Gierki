@@ -1,8 +1,9 @@
 using Games.Application.Persistence;
-using Games.Application.TicTacToe;
+using Games.Application.TicTacToe.Hubs;
+using Games.Application.TicTacToe.Services;
 using Microsoft.EntityFrameworkCore;
 
-var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+var AllowCors = "_allowCors";
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +14,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddSignalR();
+
 builder.Services.AddScoped<TicTacToeService>();
 
 builder.Services.AddDbContext<GamesDbContext>(options =>
@@ -22,14 +25,17 @@ builder.Services.AddDbContext<GamesDbContext>(options =>
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy(name: MyAllowSpecificOrigins,
-                      policy =>
-                      {
-                          policy.WithOrigins("http://localhost:4200")
-                                                  .AllowAnyHeader()
-                                                  .AllowAnyMethod(); ;
-                      });
+    options.AddPolicy(name: AllowCors,
+    policy =>
+    {
+        policy
+            .AllowAnyOrigin()
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+     });
 });
+
+builder.Services.AddSignalR();
 
 var app = builder.Build();
 
@@ -41,12 +47,14 @@ if (app.Environment.IsDevelopment())
 }
 
 
-app.UseCors(MyAllowSpecificOrigins);
+app.UseCors(AllowCors);
 
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapHub<TicTacToeHub>("/tictactoehub");
 
 app.Run();

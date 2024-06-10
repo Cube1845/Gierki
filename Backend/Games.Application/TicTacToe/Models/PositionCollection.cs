@@ -6,7 +6,7 @@ public class PositionCollection
     public Position T2 { get; private set; }
     public Position T3 { get; private set; }
 
-    public PositionCollection(int[] t1, int[] t2, int[] t3)
+    public PositionCollection(List<int> t1, List<int> t2, List<int> t3)
     {
         T1 = t1;
         T2 = t2;
