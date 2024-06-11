@@ -1,0 +1,23 @@
+:host {
+  $board-size: 150px;
+  $hover-transition-time: 0.1s;
+
+  .tile {
+    font-size: 100px;
+    text-align: center;
+    color: darkslategrey;
+    transition: background-color $hover-transition-time ease,
+      transform $hover-transition-time;
+
+    background-color: rgb(115, 168, 201);
+    border: 0px;
+    width: $board-size;
+    height: $board-size;
+
+    &:hover {
+      transition: background-color $hover-transition-time ease,
+        transform $hover-transition-time;
+      background-color: rgb(95, 148, 181);
+    }
+  }
+}

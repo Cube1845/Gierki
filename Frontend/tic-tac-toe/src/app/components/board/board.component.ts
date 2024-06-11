@@ -1,13 +1,14 @@
-import { NgFor } from '@angular/common';
 import { Component } from '@angular/core';
-import { take } from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Move } from '../../models/move';
 import { BoardApiService } from '../../services/board-api.service';
 import { BoardService } from '../../services/board.service';
+import { TileComponent } from '../tile/tile.component';
 
 @Component({
   selector: 'app-board',
   standalone: true,
-  imports: [NgFor],
+  imports: [TileComponent],
   templateUrl: './board.component.html',
   styleUrl: './board.component.scss',
 })
@@ -15,7 +16,11 @@ export class BoardComponent {
   constructor(
     private readonly boardService: BoardService,
     private readonly boardApiService: BoardApiService
-  ) {}
+  ) {
+    this.boardApiService.moveMade$.pipe(takeUntilDestroyed()).subscribe((x) => {
+      console.log(x);
+    });
+  }
 
   board: string[][] = this.boardService.board;
   responseText: string = '';
@@ -24,21 +29,7 @@ export class BoardComponent {
     return this.boardService.getBoard();
   }
 
-  tileClick(event: any): void {
-    var symbol = event.srcElement.innerHTML;
-    if (symbol != 'X' && symbol != 'O') {
-      var y = event.srcElement.id[5];
-      var x = event.srcElement.id[7];
-      var turn = this.boardService.getTurn();
-
-      this.boardApiService.makeMoveAndGetGameStatus(
-        {
-        symbol: "O", 
-        position: {
-          x: x,
-          y: y
-        }
-      });
-    }
+  onTileClick(move: Move): void {
+    this.boardApiService.makeMoveAndGetGameStatus(move);
   }
 }

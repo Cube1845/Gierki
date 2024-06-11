@@ -1,5 +1,10 @@
 <div class="board">
-    <div class="tile-row" *ngFor="let i of [0, 1, 2]; index as _i">
-        <button (click)="tileClick($event)" type="button" class="tile" *ngFor="let j of [0, 1, 2]; index as _j" id="tile-{{ _i }}-{{ _j }}">{{ this.getBoard()[i][j] }}</button>
-    </div>
+  @for (y of [0,1,2]; track y) { @for (x of [0,1,2]; track x) {
+  <app-tile
+    [x]="x"
+    [y]="y"
+    [value]="getBoard()[y][x]"
+    (tileClick)="onTileClick($event)"
+  />
+  } }
 </div>
