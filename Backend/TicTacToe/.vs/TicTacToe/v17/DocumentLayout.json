@@ -3,16 +3,16 @@
   "WorkspaceRootPath": "C:\\Users\\Jakub\\Desktop\\games project\\Gierki\\Backend\\TicTacToe\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{3EF02A13-03A2-4226-8208-53CD8D6ADD94}|..\\Games.Application\\Games.Application.csproj|c:\\users\\jakub\\desktop\\games project\\gierki\\backend\\games.application\\tictactoe\\services\\tictactoeservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{3EF02A13-03A2-4226-8208-53CD8D6ADD94}|..\\Games.Application\\Games.Application.csproj|c:\\users\\jakub\\desktop\\games project\\gierki\\backend\\games.application\\tictactoe\\models\\board.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{3EF02A13-03A2-4226-8208-53CD8D6ADD94}|..\\Games.Application\\Games.Application.csproj|c:\\users\\jakub\\desktop\\games project\\gierki\\backend\\games.application\\tictactoe\\hubs\\tictactoehub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{3EF02A13-03A2-4226-8208-53CD8D6ADD94}|..\\Games.Application\\Games.Application.csproj|c:\\users\\jakub\\desktop\\games project\\gierki\\backend\\games.application\\infrastructure\\result.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3EF02A13-03A2-4226-8208-53CD8D6ADD94}|..\\Games.Application\\Games.Application.csproj|c:\\users\\jakub\\desktop\\games project\\gierki\\backend\\games.application\\tictactoe\\services\\tictactoeservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3EF02A13-03A2-4226-8208-53CD8D6ADD94}|..\\Games.Application\\Games.Application.csproj|c:\\users\\jakub\\desktop\\games project\\gierki\\backend\\games.application\\tictactoe\\models\\board.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{3EF02A13-03A2-4226-8208-53CD8D6ADD94}|..\\Games.Application\\Games.Application.csproj|c:\\users\\jakub\\desktop\\games project\\gierki\\backend\\games.application\\persistence\\tictactoe.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
@@ -40,11 +40,11 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 9,
+          "SelectedChildIndex": 8,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 3,
               "Title": "Board.cs",
               "DocumentMoniker": "C:\\Users\\Jakub\\Desktop\\games project\\Gierki\\Backend\\Games.Application\\TicTacToe\\Models\\Board.cs",
               "RelativeDocumentMoniker": "..\\Games.Application\\TicTacToe\\Models\\Board.cs",
@@ -52,8 +52,7 @@
               "RelativeToolTip": "..\\Games.Application\\TicTacToe\\Models\\Board.cs",
               "ViewState": "AQIAAAMAAAAAAAAAAAAAAA4AAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-10T17:58:58.388Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-06-10T17:58:58.388Z"
             },
             {
               "$type": "Document",
@@ -65,8 +64,7 @@
               "RelativeToolTip": "..\\Games.Application\\TicTacToe\\Models\\Move.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAMAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-10T17:25:42.961Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-06-10T17:25:42.961Z"
             },
             {
               "$type": "Document",
@@ -78,8 +76,7 @@
               "RelativeToolTip": "..\\Games.Application\\TicTacToe\\TicTacToeController.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAwAAAA5AAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-10T16:45:11.827Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-06-10T16:45:11.827Z"
             },
             {
               "$type": "Document",
@@ -91,8 +88,7 @@
               "RelativeToolTip": "..\\Games.Application\\TicTacToe\\Models\\Position.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAA0AAAABAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-10T16:20:41.618Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-06-10T16:20:41.618Z"
             },
             {
               "$type": "Document",
@@ -104,8 +100,7 @@
               "RelativeToolTip": "..\\Games.Application\\Persistence\\TicTacToe.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-10T16:19:10.477Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-06-10T16:19:10.477Z"
             },
             {
               "$type": "Document",
@@ -117,8 +112,7 @@
               "RelativeToolTip": "..\\Games.Application\\TicTacToe\\Models\\PositionCollection.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAA4AAAABAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-10T16:17:22.064Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-06-10T16:17:22.064Z"
             },
             {
               "$type": "Document",
@@ -130,25 +124,24 @@
               "RelativeToolTip": "..\\Games.Application\\TicTacToe\\Models\\GameData.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAYAAAAnAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-10T15:57:57.049Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-06-10T15:57:57.049Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 1,
               "Title": "Result.cs",
               "DocumentMoniker": "C:\\Users\\Jakub\\Desktop\\games project\\Gierki\\Backend\\Games.Application\\Infrastructure\\Result.cs",
               "RelativeDocumentMoniker": "..\\Games.Application\\Infrastructure\\Result.cs",
               "ToolTip": "C:\\Users\\Jakub\\Desktop\\games project\\Gierki\\Backend\\Games.Application\\Infrastructure\\Result.cs",
               "RelativeToolTip": "..\\Games.Application\\Infrastructure\\Result.cs",
-              "ViewState": "AQIAAA4AAAAAAAAAAAAIwB8AAAAFAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAB8AAAAFAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-06-10T15:57:14.561Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 0,
               "Title": "TicTacToeHub.cs",
               "DocumentMoniker": "C:\\Users\\Jakub\\Desktop\\games project\\Gierki\\Backend\\Games.Application\\TicTacToe\\Hubs\\TicTacToeHub.cs",
               "RelativeDocumentMoniker": "..\\Games.Application\\TicTacToe\\Hubs\\TicTacToeHub.cs",
@@ -161,13 +154,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 2,
               "Title": "TicTacToeService.cs",
               "DocumentMoniker": "C:\\Users\\Jakub\\Desktop\\games project\\Gierki\\Backend\\Games.Application\\TicTacToe\\Services\\TicTacToeService.cs",
               "RelativeDocumentMoniker": "..\\Games.Application\\TicTacToe\\Services\\TicTacToeService.cs",
               "ToolTip": "C:\\Users\\Jakub\\Desktop\\games project\\Gierki\\Backend\\Games.Application\\TicTacToe\\Services\\TicTacToeService.cs",
               "RelativeToolTip": "..\\Games.Application\\TicTacToe\\Services\\TicTacToeService.cs",
-              "ViewState": "AQIAADcAAAAAAAAAAAAYwEsAAAAAAAAA",
+              "ViewState": "AQIAADcAAAAAAAAAAAAzwFIAAAAJAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-06-10T13:42:57.621Z",
               "EditorCaption": ""

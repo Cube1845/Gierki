@@ -40,6 +40,6 @@ export class BoardApiService{
 
   makeMoveAndGetGameStatus(move: Move): void {
     var text = JSON.stringify(move);
-    this.hubConnection?.invoke("MakeMoveAndGetGameStatus", text);
+    this.hubConnection?.invoke("MakeMoveAndGetGameData", text);
   } 
 }

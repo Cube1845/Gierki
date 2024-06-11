@@ -27,17 +27,63 @@ public class TicTacToeService(GamesDbContext context)
     {
         var board = GetEmptyBoard();
         await SaveBoardToDatabase(board);
+
     }
 
-    public async Task<GameData> GetGameData()
+    public async Task<Result<GameData>> DeserializeStringAndMakeMove(string text)
     {
-        GameData GameData;
+        if (await GetGameState())
+        {
+            var move = JsonConvert.DeserializeObject<Move>(text);
+            return await MakeMoveAndGetGameData(move!);
+        }
+
+        return Result<GameData>.Error("Game not started");
+    }
+
+    private async Task SaveGameDataToDatabase(GameData gameData)
+    {
+        var serializedBoard = JsonConvert.SerializeObject(board);
         var boardDb = await _context.TicTacToe.FirstOrDefaultAsync();
 
         if (boardDb is not null)
         {
-            GameData = new(
-                JsonConvert.DeserializeObject<Board>(boardDb.Board)!,
+            boardDb.Board = serializedBoard;
+        }
+        else
+        {
+            var ticTacToe = new Persistence.TicTacToe()
+            {
+                Board = serializedBoard,
+            };
+
+            await _context.TicTacToe.AddAsync(ticTacToe);
+        }
+
+        await _context.SaveChangesAsync();
+    }
+
+    private async Task<bool> GetGameState()
+    {
+        var boardDb = await _context.TicTacToe.FirstOrDefaultAsync();
+
+        if (boardDb is not null)
+        {
+            return boardDb.IsGameStarted;
+        }
+
+        return false;
+    }
+
+    private async Task<GameData> GetGameData()
+    {
+        var boardDb = await _context.TicTacToe.FirstOrDefaultAsync();
+        GameData gameData;
+
+        if (boardDb is not null)
+        {
+            gameData = new GameData(
+                JsonConvert.DeserializeObject<Board>(boardDb.Board),
                 boardDb.IsGameStarted,
                 boardDb.GameWinnedBy,
                 boardDb.IsGameTied,
@@ -50,39 +96,88 @@ public class TicTacToeService(GamesDbContext context)
             throw new ArgumentException("Got no data from database");
         }
 
-        return GameData;
+        return gameData;
     }
 
-    public async Task<Result<Board>> DeserializeStringAndMakeMove(string text)
+    private async Task<Result<GameData>> MakeMoveAndGetGameData(Move move)
     {
-        var move = JsonConvert.DeserializeObject<Move>(text);
-        return await MakeMove(move!);
-    }
-
-    private async Task<Result<Board>> MakeMove(Move move)
-    {
-        var board = await LoadBoardFromDatabase();
-
         if (move.Symbol is "O" || move.Symbol is "X")
         {
-            board.BoardData[move.Position.Y].Positions[move.Position.X] = move.Symbol;
-
-            await SaveBoardToDatabase(board);
+            await MakeMoveInDatabaseBoard(move);
 
             if (await IsWinSituation())
             {
-                return Result<Board>.Success(board, "Game ended");
+                await SetWinSituationInDatabase(move.Symbol, await GetWinningTiles()!);
+                return Result<GameData>.Success(await GetGameData(), "Game ended");
             }
 
-            if (await IsGameTied() && ! await IsWinSituation())
+            if (await IsGameTied() && !await IsWinSituation())
             {
-                return Result<Board>.Success(board, "Tie");
+                await SetWinSituationInDatabase(true);
+                return Result<GameData>.Success(await GetGameData(), "Tie");
             }
 
-            return Result<Board>.Success(board, "Successfully made a move");
+            await ChangeTurnInDataBase(move.Symbol);
+            return Result<GameData>.Success(await GetGameData(), "Successfully made a move");
         }
 
-        return Result<Board>.Error("Error"); ;
+        return Result<GameData>.Error("Error");
+    }
+
+    private async Task ChangeTurnInDataBase(string currentTurn)
+    {
+        if (currentTurn == "O")
+        {
+            await SetTurnInDataBase("X");
+        }
+        else
+        {
+            await SetTurnInDataBase("O");
+        }
+    }
+
+    private async Task SetWinSituationInDatabase(string gameWinnedBy, PositionCollection winningTiles)
+    {
+        var boardDb = await _context.TicTacToe.FirstOrDefaultAsync();
+
+        if (boardDb is not null)
+        {
+            boardDb.GameWinnedBy = gameWinnedBy;
+            boardDb.WinningTiles = JsonConvert.SerializeObject(winningTiles);
+        }
+
+        await _context.SaveChangesAsync();
+    }
+
+    private async Task SetWinSituationInDatabase(bool isGameTied)
+    {
+        var boardDb = await _context.TicTacToe.FirstOrDefaultAsync();
+
+        if (boardDb is not null)
+        {
+            boardDb.IsGameTied = isGameTied;
+        }
+
+        await _context.SaveChangesAsync();
+    }
+
+    private async Task SetTurnInDataBase(string turn)
+    {
+        var boardDb = await _context.TicTacToe.FirstOrDefaultAsync();
+
+        if (boardDb is not null)
+        {
+            boardDb.Turn = turn;
+        }
+
+        await _context.SaveChangesAsync();
+    }
+
+    private async Task MakeMoveInDatabaseBoard(Move move)
+    {
+        var board = await LoadBoardFromDatabase();
+        board.BoardData[move.Position.Y].Positions[move.Position.X] = move.Symbol;
+        await SaveBoardToDatabase(board);
     }
 
     private Board GetEmptyBoard()
@@ -115,8 +210,6 @@ public class TicTacToeService(GamesDbContext context)
         }
 
         await _context.SaveChangesAsync();
-
-        return;
     }
 
     private async Task<bool> IsGameTied()

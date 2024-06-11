@@ -20,7 +20,7 @@ namespace Games.Application.TicTacToe.Hubs
             await Clients.All.SendAsync("GameStarted", Result.Success("Game started"));
         }
 
-        public async Task MakeMoveAndGetGameStatus(string serializedMove)
+        public async Task MakeMoveAndGetGameData(string serializedMove)
         {
             var response = await _ticTacToeService.DeserializeStringAndMakeMove(serializedMove);
             await Clients.All.SendAsync("MoveMade", response);
