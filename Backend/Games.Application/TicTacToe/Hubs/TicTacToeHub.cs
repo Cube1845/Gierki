@@ -16,14 +16,12 @@ namespace Games.Application.TicTacToe.Hubs
 
         public async Task StartGame() 
         {
-            await _ticTacToeService.StartGame();
-            await Clients.All.SendAsync("GameStarted", Result.Success("Game started"));
+            await Clients.All.SendAsync("GameStarted", await _ticTacToeService.StartGame());
         }
 
-        public async Task MakeMoveAndGetGameData(string serializedMove)
+        public async Task MakeMoveAndGetGameData(Move move)
         {
-            var response = await _ticTacToeService.DeserializeStringAndMakeMove(serializedMove);
-            await Clients.All.SendAsync("MoveMade", response);
+            await Clients.All.SendAsync("MoveMade", await _ticTacToeService.MakeMoveAndGetGameData(move));
         }
     }
 }

@@ -3,7 +3,7 @@
   <app-tile
     [x]="x"
     [y]="y"
-    [value]="getBoard()[y][x]"
+    [value]="this.board.boardData[y].positions[x]"
     (tileClick)="onTileClick($event)"
   />
   } }

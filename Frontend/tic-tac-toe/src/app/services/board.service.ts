@@ -1,81 +1,39 @@
 import { Injectable } from '@angular/core';
+import { BoardApiService } from './board-api.service';
+import { GameData } from '../models/gameData';
+import { Position } from '../models/position';
+import { Board } from '../models/board';
 
 @Injectable({
   providedIn: 'root',
 })
 export class BoardService {
+  board: Board = {"boardData":[{"positions": ["", "", ""]}, {"positions": ["", "", ""]}, {"positions": ["", "", ""]}]};
   isGameStarted: boolean = false;
   gameWinnedBy: string | null = null;
-  gameTied: boolean = false;
-  turn: string = '';
-  board: string[][] = [
-    ['', '', ''],
-    ['', '', ''],
-    ['', '', ''],
-  ];
+  isGameTied: boolean = false;
+  turn: string = "O";
+  winningTiles: Position[] | null = null;
 
-  isGameTied(): boolean {
-    return this.gameTied;
+  constructor(private readonly boardApiService: BoardApiService) {}
+
+  setGameData(data: GameData): void {
+    this.board = data.board;
+    this.isGameStarted = data.isGameStarted;
+    this.gameWinnedBy = data.gameWinnedBy;
+    this.isGameTied = data.isGameTied;
+    this.turn = data.turn;
+    this.winningTiles = data.winningTiles;
   }
 
-  getWinner(): string | null {
-    return this.gameWinnedBy;
+  makeMoveAndGetGameStatus(pos: Position): void {
+    this.boardApiService.makeMoveAndGetGameStatus({
+      "symbol": this.turn,
+      "position": pos
+    });
   }
 
-  resetStateVariables(): void {
-    this.gameTied = false;
-    this.gameWinnedBy = null;
-  }
-
-  gameWin(symbol: string): void {
-    this.gameWinnedBy = symbol;
-    this.setGameState(false);
-    this.setTurn('');
-  }
-
-  gameTie(): void {
-    this.gameTied = true;
-    this.setGameState(false);
-    this.setTurn('');
-  }
-
-  updateBoard(board: string[][]): void {
-    this.board = board;
-  }
-
-  getBoard(): string[][] {
-    return this.board;
-  }
-
-  clearBoard(): void {
-    for (let i = 0; i < 3; i++) {
-      for (let j = 0; j < 3; j++) {
-        this.board[i][j] = '';
-      }
-    }
-  }
-
-  getTurn(): string {
-    return this.turn;
-  }
-
-  setTurn(symbol: string): void {
-    this.turn = symbol;
-  }
-
-  changeTurn(): void {
-    if (this.getTurn() == 'O') {
-      this.setTurn('X');
-    } else {
-      this.setTurn('O');
-    }
-  }
-
-  setGameState(isStarted: boolean): void {
-    this.isGameStarted = isStarted;
-  }
-
-  getGameState(): boolean {
-    return this.isGameStarted;
+  getBoardTile(x: number, y: number): string {
+    return this.board.boardData[y].positions[x];
   }
 }

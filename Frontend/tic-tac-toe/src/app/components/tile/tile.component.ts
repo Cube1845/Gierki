@@ -1,5 +1,8 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Move } from '../../models/move';
+import { Position } from '../../models/position';
+import { BoardService } from '../../services/board.service';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-tile',
@@ -13,12 +16,14 @@ export class TileComponent {
   @Input({ required: true }) y!: number;
   @Input({ required: true }) value!: string;
 
-  @Output() tileClick = new EventEmitter<Move>();
+  @Output() tileClick = new EventEmitter<Position>();
+
+  constructor() {}
 
   onTileClick(): void {
-    this.tileClick.emit({
-      symbol: this.value,
-      position: { x: this.x, y: this.y },
+    this.tileClick.emit({ 
+      x: this.x, 
+      y: this.y 
     });
   }
 }

@@ -5,6 +5,7 @@ import { NgIf } from '@angular/common';
 import { BoardApiService } from './services/board-api.service';
 import { tap } from 'rxjs';
 import { BoardService } from './services/board.service';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-root',
@@ -14,41 +15,28 @@ import { BoardService } from './services/board.service';
   styleUrl: './app.component.scss'
 })
 export class AppComponent implements OnInit {
-  constructor(private readonly boardApiService: BoardApiService, private readonly boardService: BoardService) {}
+  constructor(private readonly boardApiService: BoardApiService, private readonly boardService: BoardService) {
+    this.boardApiService.moveMade$?.pipe(takeUntilDestroyed()).subscribe((data) => 
+      this.boardService.setGameData(data.value)
+    );
+    this.boardApiService.gameStarted$?.pipe(takeUntilDestroyed()).subscribe((data) =>
+      this.boardService.setGameData(data.value)
+    );
+  }
 
   ngOnInit(): void {
     this.boardApiService.startConnection();
   }
 
-  responseText: string = "";
-
-  async startGame(): Promise<void> {
-    // this.boardService.setGameState(true);
-    // this.boardApiService.startGame().subscribe((text) => this.responseText = text);
-    // this.boardService.clearBoard();
-    // this.boardService.setTurn("O");
-    // this.boardService.updateBoard([["","",""],["","",""],["","",""]]);
-    // this.boardService.resetStateVariables();
+  startGame(): void {
     this.boardApiService.startGame();
   }
 
-  getGameState(): boolean {
-    return this.boardService.getGameState();
-  }
+  // getGameState(): boolean {
+  //   return this.boardService.getGameState();
+  // }
 
-  getTurn(): string {
-    return this.boardService.getTurn();
-  }
-
-  isGameWinned(): boolean {
-    return (this.boardService.getWinner() != null)
-  }
-
-  isGameTied(): boolean {
-    return this.boardService.isGameTied();
-  }
-
-  getWinner(): string | null {
-    return this.boardService.getWinner();
-  }
+  // getTurn(): string {
+  //   return this.boardService.getTurn();
+  // }
 }

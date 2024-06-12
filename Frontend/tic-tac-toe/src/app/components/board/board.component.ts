@@ -4,6 +4,9 @@ import { Move } from '../../models/move';
 import { BoardApiService } from '../../services/board-api.service';
 import { BoardService } from '../../services/board.service';
 import { TileComponent } from '../tile/tile.component';
+import { Position } from '../../models/position';
+import { stringify } from 'querystring';
+import { Board } from '../../models/board';
 
 @Component({
   selector: 'app-board',
@@ -13,23 +16,21 @@ import { TileComponent } from '../tile/tile.component';
   styleUrl: './board.component.scss',
 })
 export class BoardComponent {
+  board: Board = this.boardService.board;
+
   constructor(
     private readonly boardService: BoardService,
     private readonly boardApiService: BoardApiService
   ) {
-    this.boardApiService.moveMade$.pipe(takeUntilDestroyed()).subscribe((x) => {
-      console.log(x);
-    });
+    this.boardApiService.moveMade$?.pipe(takeUntilDestroyed()).subscribe((data) => 
+      {this.board = (data.value.board); this.boardService.setGameData(data.value)}
+    );
+    this.boardApiService.gameStarted$?.pipe(takeUntilDestroyed()).subscribe((data) =>
+      {this.board = (data.value.board); this.boardService.setGameData(data.value)}
+    );
   }
 
-  board: string[][] = this.boardService.board;
-  responseText: string = '';
-
-  getBoard(): string[][] {
-    return this.boardService.getBoard();
-  }
-
-  onTileClick(move: Move): void {
-    this.boardApiService.makeMoveAndGetGameStatus(move);
+  onTileClick(pos: Position): void {
+    this.boardService.makeMoveAndGetGameStatus(pos);
   }
 }

@@ -6,6 +6,7 @@ import {
 } from '@microsoft/signalr';
 import { Subject } from 'rxjs';
 import { Move } from '../models/move';
+import { Position } from '../models/position';
 
 @Injectable({
   providedIn: 'root',
@@ -17,6 +18,9 @@ export class BoardApiService {
   private moveMadeSubject = new Subject<any>();
   moveMade$ = this.moveMadeSubject.asObservable();
 
+  private gameStartedSubject = new Subject<any>();
+  gameStarted$ = this.gameStartedSubject.asObservable();
+
   startConnection(): void {
     this.hubConnection = new HubConnectionBuilder()
       .withUrl(this.apiUrl, {
@@ -25,7 +29,9 @@ export class BoardApiService {
       })
       .build();
 
-    this.hubConnection.on('GameStarted', (data) => console.log(data));
+    this.hubConnection.on('GameStarted', (data) => 
+      this.gameStartedSubject.next(data)
+    );
 
     this.hubConnection.on('MoveMade', (data) =>
       this.moveMadeSubject.next(data)
@@ -40,10 +46,10 @@ export class BoardApiService {
   }
 
   startGame(): void {
-    this.hubConnection?.invoke('StartGame');
+    this.hubConnection.invoke('StartGame');
   }
 
   makeMoveAndGetGameStatus(move: Move): void {
-    this.hubConnection?.invoke('MakeMoveAndGetGameStatus', move);
+    this.hubConnection.invoke('MakeMoveAndGetGameData', move);
   }
 }

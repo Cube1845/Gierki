@@ -13,29 +13,56 @@ public class TicTacToeService(GamesDbContext context)
 
     private readonly List<PositionCollection> WinningCases =
     [
-        new([0, 0], [0, 1], [0, 2]),
-        new([1, 0], [1, 1], [1, 2]),
-        new([2, 0], [2, 1], [2, 2]),
-        new([0, 0], [1, 0], [2, 0]),
-        new([0, 1], [1, 1], [2, 1]),
-        new([0, 2], [1, 2], [2, 2]),
-        new([0, 0], [1, 1], [2, 2]),
-        new([0, 2], [1, 1], [2, 0]),
+        new([new(0, 0), new(0, 1), new(0, 2)]),
+        new([new(1, 0), new(1, 1), new(1, 2)]),
+        new([new(2, 0), new(2, 1), new(2, 2)]),
+        new([new(0, 0), new(1, 0), new(2, 0)]),
+        new([new(0, 1), new(1, 1), new(2, 1)]),
+        new([new(0, 2), new(1, 2), new(2, 2)]),
+        new([new(0, 0), new(1, 1), new(2, 2)]),
+        new([new(0, 2), new(1, 1), new(2, 0)])
     ];
 
-    public async Task StartGame()
+    public async Task<Result<GameData>> StartGame()
     {
         var board = GetEmptyBoard();
-        await SaveBoardToDatabase(board);
+        GameData gameData = new(
+            board,
+            true,
+            null,
+            false,
+            "O",
+            null
+        );
 
+        await SaveGameDataToDatabase(gameData);
+        return Result<GameData>.Success(gameData, "Game started");
     }
-
-    public async Task<Result<GameData>> DeserializeStringAndMakeMove(string text)
+    public async Task<Result<GameData>> MakeMoveAndGetGameData(Move move)
     {
         if (await GetGameState())
         {
-            var move = JsonConvert.DeserializeObject<Move>(text);
-            return await MakeMoveAndGetGameData(move!);
+            if (move.Symbol is "O" || move.Symbol is "X")
+            {
+                await MakeMoveInDatabaseBoard(move);
+
+                if (await IsWinSituation())
+                {
+                    await SetWinSituationInDatabase(move.Symbol, await GetWinningTiles());
+                    return Result<GameData>.Success(await GetGameData(), "Game ended");
+                }
+
+                if (await IsGameTied() && !await IsWinSituation())
+                {
+                    await SetWinSituationInDatabase(true);
+                    return Result<GameData>.Success(await GetGameData(), "Tie");
+                }
+
+                await ChangeTurnInDataBase(move.Symbol);
+                return Result<GameData>.Success(await GetGameData(), "Successfully made a move");
+            }
+
+            return Result<GameData>.Error("Error");
         }
 
         return Result<GameData>.Error("Game not started");
@@ -43,18 +70,35 @@ public class TicTacToeService(GamesDbContext context)
 
     private async Task SaveGameDataToDatabase(GameData gameData)
     {
-        var serializedBoard = JsonConvert.SerializeObject(board);
+        var serializedBoard = JsonConvert.SerializeObject(gameData.Board);
+        string serializedWinningTiles = "";
+
+        if (gameData.WinningTiles != null)
+        {
+            serializedWinningTiles = JsonConvert.SerializeObject(gameData.WinningTiles);
+        }
+
         var boardDb = await _context.TicTacToe.FirstOrDefaultAsync();
 
         if (boardDb is not null)
         {
             boardDb.Board = serializedBoard;
+            boardDb.IsGameStarted = gameData.IsGameStarted;
+            boardDb.GameWinnedBy = gameData.GameWinnedBy;
+            boardDb.IsGameTied = gameData.IsGameTied;
+            boardDb.Turn = gameData.Turn;
+            boardDb.WinningTiles = serializedWinningTiles;
         }
         else
         {
             var ticTacToe = new Persistence.TicTacToe()
             {
                 Board = serializedBoard,
+                IsGameStarted = gameData.IsGameStarted,
+                GameWinnedBy = gameData.GameWinnedBy,
+                IsGameTied = gameData.IsGameTied,
+                Turn = gameData.Turn,
+                WinningTiles = serializedWinningTiles
             };
 
             await _context.TicTacToe.AddAsync(ticTacToe);
@@ -99,31 +143,6 @@ public class TicTacToeService(GamesDbContext context)
         return gameData;
     }
 
-    private async Task<Result<GameData>> MakeMoveAndGetGameData(Move move)
-    {
-        if (move.Symbol is "O" || move.Symbol is "X")
-        {
-            await MakeMoveInDatabaseBoard(move);
-
-            if (await IsWinSituation())
-            {
-                await SetWinSituationInDatabase(move.Symbol, await GetWinningTiles()!);
-                return Result<GameData>.Success(await GetGameData(), "Game ended");
-            }
-
-            if (await IsGameTied() && !await IsWinSituation())
-            {
-                await SetWinSituationInDatabase(true);
-                return Result<GameData>.Success(await GetGameData(), "Tie");
-            }
-
-            await ChangeTurnInDataBase(move.Symbol);
-            return Result<GameData>.Success(await GetGameData(), "Successfully made a move");
-        }
-
-        return Result<GameData>.Error("Error");
-    }
-
     private async Task ChangeTurnInDataBase(string currentTurn)
     {
         if (currentTurn == "O")
@@ -136,7 +155,7 @@ public class TicTacToeService(GamesDbContext context)
         }
     }
 
-    private async Task SetWinSituationInDatabase(string gameWinnedBy, PositionCollection winningTiles)
+    private async Task SetWinSituationInDatabase(string gameWinnedBy, PositionCollection? winningTiles)
     {
         var boardDb = await _context.TicTacToe.FirstOrDefaultAsync();
 
@@ -144,6 +163,8 @@ public class TicTacToeService(GamesDbContext context)
         {
             boardDb.GameWinnedBy = gameWinnedBy;
             boardDb.WinningTiles = JsonConvert.SerializeObject(winningTiles);
+            boardDb.Turn = "";
+            boardDb.IsGameStarted = false;
         }
 
         await _context.SaveChangesAsync();
@@ -156,6 +177,8 @@ public class TicTacToeService(GamesDbContext context)
         if (boardDb is not null)
         {
             boardDb.IsGameTied = isGameTied;
+            boardDb.IsGameStarted = false;
+            boardDb.Turn = "";
         }
 
         await _context.SaveChangesAsync();
@@ -233,9 +256,9 @@ public class TicTacToeService(GamesDbContext context)
 
         foreach (var winningCase in WinningCases)
         {
-            var tile1 = board.BoardData[winningCase.T1.Y].Positions[winningCase.T1.X];
-            var tile2 = board.BoardData[winningCase.T2.Y].Positions[winningCase.T2.X];
-            var tile3 = board.BoardData[winningCase.T3.Y].Positions[winningCase.T3.X];
+            var tile1 = board.BoardData[winningCase.Positions[0].Y].Positions[winningCase.Positions[0].X];
+            var tile2 = board.BoardData[winningCase.Positions[1].Y].Positions[winningCase.Positions[0].X];
+            var tile3 = board.BoardData[winningCase.Positions[2].Y].Positions[winningCase.Positions[0].X];
 
             string[] tiles = [tile1, tile2, tile3];
 
