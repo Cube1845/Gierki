@@ -14,6 +14,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddSignalR();
+
 builder.Services.AddScoped<TicTacToeService>();
 
 builder.Services.AddDbContext<GamesDbContext>(options =>
@@ -33,10 +35,7 @@ builder.Services.AddCors(options =>
      });
 });
 
-builder.Services.AddSignalR(opts =>
-{
-    opts.EnableDetailedErrors = true;
-});
+builder.Services.AddSignalR();
 
 var app = builder.Build();
 

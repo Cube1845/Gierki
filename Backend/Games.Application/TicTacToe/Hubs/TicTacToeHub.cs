@@ -2,11 +2,9 @@
 using Games.Application.TicTacToe.Models;
 using Games.Application.TicTacToe.Services;
 using Microsoft.AspNetCore.SignalR;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -22,9 +20,8 @@ namespace Games.Application.TicTacToe.Hubs
             await Clients.All.SendAsync("GameStarted", Result.Success("Game started"));
         }
 
-        public async Task MakeMoveAndGetGameStatus(Move move)
+        public async Task MakeMoveAndGetGameData(string serializedMove)
         {
-            var serializedMove = JsonConvert.SerializeObject(move);
             var response = await _ticTacToeService.DeserializeStringAndMakeMove(serializedMove);
             await Clients.All.SendAsync("MoveMade", response);
         }
