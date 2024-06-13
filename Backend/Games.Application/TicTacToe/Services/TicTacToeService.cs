@@ -31,6 +31,7 @@ public class TicTacToeService(GamesDbContext context)
     public async Task<Result<GameData>> StartGame()
     {
         var board = GetEmptyBoard();
+
         GameData gameData = new(
             board,
             true,
@@ -38,6 +39,13 @@ public class TicTacToeService(GamesDbContext context)
             false,
             "O",
             null
+        );
+
+        GameData1 gameData1 = new(
+            board,
+            isGameStarted: true,
+            isGameTied: false,
+            "O"
         );
 
         await SaveGameDataToDatabase(gameData);

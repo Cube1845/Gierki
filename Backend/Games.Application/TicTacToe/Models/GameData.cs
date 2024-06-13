@@ -15,4 +15,14 @@ namespace Games.Application.TicTacToe.Models
         public string Turn { get; set; } = turn;
         public PositionCollection? WinningTiles { get; set; } = winningTiles;
     }
+
+    public class GameData1(Board board, bool isGameStarted, bool isGameTied, string turn, string? gameWinnedBy = null, PositionCollection? winningTiles = null)
+    {
+        public Board Board { get; set; } = board;
+        public bool IsGameStarted { get; set; } = isGameStarted;
+        public string? GameWinnedBy { get; set; } = gameWinnedBy;
+        public bool IsGameTied { get; set; } = isGameTied;
+        public string Turn { get; set; } = turn;
+        public PositionCollection? WinningTiles { get; set; } = winningTiles;
+    }
 }
