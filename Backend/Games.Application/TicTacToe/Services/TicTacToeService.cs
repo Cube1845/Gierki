@@ -31,6 +31,7 @@ public class TicTacToeService(GamesDbContext context)
     public async Task<Result<GameData>> StartGame()
     {
         var board = GetEmptyBoard();
+
         GameData gameData = new(
             board,
             true,
@@ -38,6 +39,13 @@ public class TicTacToeService(GamesDbContext context)
             false,
             "O",
             null
+        );
+
+        GameData1 gameData1 = new(
+            board,
+            isGameStarted: true,
+            isGameTied: false,
+            "O"
         );
 
         await SaveGameDataToDatabase(gameData);
@@ -128,37 +136,22 @@ public class TicTacToeService(GamesDbContext context)
     private async Task<GameData> GetGameData()
     {
         var boardDb = await _context.TicTacToe.FirstOrDefaultAsync();
-        GameData gameData;
 
-        if (boardDb is not null)
-        {
-            gameData = new GameData(
-                JsonConvert.DeserializeObject<Board>(boardDb.Board),
-                boardDb.IsGameStarted,
-                boardDb.GameWinnedBy,
-                boardDb.IsGameTied,
-                boardDb.Turn,
-                JsonConvert.DeserializeObject<PositionCollection>(boardDb.WinningTiles)
-            );
-        }
-        else
+        if (boardDb is null)
         {
             throw new ArgumentException("Got no data from database");
         }
 
-        return gameData;
+        return GameData.FromTicTacToe(boardDb);
     }
 
     private async Task ChangeTurnInDataBase(string currentTurn)
     {
-        if (currentTurn == "O")
-        {
-            await SetTurnInDataBase("X");
-        }
-        else
-        {
-            await SetTurnInDataBase("O");
-        }
+        var turn = currentTurn == "O" 
+            ? "X" 
+            : "O";
+
+        await SetTurnInDataBase(turn);
     }
 
     private async Task SetWinSituationInDatabase(string gameWinnedBy, PositionCollection? winningTiles)
