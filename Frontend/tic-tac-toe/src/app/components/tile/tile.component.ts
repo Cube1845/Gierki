@@ -21,9 +21,10 @@ export class TileComponent {
   constructor() {}
 
   onTileClick(): void {
-    this.tileClick.emit({ 
+    var position = { 
       x: this.x, 
       y: this.y 
-    });
+    };
+    this.tileClick.emit(position);
   }
 }

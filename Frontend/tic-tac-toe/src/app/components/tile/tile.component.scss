@@ -13,6 +13,7 @@
     border: 0px;
     width: $board-size;
     height: $board-size;
+    margin: 0px;
 
     &:hover {
       transition: background-color $hover-transition-time ease,

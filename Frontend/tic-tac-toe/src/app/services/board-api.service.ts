@@ -21,7 +21,10 @@ export class BoardApiService {
   private gameStartedSubject = new Subject<any>();
   gameStarted$ = this.gameStartedSubject.asObservable();
 
-  startConnection(): void {
+  private dataLoadedSubject = new Subject<any>();
+  dataLoaded$ = this.dataLoadedSubject.asObservable();
+
+  async startConnection(): Promise<void> {
     this.hubConnection = new HubConnectionBuilder()
       .withUrl(this.apiUrl, {
         skipNegotiation: true,
@@ -37,7 +40,11 @@ export class BoardApiService {
       this.moveMadeSubject.next(data)
     );
 
-    this.hubConnection
+    this.hubConnection.on('DataLoaded', (data) =>
+      this.dataLoadedSubject.next(data)
+    );
+
+    await this.hubConnection
       .start()
       .then(() => {
         console.log('Hub connected!');
@@ -51,5 +58,9 @@ export class BoardApiService {
 
   makeMoveAndGetGameStatus(move: Move): void {
     this.hubConnection.invoke('MakeMoveAndGetGameData', move);
+  }
+
+  loadGameData(): void {
+    this.hubConnection.invoke('LoadGameData');
   }
 }

@@ -23,6 +23,11 @@ public class TicTacToeService(GamesDbContext context)
         new([new(0, 2), new(1, 1), new(2, 0)])
     ];
 
+    public async Task<Result<GameData>> LoadGameData()
+    {
+        return Result<GameData>.Success(await GetGameData(), "Data sent");
+    }
+
     public async Task<Result<GameData>> StartGame()
     {
         var board = GetEmptyBoard();
@@ -38,6 +43,7 @@ public class TicTacToeService(GamesDbContext context)
         await SaveGameDataToDatabase(gameData);
         return Result<GameData>.Success(gameData, "Game started");
     }
+
     public async Task<Result<GameData>> MakeMoveAndGetGameData(Move move)
     {
         if (await GetGameState())
@@ -239,15 +245,9 @@ public class TicTacToeService(GamesDbContext context)
     {
         var board = await LoadBoardFromDatabase();
 
-        foreach (BoardRow row in board.BoardData)
-        {
-            if (row.Positions.Any(x => x is ""))
-            {
-                return false;
-            }
-        }
-
-        return true;
+        return !board.BoardData.Any(row =>
+            row.Positions.Any(pos => pos is "")
+        );
     }
 
     private async Task<PositionCollection?> GetWinningTiles()
@@ -257,14 +257,14 @@ public class TicTacToeService(GamesDbContext context)
         foreach (var winningCase in WinningCases)
         {
             var tile1 = board.BoardData[winningCase.Positions[0].Y].Positions[winningCase.Positions[0].X];
-            var tile2 = board.BoardData[winningCase.Positions[1].Y].Positions[winningCase.Positions[0].X];
-            var tile3 = board.BoardData[winningCase.Positions[2].Y].Positions[winningCase.Positions[0].X];
+            var tile2 = board.BoardData[winningCase.Positions[1].Y].Positions[winningCase.Positions[1].X];
+            var tile3 = board.BoardData[winningCase.Positions[2].Y].Positions[winningCase.Positions[2].X];
 
-            string[] tiles = [tile1, tile2, tile3];
+            string[] tiles = [ tile1, tile2, tile3 ];
 
-            var isWinningCase =
-                tiles.All(t => !string.IsNullOrEmpty(t)) &&
-                (tiles.All(t => t == "X") || tiles.All(t => t == "O"));
+            var isWinningCase = 
+                tiles.All(t => t == "X") || 
+                tiles.All(t => t == "O");
 
             if (isWinningCase)
             {
@@ -291,7 +291,7 @@ public class TicTacToeService(GamesDbContext context)
         }
         else
         {
-            throw new ArgumentException("Got no data from database");
+            return GetEmptyBoard();
         }
 
         return JsonConvert.DeserializeObject<Board>(jsonText)!;

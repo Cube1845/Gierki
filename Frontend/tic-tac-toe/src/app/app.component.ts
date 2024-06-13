@@ -15,28 +15,38 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   styleUrl: './app.component.scss'
 })
 export class AppComponent implements OnInit {
-  constructor(private readonly boardApiService: BoardApiService, private readonly boardService: BoardService) {
-    this.boardApiService.moveMade$?.pipe(takeUntilDestroyed()).subscribe((data) => 
-      this.boardService.setGameData(data.value)
-    );
-    this.boardApiService.gameStarted$?.pipe(takeUntilDestroyed()).subscribe((data) =>
-      this.boardService.setGameData(data.value)
-    );
-  }
+  constructor(private readonly boardApiService: BoardApiService, private readonly boardService: BoardService) {}
 
-  ngOnInit(): void {
-    this.boardApiService.startConnection();
+  async ngOnInit(): Promise<void> {
+    await this.boardApiService.startConnection();
+    this.boardApiService.loadGameData();
   }
 
   startGame(): void {
     this.boardApiService.startGame();
   }
 
-  // getGameState(): boolean {
-  //   return this.boardService.getGameState();
-  // }
+  getWinner(): string | null{
+    if (this.boardService.getWinner() != null) {
+      return this.boardService.getWinner();
+    } else {
+      return "";
+    }
+  }
 
-  // getTurn(): string {
-  //   return this.boardService.getTurn();
-  // }
+  isGameWinned(): boolean {
+    return this.boardService.getWinner() != null;
+  }
+
+  isGameTied(): boolean {
+    return this.boardService.isGameTied();
+  }
+
+  getGameState(): boolean {
+    return this.boardService.getGameState();
+  }
+
+  getTurn(): string {
+    return this.boardService.getTurn();
+  }
 }

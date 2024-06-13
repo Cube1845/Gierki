@@ -2,38 +2,42 @@ import { Injectable } from '@angular/core';
 import { BoardApiService } from './board-api.service';
 import { GameData } from '../models/gameData';
 import { Position } from '../models/position';
-import { Board } from '../models/board';
 
 @Injectable({
   providedIn: 'root',
 })
 export class BoardService {
-  board: Board = {"boardData":[{"positions": ["", "", ""]}, {"positions": ["", "", ""]}, {"positions": ["", "", ""]}]};
-  isGameStarted: boolean = false;
-  gameWinnedBy: string | null = null;
-  isGameTied: boolean = false;
-  turn: string = "O";
-  winningTiles: Position[] | null = null;
+  gameData: GameData = new GameData();
 
   constructor(private readonly boardApiService: BoardApiService) {}
 
   setGameData(data: GameData): void {
-    this.board = data.board;
-    this.isGameStarted = data.isGameStarted;
-    this.gameWinnedBy = data.gameWinnedBy;
-    this.isGameTied = data.isGameTied;
-    this.turn = data.turn;
-    this.winningTiles = data.winningTiles;
+    if (data != null) {
+      this.gameData = data;
+    }
   }
 
   makeMoveAndGetGameStatus(pos: Position): void {
-    this.boardApiService.makeMoveAndGetGameStatus({
-      "symbol": this.turn,
+    var move = {
+      "symbol": this.gameData.turn,
       "position": pos
-    });
+    };
+    this.boardApiService.makeMoveAndGetGameStatus(move);
   }
 
-  getBoardTile(x: number, y: number): string {
-    return this.board.boardData[y].positions[x];
+  getWinner(): string | null {
+    return this.gameData.gameWinnedBy;
+  }
+
+  isGameTied(): boolean {
+    return this.gameData.isGameTied;
+  }
+
+  getGameState(): boolean {
+    return this.gameData.isGameStarted;
+  }
+
+  getTurn(): string {
+    return this.gameData.turn;
   }
 }

@@ -1,10 +1,12 @@
 <div class="board">
-  @for (y of [0,1,2]; track y) { @for (x of [0,1,2]; track x) {
-  <app-tile
-    [x]="x"
-    [y]="y"
-    [value]="this.board.boardData[y].positions[x]"
-    (tileClick)="onTileClick($event)"
-  />
-  } }
+  @for (y of [0,1,2]; track y) { 
+    @for (x of [0,1,2]; track x) {
+      <app-tile
+        [x]="x"
+        [y]="y"
+        [value]="this.board.boardData[y].positions[x]"
+        (tileClick)="onTileClick($event)"
+      />
+    } 
+  }
 </div>

@@ -23,5 +23,11 @@ namespace Games.Application.TicTacToe.Hubs
         {
             await Clients.All.SendAsync("MoveMade", await _ticTacToeService.MakeMoveAndGetGameData(move));
         }
+
+        public async Task LoadGameData() 
+        {
+            await Clients.All.SendAsync("DataLoaded", await _ticTacToeService.LoadGameData());
+        }
+
     }
 }
