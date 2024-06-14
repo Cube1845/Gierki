@@ -14,39 +14,6 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
-export class AppComponent implements OnInit {
-  constructor(private readonly boardApiService: BoardApiService, private readonly boardService: BoardService) {}
-
-  async ngOnInit(): Promise<void> {
-    await this.boardApiService.startConnection();
-    this.boardApiService.loadGameData();
-  }
-
-  startGame(): void {
-    this.boardApiService.startGame();
-  }
-
-  getWinner(): string | null{
-    if (this.boardService.getWinner() != null) {
-      return this.boardService.getWinner();
-    } else {
-      return "";
-    }
-  }
-
-  isGameWinned(): boolean {
-    return this.boardService.getWinner() != null;
-  }
-
-  isGameTied(): boolean {
-    return this.boardService.isGameTied();
-  }
-
-  getGameState(): boolean {
-    return this.boardService.getGameState();
-  }
-
-  getTurn(): string {
-    return this.boardService.getTurn();
-  }
+export class AppComponent {
+  
 }

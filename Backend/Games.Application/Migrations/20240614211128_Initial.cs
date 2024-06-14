@@ -27,6 +27,18 @@ namespace Games.Application.Migrations
                 {
                     table.PrimaryKey("PK_TicTacToe", x => x.Id);
                 });
+
+            migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.UserId);
+                });
         }
 
         /// <inheritdoc />
@@ -34,6 +46,9 @@ namespace Games.Application.Migrations
         {
             migrationBuilder.DropTable(
                 name: "TicTacToe");
+
+            migrationBuilder.DropTable(
+                name: "Users");
         }
     }
 }

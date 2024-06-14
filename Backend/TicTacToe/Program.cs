@@ -15,6 +15,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<TicTacToeService>();
+builder.Services.AddScoped<LobbyService>();
 
 builder.Services.AddDbContext<GamesDbContext>(options =>
 {
@@ -54,5 +55,6 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.MapHub<TicTacToeHub>("/tictactoehub");
+app.MapHub<LobbyHub>("/lobbyhub");
 
 app.Run();

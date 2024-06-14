@@ -1,12 +1,1 @@
-<div class="container">
-    <h1 class="header">Tic Tac Toe Game</h1>
-
-    <app-board></app-board>
-
-    <h1 class="info-text" *ngIf="this.isGameWinned()">Winner: {{ this.getWinner() }}</h1>
-    <h1 class="info-text" *ngIf="this.isGameTied()">Tie</h1>
-
-    <button type="button" class="start-button" (click)="startGame()" *ngIf="!this.getGameState()">Start</button>
-    
-    <h1 class="info-text" *ngIf="this.getGameState()">Turn: {{ this.getTurn() }}</h1>
-</div>
+<router-outlet></router-outlet>

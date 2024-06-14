@@ -1,0 +1,50 @@
+:host {
+    $hover-transition-time: .1s;
+
+    body {
+        width: 100%;
+        height: 100%;
+    }
+
+    .container {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        font-family: 'Courier New', Courier, monospace;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+    }
+
+    .header {
+        font-family: 'Courier New', Courier, monospace;
+        color: rgb(126, 72, 123);
+        font-size: 50px;
+        margin: 40px;
+    }
+
+    .start-button {
+        border: 0px;
+        margin: 40px;
+        font-family: 'Courier New', Courier, monospace;
+        color: rgb(126, 72, 123);
+        font-size: 45px;
+        padding: 20px 55px;
+        font-weight: 600;
+        transition: background-color $hover-transition-time ease, transform $hover-transition-time;
+        background-color: rgb(87, 165, 196);
+
+        &:hover {
+            transition: background-color $hover-transition-time ease, transform $hover-transition-time;
+            background-color: rgb(57, 135, 166);
+        }
+    }
+
+    .info-text {
+        font-family: 'Courier New', Courier, monospace;
+        color: rgb(126, 72, 123);
+        font-size: 50px;
+        margin: 20px;
+        margin-bottom: 0px;
+    }
+}

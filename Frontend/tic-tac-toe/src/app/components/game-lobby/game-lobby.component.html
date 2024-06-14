@@ -1,0 +1,14 @@
+<div class="container">
+    <div class="header">
+        <h1>Tic Tac Toe Game</h1>
+    </div>
+
+    <h1 class="users-waiting-counter">Users currently waiting for a game: 0</h1>
+
+    <form class="username-typein">
+        <label class="description-text">Choose username</label>
+        <input type="text" class="username-form" placeholder="Username" [formControl]="username"/>
+    </form>
+
+    <button type="button" class="join-button" (click)="joinButtonClick()" [disabled]="username.invalid">Join</button>
+</div>

@@ -1,0 +1,72 @@
+:host {
+    $fore-color: rgb(126, 72, 123);
+    $back-color: rgb(196, 142, 193);
+    $hover-transition-time: .1s;
+
+    * {
+        font-family: 'Courier New', Courier, monospace;
+    }
+
+    .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .header {
+        color: $fore-color;
+        font-size: 32px;
+        margin-top: 60px;
+    }
+
+    .username-typein {
+        display: flex;
+        flex-direction: column;
+        margin: 50px;
+        margin-top: 200px;
+    }
+
+    .username-form {
+        padding: 6px;
+        width: 300px;
+        background-color: rgb(247, 244, 246);
+        border: 0.5px solid black;
+        border-radius: 4px;
+        color: black;
+        font-size: 24px;
+    }
+
+    .description-text {
+        font-size: 20px;
+        font-weight: bolder;
+        color: $fore-color;
+    }
+
+    .join-button {
+        padding: 10px 70px;
+        font-size: 40px;
+        color: $fore-color;
+        border: 0.5px solid black;
+        border-radius: 8px;
+        font-weight: bold;
+        transition: background-color $hover-transition-time ease, transform $hover-transition-time;
+        background-color: $back-color;
+        margin: 20px;
+
+        &:hover {
+            transition: background-color $hover-transition-time ease, transform $hover-transition-time;
+            background-color: rgb(176, 122, 173);
+        }
+
+        &:disabled {
+            transition: background-color $hover-transition-time ease, transform $hover-transition-time;
+            background-color: rgb(226, 172, 223);
+        }
+    }
+
+    .users-waiting-counter {
+        color: $fore-color;
+        font-size: 30px;
+    }
+}
