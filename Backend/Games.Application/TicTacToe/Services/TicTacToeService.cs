@@ -39,6 +39,13 @@ public class TicTacToeService(GamesDbContext context)
             "O"
         );
 
+        GameData1 gameData1 = new(
+            board,
+            isGameStarted: true,
+            isGameTied: false,
+            "O"
+        );
+
         await SaveGameDataToDatabase(gameData);
         return Result<GameData>.Success(gameData, "Game started");
     }
@@ -127,7 +134,25 @@ public class TicTacToeService(GamesDbContext context)
     private async Task<GameData> GetGameData()
     {
         var boardDb = await _context.TicTacToe.FirstOrDefaultAsync();
-        return GameData.FromTicTacToePersistence(boardDb!);
+        GameData gameData;
+
+        if (boardDb is not null)
+        {
+            gameData = new GameData(
+                JsonConvert.DeserializeObject<Board>(boardDb.Board),
+                boardDb.IsGameStarted,
+                boardDb.GameWinnedBy,
+                boardDb.IsGameTied,
+                boardDb.Turn,
+                JsonConvert.DeserializeObject<PositionCollection>(boardDb.WinningTiles)
+            );
+        }
+        else
+        {
+            throw new ArgumentException("Got no data from database");
+        }
+
+        return gameData;
     }
 
     private async Task ChangeTurnInDataBase(string currentTurn)

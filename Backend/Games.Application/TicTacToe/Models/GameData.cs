@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,17 +14,5 @@ namespace Games.Application.TicTacToe.Models
         public bool IsGameTied { get; set; } = isGameTied;
         public string Turn { get; set; } = turn;
         public PositionCollection? WinningTiles { get; set; } = winningTiles;
-
-        public static GameData FromTicTacToePersistence(Persistence.TicTacToe ticTacToe)
-        {
-            return new GameData(
-                JsonConvert.DeserializeObject<Board>(ticTacToe.Board),
-                ticTacToe.IsGameStarted,
-                ticTacToe.IsGameTied,
-                ticTacToe.Turn,
-                ticTacToe.GameWinnedBy,
-                JsonConvert.DeserializeObject<PositionCollection>(ticTacToe.WinningTiles)
-            );
-        }
     }
 }
