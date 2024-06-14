@@ -38,12 +38,30 @@ export class BoardComponent {
 
   updateGameData(data: GameData | null): void {
     if (data != null) {
-      this.board = (data.board); 
-      this.boardService.setGameData(data);
+      if (this.isGameWinned(data)) {
+        this.displayOnlyWinningTiles(data);
+        this.boardService.setGameData(data);
+      } else {
+        this.board = (data.board); 
+        this.boardService.setGameData(data);
+      }
     }
   }
 
   onTileClick(pos: Position): void {
     this.boardService.makeMoveAndGetGameStatus(pos);
+  }
+
+  private isGameWinned(data: GameData | null): boolean {
+    return !data!.isGameStarted && data!.winningTiles != null && data!.gameWinnedBy != null;
+  }
+
+  private displayOnlyWinningTiles(data: GameData): void {
+    this.board = new GameData().board;
+    var tilePositions = data.winningTiles!.positions;
+
+    tilePositions.forEach(tile =>
+      this.board.boardData[tile.y].positions[tile.x] = data.gameWinnedBy!
+    )
   }
 }
