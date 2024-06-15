@@ -1,7 +1,9 @@
 import { Board } from "./board";
 import { PositionCollection } from "./positionCollection";
+import { UserRole } from "./userRole";
 
 export class GameData {
+    id: number | null = null;
     board: Board = {
         "boardData": [
             {"positions": ["", "", ""]}, 
@@ -15,4 +17,5 @@ export class GameData {
     isGameTied: boolean = false;
     turn: string = "";
     winningTiles: PositionCollection | null = null;
+    players: UserRole[] = [];
 }

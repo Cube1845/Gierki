@@ -14,20 +14,42 @@ namespace Games.Application.TicTacToe.Hubs
 
         private readonly string _waitingPlayers = "WaitingPlayers";
 
+        public async Task GetConnectionId()
+        {
+            await Clients.Caller.SendAsync("GetConnectionId", Context.ConnectionId);
+        }
+
         public async Task JoinToWaitingPlayers(string username)
         {
             await Groups.AddToGroupAsync(Context.ConnectionId, _waitingPlayers);
 
             var response = await _lobbyService.AddPlayerToWaitingList(username, Context.ConnectionId);
-            await Clients.All.SendAsync("WaitingListUpdated", response);
+            if (response.Message == "Start game")
+            {
+                await Clients.Group(_waitingPlayers).SendAsync("StartGame", response);
+            }
+            else
+            {
+                await Clients.All.SendAsync("WaitingListUpdated", response);
+            }
         }
 
-        public async Task RemovePlayerFromWaitingList()
+        public async Task RemovePlayerFromWaitingList(string userId, bool useParameter)
         {
-            await Groups.RemoveFromGroupAsync(Context.ConnectionId, _waitingPlayers);
+            if (useParameter)
+            {
+                await Groups.RemoveFromGroupAsync(userId, _waitingPlayers);
 
-            var response = await _lobbyService.RemovePlayerFromWaitingList(Context.ConnectionId);
-            await Clients.All.SendAsync("WaitingListUpdated", response);
+                var response = await _lobbyService.RemovePlayerFromWaitingList(userId);
+                await Clients.All.SendAsync("WaitingListUpdated", response);
+            }
+            else
+            {
+                await Groups.RemoveFromGroupAsync(Context.ConnectionId, _waitingPlayers);
+
+                var response = await _lobbyService.RemovePlayerFromWaitingList(Context.ConnectionId);
+                await Clients.All.SendAsync("WaitingListUpdated", response);
+            }
         }
 
         public async Task GetWaitingList()

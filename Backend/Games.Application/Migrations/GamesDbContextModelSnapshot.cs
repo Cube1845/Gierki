@@ -42,6 +42,10 @@ namespace Games.Application.Migrations
                     b.Property<bool>("IsGameTied")
                         .HasColumnType("bit");
 
+                    b.Property<string>("Players")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Turn")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");

@@ -18,9 +18,6 @@ export class BoardApiService {
   private moveMadeSubject = new Subject<any>();
   moveMade$ = this.moveMadeSubject.asObservable();
 
-  private gameStartedSubject = new Subject<any>();
-  gameStarted$ = this.gameStartedSubject.asObservable();
-
   private dataLoadedSubject = new Subject<any>();
   dataLoaded$ = this.dataLoadedSubject.asObservable();
 
@@ -31,10 +28,6 @@ export class BoardApiService {
         transport: HttpTransportType.WebSockets,
       })
       .build();
-
-    this.hubConnection.on('GameStarted', (data) => 
-      this.gameStartedSubject.next(data)
-    );
 
     this.hubConnection.on('MoveMade', (data) =>
       this.moveMadeSubject.next(data)
@@ -50,10 +43,6 @@ export class BoardApiService {
         console.log('Hub connected!');
       })
       .catch((err) => console.log('Error: ' + err));
-  }
-
-  startGame(): void {
-    this.hubConnection.invoke('StartGame');
   }
 
   makeMoveAndGetGameStatus(move: Move): void {

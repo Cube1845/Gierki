@@ -20,10 +20,6 @@ export class GameMenuComponent implements OnInit {
     this.boardApiService.loadGameData();
   }
 
-  startGame(): void {
-    this.boardApiService.startGame();
-  }
-
   getWinner(): string | null{
     if (this.boardService.getWinner() != null) {
       return this.boardService.getWinner();

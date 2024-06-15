@@ -5,8 +5,6 @@
 
     <h1 class="info-text" *ngIf="this.isGameWinned()">Winner: {{ this.getWinner() }}</h1>
     <h1 class="info-text" *ngIf="this.isGameTied()">Tie</h1>
-
-    <button type="button" class="start-button" (click)="startGame()" *ngIf="!this.getGameState()">Start</button>
     
     <h1 class="info-text" *ngIf="this.getGameState()">Turn: {{ this.getTurn() }}</h1>
 </div>

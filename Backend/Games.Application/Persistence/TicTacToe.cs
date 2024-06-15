@@ -17,4 +17,5 @@ public class TicTacToe
     public bool IsGameTied { get; set; }
     public string Turn { get; set; } = "";
     public string WinningTiles { get; set; } = "";
+    public string Players { get; set; } = "";
 }

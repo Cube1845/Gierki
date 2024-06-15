@@ -4,6 +4,7 @@ import { LobbyApiService } from '../../services/lobby-api.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { User } from '../../models/user';
 import { LobbyService } from '../../services/lobby.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-game-lobby',
@@ -13,9 +14,13 @@ import { LobbyService } from '../../services/lobby.service';
   styleUrl: './game-lobby.component.scss'
 })
 export class GameLobbyComponent implements OnInit {
-  constructor(private readonly lobbyApiService: LobbyApiService, private readonly lobbyService: LobbyService) {
+  constructor(private readonly lobbyApiService: LobbyApiService, private readonly lobbyService: LobbyService, private readonly router: Router) {
     this.lobbyApiService.listUpdated$.pipe(takeUntilDestroyed()).subscribe((response) =>
       this.setWaitingUsers(response.value)
+    );
+
+    this.lobbyApiService.gameStarted$.pipe(takeUntilDestroyed()).subscribe((response) =>
+      this.startGame(response.value)
     );
   }
 
@@ -37,15 +42,32 @@ export class GameLobbyComponent implements OnInit {
     this.removeUserFromList(event)
   }
 
-  removeUserFromList(event: any){
-    this.lobbyApiService.removeFromWaitingUsers();
+  removeUserFromList(event: any): void {
+    this.lobbyApiService.removeFromWaitingUsers(null);
+  }
+
+  startGame(users: User[]): void {
+    console.log(users);
+    console.log(this.lobbyApiService.getUserConnectionId());
+    var isThisCorrectGame: boolean = false;
+    users.forEach(user => {
+      if (user.connectionId == this.lobbyApiService.getUserConnectionId()) {
+        isThisCorrectGame = true;
+      }
+    })
+
+    if (isThisCorrectGame) {
+      users.forEach(user => this.lobbyApiService.removeFromWaitingUsers(user.connectionId));
+      this.lobbyApiService.stopConnection();
+      this.router.navigateByUrl('/game');
+    }
   }
 
   joinButtonClick(): void {
     this.lobbyApiService.joinWaitingUsers(this.username.value!);
 
     var user = {
-      'userId': this.lobbyApiService.getUserConnectionId(),
+      'connectionId': this.lobbyApiService.getUserConnectionId(),
       'username': this.username.value!
     };
     this.lobbyService.setThisUser(user);
@@ -58,7 +80,7 @@ export class GameLobbyComponent implements OnInit {
     this.removeUserFromList(null);
     this.lobbyService.setThisUserWaiting(false);
 
-    var emptyUser: User = {'userId': '', 'username': ''};
+    var emptyUser: User = {'connectionId': '', 'username': ''};
     this.lobbyService.setThisUser(emptyUser);
   }
 

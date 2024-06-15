@@ -27,10 +27,6 @@ export class BoardComponent {
       this.updateGameData(data.value)
     );
 
-    this.boardApiService.gameStarted$?.pipe(takeUntilDestroyed()).subscribe((data) =>
-      this.updateGameData(data.value)
-    );
-
     this.boardApiService.dataLoaded$?.pipe(takeUntilDestroyed()).subscribe((data) =>
       this.updateGameData(data.value)
     );

@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Games.Application.TicTacToe.Models
 {
-    public class User
+    public class UserRole(User user, string symbol)
     {
-        public string Username { get; set; } = "";
-        public string ConnectionId { get; set; } = "";
+        public User User { get; set; } = user;
+        public string Symbol { get; set; } = symbol;
     }
 }

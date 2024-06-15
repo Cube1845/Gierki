@@ -23,24 +23,51 @@ public class TicTacToeService(GamesDbContext context)
         new([new(0, 2), new(1, 1), new(2, 0)])
     ];
 
-    public async Task<Result<GameData>> LoadGameData()
+    public async Task<Result<GameData>> LoadGameData(string connectionId)
     {
-        return Result<GameData>.Success(await GetGameData(), "Data sent");
+        GameData? gameData = await GetGameDataByUsersConnectionId(connectionId);
+        if (gameData == null)
+        {
+            return Result<GameData>.Error("User not found");
+        }
+
+        return Result<GameData>.Success(gameData, "Data sent");
     }
 
-    public async Task<Result<GameData>> StartGame()
+    public async Task<GameData> StartGame(List<User> users)
     {
         var board = GetEmptyBoard();
+
+        List<UserRole> usersWithRoles;
+        Random random = new Random();
+        if (random.Next(0, 2) == 0)
+        {
+            usersWithRoles = new List<UserRole>()
+            {
+                new(users[0], "O"),
+                new(users[1], "X")
+            };
+        }
+        else
+        {
+            usersWithRoles = new List<UserRole>()
+            {
+                new(users[1], "O"),
+                new(users[0], "X")
+            };
+        }
 
         GameData gameData = new(
             board,
             isGameStarted: true,
             isGameTied: false,
-            "O"
+            "O",
+            usersWithRoles
         );
 
         await SaveGameDataToDatabase(gameData);
-        return Result<GameData>.Success(gameData, "Game started");
+
+        return gameData;
     }
 
     public async Task<Result<GameData>> MakeMoveAndGetGameData(Move move)
@@ -54,17 +81,17 @@ public class TicTacToeService(GamesDbContext context)
                 if (await IsWinSituation())
                 {
                     await SetWinSituationInDatabase(move.Symbol, await GetWinningTiles());
-                    return Result<GameData>.Success(await GetGameData(), "Game ended");
+                    return Result<GameData>.Success(await GetGameDataByUsersConnectionId(""), "Game ended");
                 }
 
                 if (await IsGameTied() && !await IsWinSituation())
                 {
                     await SetWinSituationInDatabase(true);
-                    return Result<GameData>.Success(await GetGameData(), "Tie");
+                    return Result<GameData>.Success(await GetGameDataByUsersConnectionId(""), "Tie");
                 }
 
                 await ChangeTurnInDataBase(move.Symbol);
-                return Result<GameData>.Success(await GetGameData(), "Successfully made a move");
+                return Result<GameData>.Success(await GetGameDataByUsersConnectionId(""), "Successfully made a move");
             }
 
             return Result<GameData>.Error("Error");
@@ -124,10 +151,10 @@ public class TicTacToeService(GamesDbContext context)
         return false;
     }
 
-    private async Task<GameData> GetGameData()
+    private async Task<GameData?> GetGameDataByUsersConnectionId(string connectionId)
     {
-        var boardDb = await _context.TicTacToe.FirstOrDefaultAsync();
-        return GameData.FromTicTacToePersistence(boardDb!);
+        var gameDb = await _context.TicTacToe.FindAsync(connectionId);
+        return GameData.FromTicTacToePersistence(gameDb!);
     }
 
     private async Task ChangeTurnInDataBase(string currentTurn)

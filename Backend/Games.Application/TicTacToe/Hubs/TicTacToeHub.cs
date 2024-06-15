@@ -14,11 +14,6 @@ namespace Games.Application.TicTacToe.Hubs
     {
         private readonly TicTacToeService _ticTacToeService = ticTacToeService;
 
-        public async Task StartGame() 
-        {
-            await Clients.All.SendAsync("GameStarted", await _ticTacToeService.StartGame());
-        }
-
         public async Task MakeMoveAndGetGameData(Move move)
         {
             await Clients.All.SendAsync("MoveMade", await _ticTacToeService.MakeMoveAndGetGameData(move));
@@ -26,7 +21,7 @@ namespace Games.Application.TicTacToe.Hubs
 
         public async Task LoadGameData() 
         {
-            await Clients.All.SendAsync("DataLoaded", await _ticTacToeService.LoadGameData());
+            await Clients.All.SendAsync("DataLoaded", await _ticTacToeService.LoadGameData(Context.ConnectionId));
         }
 
     }

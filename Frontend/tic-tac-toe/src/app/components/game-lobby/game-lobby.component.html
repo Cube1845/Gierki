@@ -6,7 +6,7 @@
     <h1 class="users-waiting-counter">Users currently waiting for a game: {{ getWaitingUsersCount() }}</h1>
 
     <div class="waiting-users-container">
-        @for (name of getWaitingUsernames(); track name) {
+        @for (name of getWaitingUsernames(); track $index) {
             <h2 class="color">- {{ name }}</h2>
         }
     </div>

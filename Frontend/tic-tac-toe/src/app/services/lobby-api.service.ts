@@ -9,8 +9,13 @@ export class LobbyApiService {
   private apiUrl = 'https://localhost:7047/lobbyhub';
   private hubConnection!: HubConnection;
 
+  private connectionId!: string;
+
   private ListUpdatedSubject = new Subject<any>();
   listUpdated$ = this.ListUpdatedSubject.asObservable();
+
+  private gameStartedSubject = new Subject<any>();
+  gameStarted$ = this.gameStartedSubject.asObservable();
 
   async startConnection(): Promise<void> {
     this.hubConnection = new HubConnectionBuilder()
@@ -20,8 +25,16 @@ export class LobbyApiService {
       })
       .build();
 
-    this.hubConnection.on("WaitingListUpdated", (users) => {
-      this.ListUpdatedSubject.next(users);
+    this.hubConnection.on("GetConnectionId", (response) => {
+      this.connectionId = response;
+    });
+    
+    this.hubConnection.on("WaitingListUpdated", (response) => {
+      this.ListUpdatedSubject.next(response);
+    });
+
+    this.hubConnection.on("StartGame", (response) => {
+      this.gameStartedSubject.next(response);
     });
 
     await this.hubConnection
@@ -30,14 +43,20 @@ export class LobbyApiService {
         console.log('Hub connected!');
       })
       .catch((err) => console.log('Error: ' + err));
+
+    this.hubConnection.invoke("GetConnectionId");
   }
 
   stopConnection(): void {
     this.hubConnection.stop();
   }
 
-  removeFromWaitingUsers(): void {
-    this.hubConnection.invoke("RemovePlayerFromWaitingList");
+  removeFromWaitingUsers(connectionId: string | null): void {
+    if (connectionId == null) {
+      this.hubConnection.invoke("RemovePlayerFromWaitingList", null, false);
+    } else {
+      this.hubConnection.invoke("RemovePlayerFromWaitingList", connectionId, true);
+    }
   }
 
   joinWaitingUsers(username: string): void {
@@ -49,6 +68,6 @@ export class LobbyApiService {
   }
 
   getUserConnectionId(): string {
-    return this.hubConnection.connectionId!;
+    return this.connectionId;
   }
 }
