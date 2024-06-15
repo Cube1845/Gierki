@@ -17,15 +17,23 @@ namespace Games.Application.TicTacToe.Hubs
         public async Task JoinToWaitingPlayers(string username)
         {
             await Groups.AddToGroupAsync(Context.ConnectionId, _waitingPlayers);
+
             var response = await _lobbyService.AddPlayerToWaitingList(username, Context.ConnectionId);
-            await Clients.Group(_waitingPlayers).SendAsync("WaitingListUpdated", response);
+            await Clients.All.SendAsync("WaitingListUpdated", response);
         }
 
         public async Task RemovePlayerFromWaitingList()
         {
             await Groups.RemoveFromGroupAsync(Context.ConnectionId, _waitingPlayers);
+
             var response = await _lobbyService.RemovePlayerFromWaitingList(Context.ConnectionId);
-            await Clients.Group(_waitingPlayers).SendAsync("WaitingListUpdated", response);
+            await Clients.All.SendAsync("WaitingListUpdated", response);
+        }
+
+        public async Task GetWaitingList()
+        {
+            var response = await _lobbyService.GetWaitingList();
+            await Clients.Caller.SendAsync("WaitingListUpdated", response);
         }
     }
 }

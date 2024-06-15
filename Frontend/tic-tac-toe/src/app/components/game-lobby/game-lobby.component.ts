@@ -14,9 +14,16 @@ import { LobbyService } from '../../services/lobby.service';
 })
 export class GameLobbyComponent implements OnInit {
   constructor(private readonly lobbyApiService: LobbyApiService, private readonly lobbyService: LobbyService) {
-    this.lobbyApiService.listUpdated$.pipe(takeUntilDestroyed()).subscribe((users) =>
-      this.setWaitingPlayers(users.value)
+    this.lobbyApiService.listUpdated$.pipe(takeUntilDestroyed()).subscribe((response) =>
+      this.setWaitingUsers(response.value)
     );
+  }
+
+  username = new FormControl("", Validators.required);
+
+  async ngOnInit(): Promise<void> {
+    await this.lobbyApiService.startConnection();
+    this.lobbyApiService.loadWaitingUsers();
   }
 
   @HostListener('window:unload', [ '$event' ])
@@ -31,21 +38,45 @@ export class GameLobbyComponent implements OnInit {
   }
 
   removeUserFromList(event: any){
-    this.lobbyApiService.removeFromWaitingPlayers();
+    this.lobbyApiService.removeFromWaitingUsers();
   }
-
-  ngOnInit(): void {
-    this.lobbyApiService.startConnection();
-  }
-
-  username = new FormControl("", Validators.required);
 
   joinButtonClick(): void {
-    this.lobbyApiService.joinWaitingPlayers(this.username.value!);
+    this.lobbyApiService.joinWaitingUsers(this.username.value!);
+
+    var user = {
+      'userId': this.lobbyApiService.getUserConnectionId(),
+      'username': this.username.value!
+    };
+    this.lobbyService.setThisUser(user);
+
+    this.username.reset();
+    this.lobbyService.setThisUserWaiting(true);
   }
 
-  setWaitingPlayers(users: User[] | null): void {
-    //make this work
-    this.lobbyService.setWaitingPlayers(users);
+  stopWaitingButtonClick(): void {
+    this.removeUserFromList(null);
+    this.lobbyService.setThisUserWaiting(false);
+
+    var emptyUser: User = {'userId': '', 'username': ''};
+    this.lobbyService.setThisUser(emptyUser);
+  }
+
+  setWaitingUsers(users: User[]): void {
+    if (users != null) {
+      this.lobbyService.setWaitingUsers(users);
+    }
+  }
+
+  getWaitingUsersCount(): number {
+    return this.lobbyService.getWaitingUsersCount();
+  }
+
+  getWaitingUsernames(): string[] {
+    return this.lobbyService.getWaitingUsernames();
+  }
+
+  isUserWaiting(): boolean {
+    return this.lobbyService.isThisUserWaiting();
   }
 }

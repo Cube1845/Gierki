@@ -1,18 +1,44 @@
 import { Injectable } from '@angular/core';
-import { LobbyApiService } from './lobby-api.service';
 import { User } from '../models/user';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LobbyService {
-  waitingPlayers: User[] | null = null;
+  waitingUsers: User[] = [];
+  isUserWaiting: boolean = false;
+  thisUser: User = {'userId': '', 'username': ''};
 
-  getWaitingPlayers(): User[] | null {
-    return this.waitingPlayers;
+  getWaitingUsernames(): string[] {
+    var users: string[] = [];
+    this.waitingUsers.forEach(user => {
+      if (user.username == this.thisUser.username) {
+        users.push(user.username + " (you)");
+      } else {
+        users.push(user.username);
+      }
+    });
+
+    return users;
   }
 
-  setWaitingPlayers(users: User[] | null): void {
-    this.waitingPlayers = users;
+  setThisUser(user: User): void {
+    this.thisUser = user;
+  }
+
+  isThisUserWaiting(): boolean {
+    return this.isUserWaiting;
+  }
+
+  setThisUserWaiting(value: boolean): void {
+    this.isUserWaiting = value;
+  }
+
+  setWaitingUsers(users: User[]): void {
+    this.waitingUsers = users;
+  }
+
+  getWaitingUsersCount(): number {
+    return this.waitingUsers.length;
   }
 }

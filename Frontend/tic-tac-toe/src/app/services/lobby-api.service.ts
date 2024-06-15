@@ -36,11 +36,19 @@ export class LobbyApiService {
     this.hubConnection.stop();
   }
 
-  removeFromWaitingPlayers(): void {
+  removeFromWaitingUsers(): void {
     this.hubConnection.invoke("RemovePlayerFromWaitingList");
   }
 
-  joinWaitingPlayers(username: string): void {
+  joinWaitingUsers(username: string): void {
     this.hubConnection.invoke("JoinToWaitingPlayers", username);
+  }
+
+  loadWaitingUsers(): void {
+    this.hubConnection.invoke("GetWaitingList");
+  }
+
+  getUserConnectionId(): string {
+    return this.hubConnection.connectionId!;
   }
 }

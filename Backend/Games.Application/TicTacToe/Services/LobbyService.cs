@@ -13,10 +13,19 @@ namespace Games.Application.TicTacToe.Services
     public class LobbyService(GamesDbContext context)
     {
         private readonly GamesDbContext _context = context;
-         
+        
+        public async Task<Result<List<User>>> GetWaitingList()
+        {
+            return Result<List<User>>.Success(await GetUsersFromDatabase(), "List sent");
+        }
+
         public async Task<Result<List<User>>> AddPlayerToWaitingList(string username, string connectionId)
         {
-            var usersDb = await _context.Users.FirstOrDefaultAsync();
+            var waitingPlayers = await GetUsersFromDatabase();
+            if (waitingPlayers.Any(p => p.UserId == connectionId))
+            {
+                return Result<List<User>>.Error("Client already in");
+            }
 
             var user = new Persistence.Users()
             {
@@ -27,13 +36,7 @@ namespace Games.Application.TicTacToe.Services
             await _context.Users.AddAsync(user);
             await _context.SaveChangesAsync();
 
-            var waitingPlayers = await GetUsersFromDatabase();
-            if (waitingPlayers.Any(p => p.UserId != connectionId))
-            {
-                return Result<List<User>>.Success(waitingPlayers, "Added user to waiting list");
-            }
-
-            return Result<List<User>>.Error("Client already in");
+            return Result<List<User>>.Success(await GetUsersFromDatabase(), "Added user to waiting list");
         }
 
         public async Task<Result<List<User>>> RemovePlayerFromWaitingList(string connectionId)

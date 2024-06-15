@@ -3,12 +3,23 @@
         <h1>Tic Tac Toe Game</h1>
     </div>
 
-    <h1 class="users-waiting-counter">Users currently waiting for a game: 0</h1>
+    <h1 class="users-waiting-counter">Users currently waiting for a game: {{ getWaitingUsersCount() }}</h1>
 
-    <form class="username-typein">
-        <label class="description-text">Choose username</label>
-        <input type="text" class="username-form" placeholder="Username" [formControl]="username"/>
-    </form>
+    <div class="waiting-users-container">
+        @for (name of getWaitingUsernames(); track name) {
+            <h2 class="color">- {{ name }}</h2>
+        }
+    </div>
 
-    <button type="button" class="join-button" (click)="joinButtonClick()" [disabled]="username.invalid">Join</button>
+    @if (!isUserWaiting()) {
+        <form class="username-typein">
+            <label class="description-text">Choose username</label>
+            <input type="text" class="username-form" placeholder="Username" [formControl]="username"/>
+        </form>
+
+        <button type="button" class="join-leave-button" (click)="joinButtonClick()" [disabled]="username.invalid">Join</button>
+    } @else {
+        <h1 class="color">You are looking for someone to play with...</h1>
+        <button type="button" class="join-leave-button"  (click)="stopWaitingButtonClick()">Stop waiting</button>
+    }
 </div>
