@@ -25,6 +25,17 @@ export class BoardService {
     this.boardApiService.makeMoveAndGetGameStatus(move);
   }
 
+  getThisUsersTurn(): string {
+    var symbol = "";
+    this.gameData.players.forEach(userRole => {
+      if (userRole.user.connectionId == this.boardApiService.getConnectionId()) {
+        symbol = userRole.symbol;
+      }
+    });
+
+    return symbol;
+  }
+
   getWinner(): string | null {
     return this.gameData.gameWinnedBy;
   }

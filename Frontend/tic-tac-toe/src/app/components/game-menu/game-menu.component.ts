@@ -3,6 +3,7 @@ import { BoardApiService } from '../../services/board-api.service';
 import { BoardService } from '../../services/board.service';
 import { NgIf } from '@angular/common';
 import { BoardComponent } from '../board/board.component';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-game-menu',
@@ -13,11 +14,15 @@ import { BoardComponent } from '../board/board.component';
 })
 
 export class GameMenuComponent implements OnInit {
-  constructor(private readonly boardApiService: BoardApiService, private readonly boardService: BoardService) {}
+  private connectionId!: string;
+
+  constructor(private readonly boardApiService: BoardApiService, private readonly boardService: BoardService, private readonly route: ActivatedRoute) {
+    this.connectionId = this.route.snapshot.params['name'];
+  }
 
   async ngOnInit(): Promise<void> {
     await this.boardApiService.startConnection();
-    this.boardApiService.loadGameData();
+    this.boardApiService.loadGameDataAndUpdateConnectionId(this.connectionId);
   }
 
   getWinner(): string | null{
@@ -42,5 +47,9 @@ export class GameMenuComponent implements OnInit {
 
   getTurn(): string {
     return this.boardService.getTurn();
+  }
+
+  getThisUsersTurn(): string {
+    return this.boardService.getThisUsersTurn();
   }
 }

@@ -14,6 +14,7 @@ import { Position } from '../models/position';
 export class BoardApiService {
   private apiUrl = 'https://localhost:7047/tictactoehub';
   private hubConnection!: HubConnection;
+  private connectionId!: string;
 
   private moveMadeSubject = new Subject<any>();
   moveMade$ = this.moveMadeSubject.asObservable();
@@ -37,19 +38,29 @@ export class BoardApiService {
       this.dataLoadedSubject.next(data)
     );
 
+    this.hubConnection.on('GetConnectionId', (data) =>
+      this.connectionId = data
+    );
+
     await this.hubConnection
       .start()
       .then(() => {
         console.log('Hub connected!');
       })
       .catch((err) => console.log('Error: ' + err));
+
+    this.hubConnection.invoke('GetConnectionId');
+  }
+
+  getConnectionId(): string {
+    return this.connectionId;
   }
 
   makeMoveAndGetGameStatus(move: Move): void {
     this.hubConnection.invoke('MakeMoveAndGetGameData', move);
   }
 
-  loadGameData(): void {
-    this.hubConnection.invoke('LoadGameData');
+  loadGameDataAndUpdateConnectionId(oldConnectionId: string): void {
+    this.hubConnection.invoke('LoadGameData', oldConnectionId);
   }
 }

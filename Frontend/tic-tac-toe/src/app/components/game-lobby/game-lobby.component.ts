@@ -47,8 +47,6 @@ export class GameLobbyComponent implements OnInit {
   }
 
   startGame(users: User[]): void {
-    console.log(users);
-    console.log(this.lobbyApiService.getUserConnectionId());
     var isThisCorrectGame: boolean = false;
     users.forEach(user => {
       if (user.connectionId == this.lobbyApiService.getUserConnectionId()) {
@@ -58,8 +56,8 @@ export class GameLobbyComponent implements OnInit {
 
     if (isThisCorrectGame) {
       users.forEach(user => this.lobbyApiService.removeFromWaitingUsers(user.connectionId));
+      this.router.navigateByUrl('/game/' + this.lobbyApiService.getUserConnectionId());
       this.lobbyApiService.stopConnection();
-      this.router.navigateByUrl('/game');
     }
   }
 

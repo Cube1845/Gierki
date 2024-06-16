@@ -20,5 +20,11 @@
         transform $hover-transition-time;
       background-color: rgb(95, 148, 181);
     }
+
+    &:disabled {
+      transition: background-color $hover-transition-time ease,
+        transform $hover-transition-time;
+      background-color: rgb(145, 198, 231);
+    }
   }
 }

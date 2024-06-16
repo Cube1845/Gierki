@@ -15,6 +15,7 @@ export class TileComponent {
   @Input({ required: true }) x!: number;
   @Input({ required: true }) y!: number;
   @Input({ required: true }) value!: string;
+  @Input({ required: true }) isDisabled!: boolean;
 
   @Output() tileClick = new EventEmitter<Position>();
 

@@ -6,6 +6,7 @@
         [y]="y"
         [value]="this.board.boardData[y].positions[x]"
         (tileClick)="onTileClick($event)"
+        [isDisabled]="!isCurrentTurnThisUsers()"
       />
     } 
   }

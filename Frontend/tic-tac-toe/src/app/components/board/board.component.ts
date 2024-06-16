@@ -27,9 +27,9 @@ export class BoardComponent {
       this.updateGameData(data.value)
     );
 
-    this.boardApiService.dataLoaded$?.pipe(takeUntilDestroyed()).subscribe((data) =>
-      this.updateGameData(data.value)
-    );
+    this.boardApiService.dataLoaded$?.pipe(takeUntilDestroyed()).subscribe((data) => {
+      this.updateGameData(data.value);
+    });
   }
 
   updateGameData(data: GameData | null): void {
@@ -42,6 +42,10 @@ export class BoardComponent {
         this.boardService.setGameData(data);
       }
     }
+  }
+
+  isCurrentTurnThisUsers(): boolean {
+    return this.boardService.getTurn() == this.boardService.getThisUsersTurn();
   }
 
   onTileClick(pos: Position): void {

@@ -26,10 +26,6 @@ export class LobbyService {
     this.thisUser = user;
   }
 
-  getThisUser(): User {
-    return this.thisUser;
-  }
-
   isThisUserWaiting(): boolean {
     return this.isUserWaiting;
   }

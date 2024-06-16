@@ -16,13 +16,23 @@ namespace Games.Application.TicTacToe.Hubs
 
         public async Task MakeMoveAndGetGameData(Move move)
         {
-            await Clients.All.SendAsync("MoveMade", await _ticTacToeService.MakeMoveAndGetGameData(move));
+            await Clients.All.SendAsync(
+                "MoveMade",
+                await _ticTacToeService.MakeMoveAndGetGameData(move, Context.ConnectionId));
         }
 
-        public async Task LoadGameData() 
+        public async Task LoadGameData(string oldConnectionId) 
         {
-            await Clients.All.SendAsync("DataLoaded", await _ticTacToeService.LoadGameData(Context.ConnectionId));
+            await Clients.Caller.SendAsync(
+                "DataLoaded",
+                await _ticTacToeService.LoadGameDataAndUpdateConnectionIds(oldConnectionId, Context.ConnectionId));
         }
 
+        public async Task GetConnectionId()
+        {
+            await Clients.Caller.SendAsync(
+                "GetConnectionId",
+                Context.ConnectionId);
+        }
     }
 }

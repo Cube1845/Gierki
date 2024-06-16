@@ -4,6 +4,7 @@ using Games.Application.TicTacToe.Models;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Games.Application.TicTacToe.Services;
 
@@ -23,15 +24,53 @@ public class TicTacToeService(GamesDbContext context)
         new([new(0, 2), new(1, 1), new(2, 0)])
     ];
 
-    public async Task<Result<GameData>> LoadGameData(string connectionId)
+    public async Task<Result<GameData>> LoadGameDataAndUpdateConnectionIds(string oldConnectionId, string connectionId)
     {
-        GameData? gameData = await GetGameDataByUsersConnectionId(connectionId);
+        GameData? gameData = await UpdateConnectionIdAndGetGameData(oldConnectionId, connectionId);
         if (gameData == null)
         {
             return Result<GameData>.Error("User not found");
         }
 
         return Result<GameData>.Success(gameData, "Data sent");
+    }
+
+    private async Task<GameData?> UpdateConnectionIdAndGetGameData(string oldConnectionId, string connectionId)
+    {
+        int? id = await GetGameIdByConnectionId(oldConnectionId);
+        if (id == null)
+        {
+            return null;
+        }
+
+        var data = await _context.TicTacToe.FindAsync(id);
+        var oldPlayers = JsonConvert.DeserializeObject<List<UserRole>>(data!.Players);
+        oldPlayers.Find(player => player.User.ConnectionId == oldConnectionId)!.User.ConnectionId = connectionId;
+        data.Players = JsonConvert.SerializeObject(oldPlayers);
+
+        await _context.SaveChangesAsync();
+
+        if (data != null)
+        {
+            return GameData.FromTicTacToePersistence(data!);
+        }
+        return null;
+    }
+
+    private async Task<int> GetGameIdByConnectionId(string connectionId)
+    {
+        int id = -1;
+
+        var gameDb = await _context.TicTacToe.ToListAsync();
+        foreach (var ttt in gameDb)
+        {
+            if (ttt.Players.Contains(connectionId))
+            {
+                id = ttt.Id;
+            }
+        }
+
+        return id;
     }
 
     public async Task<GameData> StartGame(List<User> users)
@@ -70,34 +109,50 @@ public class TicTacToeService(GamesDbContext context)
         return gameData;
     }
 
-    public async Task<Result<GameData>> MakeMoveAndGetGameData(Move move)
-    {
-        if (await GetGameState())
+    public async Task<Result<GameData>> MakeMoveAndGetGameData(Move move, string connectionId)
+    {   
+        if (!await gameExists(connectionId))
         {
-            if (move.Symbol is "O" || move.Symbol is "X")
-            {
-                await MakeMoveInDatabaseBoard(move);
-
-                if (await IsWinSituation())
-                {
-                    await SetWinSituationInDatabase(move.Symbol, await GetWinningTiles());
-                    return Result<GameData>.Success(await GetGameDataByUsersConnectionId(""), "Game ended");
-                }
-
-                if (await IsGameTied() && !await IsWinSituation())
-                {
-                    await SetWinSituationInDatabase(true);
-                    return Result<GameData>.Success(await GetGameDataByUsersConnectionId(""), "Tie");
-                }
-
-                await ChangeTurnInDataBase(move.Symbol);
-                return Result<GameData>.Success(await GetGameDataByUsersConnectionId(""), "Successfully made a move");
-            }
-
-            return Result<GameData>.Error("Error");
+            return Result<GameData>.Error("Game does not exist");
         }
 
-        return Result<GameData>.Error("Game not started");
+        if (!await GetGameState(connectionId))
+        {
+            return Result<GameData>.Error("Game not started");
+        }
+
+        if (move.Symbol is not "O" && move.Symbol is not "X")
+        {
+            return Result<GameData>.Error("Wrong symbol");
+        }
+
+        await MakeMoveInDatabaseBoard(move, connectionId);
+
+        if (await IsWinSituation(connectionId))
+        {
+            await SetWinSituationInDatabase(move.Symbol, await GetWinningTiles(connectionId), connectionId);
+            return Result<GameData>.Success(await GetGameDataByUsersConnectionId(connectionId), "Game ended");
+        }
+
+        if (await IsGameTied(connectionId) && !await IsWinSituation(connectionId))
+        {
+            await SetWinSituationInDatabase(true, connectionId);
+            return Result<GameData>.Success(await GetGameDataByUsersConnectionId(connectionId), "Tie");
+        }
+
+        await ChangeTurnInDataBase(move.Symbol, connectionId);
+        return Result<GameData>.Success(await GetGameDataByUsersConnectionId(connectionId), "Successfully made a move");
+    }
+
+    private async Task<bool> gameExists(string connectionId)
+    {
+        var boardDb = await _context.TicTacToe.FindAsync((await GetGameIdByConnectionId(connectionId)));
+        if (boardDb == null)
+        {
+            return false;
+        }
+
+        return true;
     }
 
     private async Task SaveGameDataToDatabase(GameData gameData)
@@ -110,38 +165,24 @@ public class TicTacToeService(GamesDbContext context)
             serializedWinningTiles = JsonConvert.SerializeObject(gameData.WinningTiles);
         }
 
-        var boardDb = await _context.TicTacToe.FirstOrDefaultAsync();
-
-        if (boardDb is not null)
+        var ticTacToe = new Persistence.TicTacToe()
         {
-            boardDb.Board = serializedBoard;
-            boardDb.IsGameStarted = gameData.IsGameStarted;
-            boardDb.GameWinnedBy = gameData.GameWinnedBy;
-            boardDb.IsGameTied = gameData.IsGameTied;
-            boardDb.Turn = gameData.Turn;
-            boardDb.WinningTiles = serializedWinningTiles;
-        }
-        else
-        {
-            var ticTacToe = new Persistence.TicTacToe()
-            {
-                Board = serializedBoard,
-                IsGameStarted = gameData.IsGameStarted,
-                GameWinnedBy = gameData.GameWinnedBy,
-                IsGameTied = gameData.IsGameTied,
-                Turn = gameData.Turn,
-                WinningTiles = serializedWinningTiles
-            };
-
-            await _context.TicTacToe.AddAsync(ticTacToe);
-        }
+            Board = serializedBoard,
+            IsGameStarted = gameData.IsGameStarted,
+            GameWinnedBy = gameData.GameWinnedBy,
+            IsGameTied = gameData.IsGameTied,
+            Turn = gameData.Turn,
+            WinningTiles = serializedWinningTiles,
+            Players = JsonConvert.SerializeObject(gameData.Players)
+        };
+        await _context.TicTacToe.AddAsync(ticTacToe);
 
         await _context.SaveChangesAsync();
     }
 
-    private async Task<bool> GetGameState()
+    private async Task<bool> GetGameState(string connectionId)
     {
-        var boardDb = await _context.TicTacToe.FirstOrDefaultAsync();
+        var boardDb = await _context.TicTacToe.FindAsync(await GetGameIdByConnectionId(connectionId));
 
         if (boardDb is not null)
         {
@@ -151,27 +192,27 @@ public class TicTacToeService(GamesDbContext context)
         return false;
     }
 
-    private async Task<GameData?> GetGameDataByUsersConnectionId(string connectionId)
+    private async Task<GameData> GetGameDataByUsersConnectionId(string connectionId)
     {
-        var gameDb = await _context.TicTacToe.FindAsync(connectionId);
-        return GameData.FromTicTacToePersistence(gameDb!);
+        var data = await _context.TicTacToe.FindAsync(await GetGameIdByConnectionId(connectionId));
+        return GameData.FromTicTacToePersistence(data!);
     }
 
-    private async Task ChangeTurnInDataBase(string currentTurn)
+    private async Task ChangeTurnInDataBase(string currentTurn, string connectionId)
     {
         if (currentTurn == "O")
         {
-            await SetTurnInDataBase("X");
+            await SetTurnInDataBase("X", connectionId);
         }
         else
         {
-            await SetTurnInDataBase("O");
+            await SetTurnInDataBase("O", connectionId);
         }
     }
 
-    private async Task SetWinSituationInDatabase(string gameWinnedBy, PositionCollection? winningTiles)
+    private async Task SetWinSituationInDatabase(string gameWinnedBy, PositionCollection? winningTiles, string connectionId)
     {
-        var boardDb = await _context.TicTacToe.FirstOrDefaultAsync();
+        var boardDb = await _context.TicTacToe.FindAsync(await GetGameIdByConnectionId(connectionId));
 
         if (boardDb is not null)
         {
@@ -184,9 +225,9 @@ public class TicTacToeService(GamesDbContext context)
         await _context.SaveChangesAsync();
     }
 
-    private async Task SetWinSituationInDatabase(bool isGameTied)
+    private async Task SetWinSituationInDatabase(bool isGameTied, string connectionId)
     {
-        var boardDb = await _context.TicTacToe.FirstOrDefaultAsync();
+        var boardDb = await _context.TicTacToe.FindAsync(await GetGameIdByConnectionId(connectionId));
 
         if (boardDb is not null)
         {
@@ -198,9 +239,9 @@ public class TicTacToeService(GamesDbContext context)
         await _context.SaveChangesAsync();
     }
 
-    private async Task SetTurnInDataBase(string turn)
+    private async Task SetTurnInDataBase(string turn, string connectionId)
     {
-        var boardDb = await _context.TicTacToe.FirstOrDefaultAsync();
+        var boardDb = await _context.TicTacToe.FindAsync(await GetGameIdByConnectionId(connectionId));
 
         if (boardDb is not null)
         {
@@ -210,11 +251,11 @@ public class TicTacToeService(GamesDbContext context)
         await _context.SaveChangesAsync();
     }
 
-    private async Task MakeMoveInDatabaseBoard(Move move)
+    private async Task MakeMoveInDatabaseBoard(Move move, string connectionId)
     {
-        var board = await LoadBoardFromDatabase();
+        var board = await LoadBoardFromDatabase(connectionId);
         board.BoardData[move.Position.Y].Positions[move.Position.X] = move.Symbol;
-        await SaveBoardToDatabase(board);
+        await SaveBoardToDatabase(board, connectionId);
     }
 
     private Board GetEmptyBoard()
@@ -227,10 +268,10 @@ public class TicTacToeService(GamesDbContext context)
         ]);
     }
 
-    private async Task SaveBoardToDatabase(Board board)
+    private async Task SaveBoardToDatabase(Board board, string connectionId)
     {
+        var boardDb = await _context.TicTacToe.FindAsync(await GetGameIdByConnectionId(connectionId));
         var serializedBoard = JsonConvert.SerializeObject(board);
-        var boardDb = await _context.TicTacToe.FirstOrDefaultAsync();
 
         if (boardDb is not null)
         {
@@ -249,18 +290,18 @@ public class TicTacToeService(GamesDbContext context)
         await _context.SaveChangesAsync();
     }
 
-    private async Task<bool> IsGameTied()
+    private async Task<bool> IsGameTied(string connectionId)
     {
-        var board = await LoadBoardFromDatabase();
+        var board = await LoadBoardFromDatabase(connectionId);
 
         return !board.BoardData.Any(row =>
             row.Positions.Any(pos => pos is "")
         );
     }
 
-    private async Task<PositionCollection?> GetWinningTiles()
+    private async Task<PositionCollection?> GetWinningTiles(string connectionId)
     {
-        var board = await LoadBoardFromDatabase();
+        var board = await LoadBoardFromDatabase(connectionId);
 
         foreach (var winningCase in WinningCases)
         {
@@ -283,14 +324,14 @@ public class TicTacToeService(GamesDbContext context)
         return null;
     }
 
-    private async Task<bool> IsWinSituation()
+    private async Task<bool> IsWinSituation(string connectionId)
     {
-        return await GetWinningTiles() != null;
+        return await GetWinningTiles(connectionId) != null;
     }
 
-    private async Task<Board> LoadBoardFromDatabase()
+    private async Task<Board> LoadBoardFromDatabase(string connectionId)
     {
-        var boardDb = await _context.TicTacToe.FirstOrDefaultAsync();
+        var boardDb = await _context.TicTacToe.FindAsync(await GetGameIdByConnectionId(connectionId));
         string jsonText = "";
 
         if (boardDb is not null)
