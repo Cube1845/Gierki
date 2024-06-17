@@ -23,9 +23,9 @@ export class BoardComponent {
     private readonly boardService: BoardService,
     private readonly boardApiService: BoardApiService
   ) {
-    this.boardApiService.moveMade$?.pipe(takeUntilDestroyed()).subscribe((data) => 
-      this.updateGameData(data.value)
-    );
+    this.boardApiService.moveMade$?.pipe(takeUntilDestroyed()).subscribe((data) => {
+      this.updateGameData(data.value);
+    });
 
     this.boardApiService.dataLoaded$?.pipe(takeUntilDestroyed()).subscribe((data) => {
       this.updateGameData(data.value);

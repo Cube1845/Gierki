@@ -44,17 +44,18 @@ public class TicTacToeService(GamesDbContext context)
         }
 
         var data = await _context.TicTacToe.FindAsync(id);
+        if (data == null)
+        {
+            return null;
+        }
+
         var oldPlayers = JsonConvert.DeserializeObject<List<UserRole>>(data!.Players);
         oldPlayers.Find(player => player.User.ConnectionId == oldConnectionId)!.User.ConnectionId = connectionId;
         data.Players = JsonConvert.SerializeObject(oldPlayers);
 
         await _context.SaveChangesAsync();
 
-        if (data != null)
-        {
-            return GameData.FromTicTacToePersistence(data!);
-        }
-        return null;
+        return GameData.FromTicTacToePersistence(data!);
     }
 
     private async Task<int> GetGameIdByConnectionId(string connectionId)
@@ -111,7 +112,7 @@ public class TicTacToeService(GamesDbContext context)
 
     public async Task<Result<GameData>> MakeMoveAndGetGameData(Move move, string connectionId)
     {   
-        if (!await gameExists(connectionId))
+        if (!await GameExists(connectionId))
         {
             return Result<GameData>.Error("Game does not exist");
         }
@@ -144,7 +145,7 @@ public class TicTacToeService(GamesDbContext context)
         return Result<GameData>.Success(await GetGameDataByUsersConnectionId(connectionId), "Successfully made a move");
     }
 
-    private async Task<bool> gameExists(string connectionId)
+    private async Task<bool> GameExists(string connectionId)
     {
         var boardDb = await _context.TicTacToe.FindAsync((await GetGameIdByConnectionId(connectionId)));
         if (boardDb == null)

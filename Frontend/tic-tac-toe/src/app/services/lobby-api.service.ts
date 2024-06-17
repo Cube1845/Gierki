@@ -47,10 +47,6 @@ export class LobbyApiService {
     this.hubConnection.invoke("GetConnectionId");
   }
 
-  stopConnection(): void {
-    this.hubConnection.stop();
-  }
-
   removeFromWaitingUsers(connectionId: string | null): void {
     if (connectionId == null) {
       this.hubConnection.invoke("RemovePlayerFromWaitingList", null, false);

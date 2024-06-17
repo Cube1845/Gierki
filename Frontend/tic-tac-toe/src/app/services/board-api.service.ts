@@ -52,6 +52,10 @@ export class BoardApiService {
     this.hubConnection.invoke('GetConnectionId');
   }
 
+  stopConnection(): void {
+    this.hubConnection.stop();
+  }
+
   getConnectionId(): string {
     return this.connectionId;
   }

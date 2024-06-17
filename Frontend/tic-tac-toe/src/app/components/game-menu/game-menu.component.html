@@ -4,8 +4,19 @@
 
     <app-board></app-board>
 
-    <h1 class="info-text" *ngIf="this.isGameWinned()">Winner: {{ this.getWinner() }}</h1>
-    <h1 class="info-text" *ngIf="this.isGameTied()">Tie</h1>
+    @if (this.isGameWinned()) {
+        <h1 class="info-text">Winner: {{ this.getWinner() }}</h1>
+    }
+
+    @if (this.isGameTied()) {
+        <h1 class="info-text">Tie</h1>
+    }
     
-    <h1 class="info-text" *ngIf="this.getGameState()">Turn: {{ this.getTurn() }}</h1>
+    @if (this.getGameState()) {
+        <h1 class="info-text">Turn: {{ this.getTurn() }}</h1>
+    }
+
+    @if (!this.getGameState()) {
+        <button type="button" class="go-back-button" (click)="goBackToLobby()">Go back to lobby</button>
+    }
 </div>

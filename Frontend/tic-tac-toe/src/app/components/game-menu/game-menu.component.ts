@@ -3,7 +3,8 @@ import { BoardApiService } from '../../services/board-api.service';
 import { BoardService } from '../../services/board.service';
 import { NgIf } from '@angular/common';
 import { BoardComponent } from '../board/board.component';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router, } from '@angular/router';
+import { LobbyApiService } from '../../services/lobby-api.service';
 
 @Component({
   selector: 'app-game-menu',
@@ -16,7 +17,7 @@ import { ActivatedRoute } from '@angular/router';
 export class GameMenuComponent implements OnInit {
   private connectionId!: string;
 
-  constructor(private readonly boardApiService: BoardApiService, private readonly boardService: BoardService, private readonly route: ActivatedRoute) {
+  constructor(private readonly boardApiService: BoardApiService, private readonly boardService: BoardService, private readonly route: ActivatedRoute, private readonly router: Router,private readonly lobbyApiService: LobbyApiService) {
     this.connectionId = this.route.snapshot.params['name'];
   }
 
@@ -31,6 +32,11 @@ export class GameMenuComponent implements OnInit {
     } else {
       return "";
     }
+  }
+
+  goBackToLobby(): void {
+    this.boardApiService.stopConnection();
+    this.router.navigateByUrl('/lobby');
   }
 
   isGameWinned(): boolean {

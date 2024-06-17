@@ -5,6 +5,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { User } from '../../models/user';
 import { LobbyService } from '../../services/lobby.service';
 import { Router } from '@angular/router';
+import { BoardApiService } from '../../services/board-api.service';
 
 @Component({
   selector: 'app-game-lobby',
@@ -14,7 +15,7 @@ import { Router } from '@angular/router';
   styleUrl: './game-lobby.component.scss'
 })
 export class GameLobbyComponent implements OnInit {
-  constructor(private readonly lobbyApiService: LobbyApiService, private readonly lobbyService: LobbyService, private readonly router: Router) {
+  constructor(private readonly lobbyApiService: LobbyApiService, private readonly lobbyService: LobbyService, private readonly router: Router, private readonly boardApiService: BoardApiService) {
     this.lobbyApiService.listUpdated$.pipe(takeUntilDestroyed()).subscribe((response) =>
       this.setWaitingUsers(response.value)
     );
@@ -29,6 +30,7 @@ export class GameLobbyComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     await this.lobbyApiService.startConnection();
     this.lobbyApiService.loadWaitingUsers();
+    this.lobbyService.setThisUserWaiting(false);
   }
 
   @HostListener('window:unload', [ '$event' ])
@@ -57,7 +59,6 @@ export class GameLobbyComponent implements OnInit {
     if (isThisCorrectGame) {
       users.forEach(user => this.lobbyApiService.removeFromWaitingUsers(user.connectionId));
       this.router.navigateByUrl('/game/' + this.lobbyApiService.getUserConnectionId());
-      this.lobbyApiService.stopConnection();
     }
   }
 
