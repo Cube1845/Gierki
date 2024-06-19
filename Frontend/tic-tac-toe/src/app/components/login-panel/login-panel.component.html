@@ -1,0 +1,19 @@
+<div class="container">
+    <div class="header">
+        <h1>Log in</h1>
+    </div>
+
+    <div class="login-panel">
+        <form class="login-form" [formGroup]="userFormControl">
+            <label class="input-description">Enter username</label>
+            <input type="text" class="data-input" formControlName="username"/>
+
+            <label class="input-description">Enter password</label>
+            <input type="password" class="data-input" formControlName="password"/>
+        </form>
+
+        <button type="button" class="login-button" (click)="login()" [disabled]="userFormControl.invalid">Log in</button>
+    </div>
+
+    <button type="button" class="register-button" (click)="goToRegister()">Dont have account? Register here</button>
+</div>

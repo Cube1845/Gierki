@@ -1,7 +1,12 @@
+using Games.Application.Authentication.Services;
+using Games.Application.Infrastructure;
 using Games.Application.Persistence;
 using Games.Application.TicTacToe.Hubs;
 using Games.Application.TicTacToe.Services;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
+using TicTacToe;
 
 var AllowCors = "_allowCors";
 
@@ -16,6 +21,14 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<TicTacToeService>();
 builder.Services.AddScoped<LobbyService>();
+builder.Services.AddScoped<AuthService>();
+builder.Services.AddScoped<Encryptor>();
+
+builder.Services.AddDbContext<AuthDbContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer"));
+});
+
 
 builder.Services.AddDbContext<GamesDbContext>(options =>
 {
@@ -53,6 +66,10 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseRouting();
+app.MapAreaControllerRoute("Auth", "Auth", "{controller}");
+app.MapDefaultControllerRoute();
 
 app.MapHub<TicTacToeHub>("/tictactoehub");
 app.MapHub<LobbyHub>("/lobbyhub");

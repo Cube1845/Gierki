@@ -1,0 +1,67 @@
+:host {
+    $fore-color: rgb(97, 143, 45);
+    $hover-transition-time: .1s;
+
+    * {
+        font-family: 'Courier New', Courier, monospace;
+    }
+
+    .container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        margin-top: 240px;
+    }
+
+    .header {
+
+
+        & > h1 {
+            color: $fore-color;
+            font-size: 50px;
+        }
+    }
+
+    .login-panel, .login-form {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .data-input {
+        font-size: 24px;
+    }
+
+    .input-description {
+        font-size: 20px;
+    }
+
+    .login-button {
+        margin: 50px;
+        border: 0.5px solid black;
+        font-weight: bolder;
+        color: gray;
+        padding: 10px 100px;
+        font-size: 26px;
+        transition: background-color $hover-transition-time ease, transform $hover-transition-time;
+        background-color: rgb(175, 216, 128);
+        border-radius: 10px;
+
+        &:hover {
+            transition: background-color $hover-transition-time ease, transform $hover-transition-time;
+            background-color: rgb(145, 186, 98);
+        }
+
+        &:disabled {
+            transition: background-color $hover-transition-time ease, transform $hover-transition-time;
+            background-color: rgb(191, 202, 178);
+        }
+    }
+
+    .register-button {
+        border: 0;
+        background: none;
+        font-size: 20px;
+        color: darkgreen;
+    }
+}
