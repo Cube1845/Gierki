@@ -20,7 +20,16 @@ export class RegisterPanelComponent {
   });
 
   register(): void {
-    this.authApiService.register(this.userFormControl.value).subscribe(result => console.log(result));
+    this.authApiService.register(this.userFormControl.value).subscribe(result => {
+      console.log(result);
+      this.navigateToLoginPanel();
+    });
     this.userFormControl.reset();
+    
+  }
+
+  navigateToLoginPanel(): void {
+    this.router.navigateByUrl('login');
+    alert("Successfully registered, now log in");
   }
 }

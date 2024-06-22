@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Games.Application.Authentication.Models
 {
-    public record LoginUser
+    public record LoginDto
     {
-        public string Username { get; set; }
-        public string Password { get; set; }
+        public string Username { get; set; } = "";
+        public string Password { get; set; } = "";
     }
 }

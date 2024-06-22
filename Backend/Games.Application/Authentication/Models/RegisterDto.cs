@@ -1,19 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Games.Application.Persistence
+namespace Games.Application.Authentication.Models
 {
-    public class AppUsers
+    public record RegisterDto
     {
-        [Key]
-        public int Id { get; set; }
         public string Username { get; set; } = "";
         public string? Email { get; set; }
         public string Password { get; set; } = "";
-        public byte[] Salt { get; set; } = new byte[64];
     }
 }

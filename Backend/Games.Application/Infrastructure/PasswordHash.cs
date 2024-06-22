@@ -1,12 +1,11 @@
-﻿using System.Security.Cryptography;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
+using System.Threading.Tasks;
 
-var (password, salt) = PasswordHash.HashPasword("dupa");
-
-var passwordCorrect = PasswordHash.VerifyPassword("dupa", password, salt);
-
-var x = 5;
-
+namespace Games.Application.Infrastructure;
 
 public static class PasswordHash
 {

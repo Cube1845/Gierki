@@ -9,6 +9,7 @@ namespace Games.Application.Persistence
 {
     public class GamesDbContext(DbContextOptions<GamesDbContext> options) : DbContext(options)
     {
+        public DbSet<AppUsers> AppUsers { get; set; }
         public DbSet<TicTacToe> TicTacToe { get; set; }
         public DbSet<Users> Users { get; set; }
     }

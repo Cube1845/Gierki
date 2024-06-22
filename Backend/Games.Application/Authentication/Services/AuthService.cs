@@ -3,67 +3,64 @@ using Games.Application.Infrastructure;
 using Games.Application.Persistence;
 using Games.Application.TicTacToe.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Games.Application.Authentication.Services
 {
-    public class AuthService(AuthDbContext authDbContext, Encryptor encryptor)
+    public class AuthService(GamesDbContext gamesDbContext, JwtService jwt)
     {
-        private readonly AuthDbContext _context = authDbContext;
-        private readonly Encryptor _encryptor = encryptor;
+        private readonly GamesDbContext _context = gamesDbContext;
+        private readonly JwtService _jwt = jwt;
 
-        private readonly string _encryptorKey = "kdhst5s9f72agfa9s7g30a5s7h5j7w20";
-
-        public async Task<Result> RegisterUser(AppUser user)
+        public async Task<Result> RegisterUser(RegisterDto dto)
         {
-            if (user == null)
+            if (dto == null)
             {
                 return Result.Error("No user given");
             }
 
-            if (await UserExists(user))
+            AppUser appUser = new()
+            {
+                Username = dto.Username,
+                Password = dto.Password,
+            };
+            if (await UserExists(appUser))
             {
                 return Result.Error("This username or email is already taken");
             }
 
-            await AddAppUserToDatabase(user);
+            await RegisterUserInDatabase(dto);
             return Result.Success("Successfully registered");
         }
 
-        public async Task<Result> Login(LoginUser user)
+        public async Task<Result<string>> Login(LoginDto dto)
         {
             AppUser appUser = new() 
             {
-                Username = user.Username,
-                Password = user.Password,
+                Username = dto.Username,
+                Password = dto.Password,
             };
 
             if (!await UserExists(appUser))
             {
-                return Result.Error("There is no user with this username or email");
+                return Result<string>.Error("There is no user with this username or email");
             }
 
-            if (!EnteredPasswordMatchUserPassword(user.Password, await GetUserEncryptedPassword(user)))
+            if (!await EnteredPasswordMatchUserPassword(dto))
             {
-                return Result.Error("Wrong password");
+                return Result<string>.Error("Wrong password");
             }
 
-            return Result.Success("Successfully logged in");
+            return Result<string>.Success("", "Successfully logged in");
         }
 
-        public async Task<int?> GetUserIdFromDataBase(LoginUser user)
+        public async Task<int> GetUserIdFromDataBase(LoginDto dto)
         {
-            int? id = null;
+            int id = 0;
             var dbAppUsers = await _context.AppUsers.ToListAsync();
             foreach (var dbAppUser in dbAppUsers)
             {
-                if (dbAppUser.Username == user.Username)
+                if (dbAppUser.Username == dto.Username)
                 {
                     id = dbAppUser.Id; 
                 }
@@ -72,26 +69,33 @@ namespace Games.Application.Authentication.Services
             return id;
         }
 
-        public async Task<string> GetUserEncryptedPassword(LoginUser user)
+        private async Task<(string, byte[])> GetUsersHashedPaswordAndSalt(int userId)
         {
-            var dbUser = await _context.AppUsers.FindAsync(await GetUserIdFromDataBase(user));
-            return dbUser!.Password;
+            var dbUser = await _context.AppUsers.FindAsync(userId);
+
+            string password = dbUser!.Password;
+            byte[] salt = dbUser!.Salt;
+
+            return (password, salt);
+        } 
+
+        private async Task<bool> EnteredPasswordMatchUserPassword(LoginDto dto)
+        {
+            var (hashedPassword, salt) = await GetUsersHashedPaswordAndSalt(await GetUserIdFromDataBase(dto));
+            bool isPasswordCorrect = PasswordHash.VerifyPassword(dto.Password, hashedPassword, salt);
+            return isPasswordCorrect;
         }
 
-        private bool EnteredPasswordMatchUserPassword(string enteredPassword, string userPassword)
+        private async Task RegisterUserInDatabase(RegisterDto dto)
         {
-            string password = _encryptor.EncryptString(_encryptorKey, enteredPassword);
-            return password == userPassword;
-        }
+            var (password, salt) = PasswordHash.HashPasword(dto.Password);
 
-        private async Task AddAppUserToDatabase(AppUser user)
-        {
             var appUserDbModel = new Persistence.AppUsers() 
             {
-                Id = user.Id,
-                Username = user.Username,
-                Email = user.Email,
-                Password = _encryptor.EncryptString(_encryptorKey, user.Password)
+                Username = dto.Username,
+                Email = dto.Email,
+                Password = password,
+                Salt = salt,
             };
 
             var appUsersDb = await _context.AppUsers.AddAsync(appUserDbModel);

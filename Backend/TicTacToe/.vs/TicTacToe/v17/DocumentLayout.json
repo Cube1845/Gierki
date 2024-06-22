@@ -3,33 +3,23 @@
   "WorkspaceRootPath": "C:\\Users\\Jakub\\Desktop\\Projektik\\Gierki\\Backend\\TicTacToe\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{27462ADD-AD9C-45AD-AAB3-3F88E5D18251}|TicTacToe.csproj|c:\\users\\jakub\\desktop\\projektik\\gierki\\backend\\tictactoe\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{27462ADD-AD9C-45AD-AAB3-3F88E5D18251}|TicTacToe.csproj|solutionrelative:controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{3EF02A13-03A2-4226-8208-53CD8D6ADD94}|..\\Games.Application\\Games.Application.csproj|c:\\users\\jakub\\desktop\\projektik\\gierki\\backend\\games.application\\authentication\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3EF02A13-03A2-4226-8208-53CD8D6ADD94}|..\\Games.Application\\Games.Application.csproj|c:\\users\\jakub\\desktop\\projektik\\gierki\\backend\\games.application\\authentication\\services\\authservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3EF02A13-03A2-4226-8208-53CD8D6ADD94}|..\\Games.Application\\Games.Application.csproj|c:\\users\\jakub\\desktop\\projektik\\gierki\\backend\\games.application\\authentication\\services\\jwtservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{27462ADD-AD9C-45AD-AAB3-3F88E5D18251}|TicTacToe.csproj|c:\\users\\jakub\\desktop\\projektik\\gierki\\backend\\tictactoe\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{27462ADD-AD9C-45AD-AAB3-3F88E5D18251}|TicTacToe.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{3EF02A13-03A2-4226-8208-53CD8D6ADD94}|..\\Games.Application\\Games.Application.csproj|c:\\users\\jakub\\desktop\\projektik\\gierki\\backend\\games.application\\authentication\\models\\loginuser.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{3EF02A13-03A2-4226-8208-53CD8D6ADD94}|..\\Games.Application\\Games.Application.csproj|c:\\users\\jakub\\desktop\\projektik\\gierki\\backend\\games.application\\authentication\\services\\authservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{3EF02A13-03A2-4226-8208-53CD8D6ADD94}|..\\Games.Application\\Games.Application.csproj|c:\\users\\jakub\\desktop\\projektik\\gierki\\backend\\games.application\\infrastructure\\encryptor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{3EF02A13-03A2-4226-8208-53CD8D6ADD94}|..\\Games.Application\\Games.Application.csproj|c:\\users\\jakub\\desktop\\projektik\\gierki\\backend\\games.application\\persistence\\authdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{3EF02A13-03A2-4226-8208-53CD8D6ADD94}|..\\Games.Application\\Games.Application.csproj|c:\\users\\jakub\\desktop\\projektik\\gierki\\backend\\games.application\\persistence\\appusers.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{3EF02A13-03A2-4226-8208-53CD8D6ADD94}|..\\Games.Application\\Games.Application.csproj|c:\\users\\jakub\\desktop\\projektik\\gierki\\backend\\games.application\\persistence\\gamesdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{3EF02A13-03A2-4226-8208-53CD8D6ADD94}|..\\Games.Application\\Games.Application.csproj|c:\\users\\jakub\\desktop\\projektik\\gierki\\backend\\games.application\\migrations\\authdb\\20240618213104_auth.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -39,7 +29,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 7,
+          "SelectedChildIndex": 5,
           "Children": [
             {
               "$type": "Bookmark",
@@ -63,52 +53,52 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "LoginUser.cs",
-              "DocumentMoniker": "C:\\Users\\Jakub\\Desktop\\Projektik\\Gierki\\Backend\\Games.Application\\Authentication\\Models\\LoginUser.cs",
-              "RelativeDocumentMoniker": "..\\Games.Application\\Authentication\\Models\\LoginUser.cs",
-              "ToolTip": "C:\\Users\\Jakub\\Desktop\\Projektik\\Gierki\\Backend\\Games.Application\\Authentication\\Models\\LoginUser.cs",
-              "RelativeToolTip": "..\\Games.Application\\Authentication\\Models\\LoginUser.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAqwAgAAAASAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-19T20:34:24.335Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Users\\Jakub\\Desktop\\Projektik\\Gierki\\Backend\\TicTacToe\\Program.cs",
-              "RelativeDocumentMoniker": "Program.cs",
-              "ToolTip": "C:\\Users\\Jakub\\Desktop\\Projektik\\Gierki\\Backend\\TicTacToe\\Program.cs",
-              "RelativeToolTip": "Program.cs",
-              "ViewState": "AQIAADAAAAAAAAAAAAAAAEYAAAAsAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-18T12:14:37.285Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 0,
               "Title": "AuthController.cs",
-              "DocumentMoniker": "C:\\Users\\Jakub\\Desktop\\Projektik\\Gierki\\Backend\\TicTacToe\\Controllers\\AuthController.cs",
-              "RelativeDocumentMoniker": "Controllers\\AuthController.cs",
-              "ToolTip": "C:\\Users\\Jakub\\Desktop\\Projektik\\Gierki\\Backend\\TicTacToe\\Controllers\\AuthController.cs",
-              "RelativeToolTip": "Controllers\\AuthController.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAABUAAAA+AAAA",
+              "DocumentMoniker": "C:\\Users\\Jakub\\Desktop\\Projektik\\Gierki\\Backend\\Games.Application\\Authentication\\Controllers\\AuthController.cs",
+              "RelativeDocumentMoniker": "..\\Games.Application\\Authentication\\Controllers\\AuthController.cs",
+              "ToolTip": "C:\\Users\\Jakub\\Desktop\\Projektik\\Gierki\\Backend\\Games.Application\\Authentication\\Controllers\\AuthController.cs",
+              "RelativeToolTip": "..\\Games.Application\\Authentication\\Controllers\\AuthController.cs",
+              "ViewState": "AQIAABAAAAAAAAAAAAAUwCcAAAAEAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-19T19:51:13.001Z",
+              "WhenOpened": "2024-06-22T15:18:08.253Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 3,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\Jakub\\Desktop\\Projektik\\Gierki\\Backend\\TicTacToe\\Program.cs",
+              "RelativeDocumentMoniker": "Program.cs",
+              "ToolTip": "C:\\Users\\Jakub\\Desktop\\Projektik\\Gierki\\Backend\\TicTacToe\\Program.cs",
+              "RelativeToolTip": "Program.cs",
+              "ViewState": "AQIAACQAAAAAAAAAAAAAAFMAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-22T14:58:39.779Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "JwtService.cs",
+              "DocumentMoniker": "C:\\Users\\Jakub\\Desktop\\Projektik\\Gierki\\Backend\\Games.Application\\Authentication\\Services\\JwtService.cs",
+              "RelativeDocumentMoniker": "..\\Games.Application\\Authentication\\Services\\JwtService.cs",
+              "ToolTip": "C:\\Users\\Jakub\\Desktop\\Projektik\\Gierki\\Backend\\Games.Application\\Authentication\\Services\\JwtService.cs",
+              "RelativeToolTip": "..\\Games.Application\\Authentication\\Services\\JwtService.cs",
+              "ViewState": "AQIAAAsAAAAAAAAAAADgvyYAAABdAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-22T14:45:37.105Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
               "Title": "AuthService.cs",
               "DocumentMoniker": "C:\\Users\\Jakub\\Desktop\\Projektik\\Gierki\\Backend\\Games.Application\\Authentication\\Services\\AuthService.cs",
               "RelativeDocumentMoniker": "..\\Games.Application\\Authentication\\Services\\AuthService.cs",
               "ToolTip": "C:\\Users\\Jakub\\Desktop\\Projektik\\Gierki\\Backend\\Games.Application\\Authentication\\Services\\AuthService.cs",
               "RelativeToolTip": "..\\Games.Application\\Authentication\\Services\\AuthService.cs",
-              "ViewState": "AQIAABwAAAAAAAAAAAAUwE0AAAAkAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAwAAAAvAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-06-18T21:33:48.356Z",
               "EditorCaption": ""
@@ -116,63 +106,28 @@
             {
               "$type": "Document",
               "DocumentIndex": 4,
-              "Title": "Encryptor.cs",
-              "DocumentMoniker": "C:\\Users\\Jakub\\Desktop\\Projektik\\Gierki\\Backend\\Games.Application\\Infrastructure\\Encryptor.cs",
-              "RelativeDocumentMoniker": "..\\Games.Application\\Infrastructure\\Encryptor.cs",
-              "ToolTip": "C:\\Users\\Jakub\\Desktop\\Projektik\\Gierki\\Backend\\Games.Application\\Infrastructure\\Encryptor.cs",
-              "RelativeToolTip": "..\\Games.Application\\Infrastructure\\Encryptor.cs",
-              "ViewState": "AQIAAAkAAAAAAAAAAAAAAAAAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-18T22:24:08.339Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "20240618213104_Auth.cs",
-              "DocumentMoniker": "C:\\Users\\Jakub\\Desktop\\Projektik\\Gierki\\Backend\\Games.Application\\Migrations\\AuthDb\\20240618213104_Auth.cs",
-              "RelativeDocumentMoniker": "..\\Games.Application\\Migrations\\AuthDb\\20240618213104_Auth.cs",
-              "ToolTip": "C:\\Users\\Jakub\\Desktop\\Projektik\\Gierki\\Backend\\Games.Application\\Migrations\\AuthDb\\20240618213104_Auth.cs",
-              "RelativeToolTip": "..\\Games.Application\\Migrations\\AuthDb\\20240618213104_Auth.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-18T21:31:04.235Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
               "Title": "AppUsers.cs",
               "DocumentMoniker": "C:\\Users\\Jakub\\Desktop\\Projektik\\Gierki\\Backend\\Games.Application\\Persistence\\AppUsers.cs",
               "RelativeDocumentMoniker": "..\\Games.Application\\Persistence\\AppUsers.cs",
               "ToolTip": "C:\\Users\\Jakub\\Desktop\\Projektik\\Gierki\\Backend\\Games.Application\\Persistence\\AppUsers.cs",
               "RelativeToolTip": "..\\Games.Application\\Persistence\\AppUsers.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAwAAAAjAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABAAAAAXAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-18T21:26:21.135Z"
+              "WhenOpened": "2024-06-18T21:26:21.135Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 5,
               "Title": "GamesDBContext.cs",
               "DocumentMoniker": "C:\\Users\\Jakub\\Desktop\\Projektik\\Gierki\\Backend\\Games.Application\\Persistence\\GamesDBContext.cs",
               "RelativeDocumentMoniker": "..\\Games.Application\\Persistence\\GamesDBContext.cs",
               "ToolTip": "C:\\Users\\Jakub\\Desktop\\Projektik\\Gierki\\Backend\\Games.Application\\Persistence\\GamesDBContext.cs",
               "RelativeToolTip": "..\\Games.Application\\Persistence\\GamesDBContext.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAkAAAAEAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAsAAAA1AAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-18T21:25:22.671Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "AuthDbContext.cs",
-              "DocumentMoniker": "C:\\Users\\Jakub\\Desktop\\Projektik\\Gierki\\Backend\\Games.Application\\Persistence\\AuthDbContext.cs",
-              "RelativeDocumentMoniker": "..\\Games.Application\\Persistence\\AuthDbContext.cs",
-              "ToolTip": "C:\\Users\\Jakub\\Desktop\\Projektik\\Gierki\\Backend\\Games.Application\\Persistence\\AuthDbContext.cs",
-              "RelativeToolTip": "..\\Games.Application\\Persistence\\AuthDbContext.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA0AAAA1AAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-18T12:12:16.072Z"
+              "WhenOpened": "2024-06-18T21:25:22.671Z",
+              "EditorCaption": ""
             }
           ]
         }

@@ -6,6 +6,7 @@ import { User } from '../../models/user';
 import { LobbyService } from '../../services/lobby.service';
 import { Router } from '@angular/router';
 import { BoardApiService } from '../../services/board-api.service';
+import { AuthApiService } from '../../services/auth-api.service';
 
 @Component({
   selector: 'app-game-lobby',
@@ -15,7 +16,7 @@ import { BoardApiService } from '../../services/board-api.service';
   styleUrl: './game-lobby.component.scss'
 })
 export class GameLobbyComponent implements OnInit {
-  constructor(private readonly lobbyApiService: LobbyApiService, private readonly lobbyService: LobbyService, private readonly router: Router, private readonly boardApiService: BoardApiService) {
+  constructor(private readonly lobbyApiService: LobbyApiService, private readonly lobbyService: LobbyService, private readonly router: Router, private readonly boardApiService: BoardApiService, private readonly authApiService: AuthApiService) {
     this.lobbyApiService.listUpdated$.pipe(takeUntilDestroyed()).subscribe((response) =>
       this.setWaitingUsers(response.value)
     );
@@ -27,7 +28,18 @@ export class GameLobbyComponent implements OnInit {
 
   username = new FormControl("", Validators.required);
 
-  async ngOnInit(): Promise<void> {
+  ngOnInit(): void {
+    this.authApiService.isUserAuthenticated().subscribe((value) => {
+      if (value) {
+        this.loadComponentValues();
+      }
+      else {
+        this.router.navigateByUrl('login');
+      }
+    });
+  }
+
+  async loadComponentValues(): Promise<void> {
     await this.lobbyApiService.startConnection();
     this.lobbyApiService.loadWaitingUsers();
     this.lobbyService.setThisUserWaiting(false);
@@ -63,16 +75,18 @@ export class GameLobbyComponent implements OnInit {
   }
 
   joinButtonClick(): void {
-    this.lobbyApiService.joinWaitingUsers(this.username.value!);
+    // this.lobbyApiService.joinWaitingUsers(this.username.value!);
 
-    var user = {
-      'connectionId': this.lobbyApiService.getUserConnectionId(),
-      'username': this.username.value!
-    };
-    this.lobbyService.setThisUser(user);
+    // var user = {
+    //   'connectionId': this.lobbyApiService.getUserConnectionId(),
+    //   'username': this.username.value!
+    // };
+    // this.lobbyService.setThisUser(user);
 
-    this.username.reset();
-    this.lobbyService.setThisUserWaiting(true);
+    // this.username.reset();
+    // this.lobbyService.setThisUserWaiting(true);
+
+    this.authApiService.isUserAuthenticated().subscribe((x) => console.log(x));
   }
 
   stopWaitingButtonClick(): void {

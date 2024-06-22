@@ -3,9 +3,12 @@ using Games.Application.Infrastructure;
 using Games.Application.Persistence;
 using Games.Application.TicTacToe.Hubs;
 using Games.Application.TicTacToe.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 using TicTacToe;
 
 var AllowCors = "_allowCors";
@@ -22,13 +25,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<TicTacToeService>();
 builder.Services.AddScoped<LobbyService>();
 builder.Services.AddScoped<AuthService>();
-builder.Services.AddScoped<Encryptor>();
-
-builder.Services.AddDbContext<AuthDbContext>(options =>
-{
-    options.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer"));
-});
-
+builder.Services.AddScoped<JwtService>();
 
 builder.Services.AddDbContext<GamesDbContext>(options =>
 {
@@ -49,7 +46,27 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddSignalR(opts => opts.EnableDetailedErrors = true);
 
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = builder.Configuration["Jwt:Issuer"],
+        ValidAudience = builder.Configuration["Jwt:Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!))
+    };
+});
+
 var app = builder.Build();
+
+app.UseAuthentication();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -67,8 +84,6 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.UseRouting();
-app.MapAreaControllerRoute("Auth", "Auth", "{controller}");
 app.MapDefaultControllerRoute();
 
 app.MapHub<TicTacToeHub>("/tictactoehub");

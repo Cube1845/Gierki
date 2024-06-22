@@ -19,7 +19,17 @@ export class LoginPanelComponent {
   });
 
   login(): void {
-    this.authApiService.loginWithUsernameAndData(this.userFormControl.value).subscribe(result => console.log(result));
+    this.authApiService.loginWithUsernameAndData(this.userFormControl.value).subscribe(result => {
+      console.log(result);
+      if (result.value != null) {
+        this.goToLobby(result.value!);
+      }
+    });
+  }
+
+  goToLobby(token: string) {
+    this.router.navigateByUrl('lobby');
+    localStorage.setItem('token', token);
   }
 
   goToRegister(): void {
