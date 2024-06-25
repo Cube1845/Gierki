@@ -1,4 +1,4 @@
-import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
+import { Component, HostListener, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { LobbyApiService } from '../../services/lobby-api.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -7,36 +7,57 @@ import { LobbyService } from '../../services/lobby.service';
 import { Router } from '@angular/router';
 import { BoardApiService } from '../../services/board-api.service';
 import { AuthApiService } from '../../services/auth-api.service';
+import { HttpErrorResponse } from '@angular/common/http';
+import { DOCUMENT } from '@angular/common';
 
 @Component({
   selector: 'app-game-lobby',
   standalone: true,
-  imports: [ ReactiveFormsModule ],
+  imports: [ReactiveFormsModule],
   templateUrl: './game-lobby.component.html',
-  styleUrl: './game-lobby.component.scss'
+  styleUrl: './game-lobby.component.scss',
 })
 export class GameLobbyComponent implements OnInit {
-  constructor(private readonly lobbyApiService: LobbyApiService, private readonly lobbyService: LobbyService, private readonly router: Router, private readonly boardApiService: BoardApiService, private readonly authApiService: AuthApiService) {
-    this.lobbyApiService.listUpdated$.pipe(takeUntilDestroyed()).subscribe((response) =>
-      this.setWaitingUsers(response.value)
-    );
+  constructor(
+    private readonly lobbyApiService: LobbyApiService,
+    private readonly lobbyService: LobbyService,
+    private readonly router: Router,
+    private readonly boardApiService: BoardApiService,
+    private readonly authApiService: AuthApiService,
+    @Inject(DOCUMENT) private document: Document
+  ) {
+    this.lobbyApiService.listUpdated$
+      .pipe(takeUntilDestroyed())
+      .subscribe((response) => this.setWaitingUsers(response.value));
 
-    this.lobbyApiService.gameStarted$.pipe(takeUntilDestroyed()).subscribe((response) =>
-      this.startGame(response.value)
-    );
+    this.lobbyApiService.gameStarted$
+      .pipe(takeUntilDestroyed())
+      .subscribe((response) => this.startGame(response.value));
   }
 
-  username = new FormControl("", Validators.required);
+  username = new FormControl('', Validators.required);
 
-  ngOnInit(): void {
-    this.authApiService.isUserAuthenticated().subscribe((value) => {
-      if (value) {
-        this.loadComponentValues();
+  async ngOnInit(): Promise<void> {
+    const localStorage = this.document.defaultView?.localStorage;
+
+    if (!localStorage) {
+      return;
+    }
+
+    const token = localStorage.getItem('token')!;
+    
+    this.authApiService.isUserAuthenticated(token).subscribe(
+      async (value) => {
+        if (value) {
+          await this.loadComponentValues();
+        }
+      },
+      (err: HttpErrorResponse) => {
+        if (err.status == 401) {
+          this.router.navigateByUrl('login');
+        }
       }
-      else {
-        this.router.navigateByUrl('login');
-      }
-    });
+    );
   }
 
   async loadComponentValues(): Promise<void> {
@@ -45,15 +66,15 @@ export class GameLobbyComponent implements OnInit {
     this.lobbyService.setThisUserWaiting(false);
   }
 
-  @HostListener('window:unload', [ '$event' ])
+  @HostListener('window:unload', ['$event'])
   beforeUnloadHandler(event: any) {
-    this.removeUserFromList(event)
+    this.removeUserFromList(event);
     event.preventDefault();
-    return false;   
+    return false;
   }
 
   unloadHandler(event: any) {
-    this.removeUserFromList(event)
+    this.removeUserFromList(event);
   }
 
   removeUserFromList(event: any): void {
@@ -62,15 +83,19 @@ export class GameLobbyComponent implements OnInit {
 
   startGame(users: User[]): void {
     var isThisCorrectGame: boolean = false;
-    users.forEach(user => {
+    users.forEach((user) => {
       if (user.connectionId == this.lobbyApiService.getUserConnectionId()) {
         isThisCorrectGame = true;
       }
-    })
+    });
 
     if (isThisCorrectGame) {
-      users.forEach(user => this.lobbyApiService.removeFromWaitingUsers(user.connectionId));
-      this.router.navigateByUrl('/game/' + this.lobbyApiService.getUserConnectionId());
+      users.forEach((user) =>
+        this.lobbyApiService.removeFromWaitingUsers(user.connectionId)
+      );
+      this.router.navigateByUrl(
+        '/game/' + this.lobbyApiService.getUserConnectionId()
+      );
     }
   }
 
@@ -86,14 +111,18 @@ export class GameLobbyComponent implements OnInit {
     // this.username.reset();
     // this.lobbyService.setThisUserWaiting(true);
 
-    this.authApiService.isUserAuthenticated().subscribe((x) => console.log(x));
+    var token = localStorage.getItem('token')!;
+    this.authApiService.isUserAuthenticated(token).subscribe(
+      () => {},
+      (err: HttpErrorResponse) => console.log(err)
+    );
   }
 
   stopWaitingButtonClick(): void {
     this.removeUserFromList(null);
     this.lobbyService.setThisUserWaiting(false);
 
-    var emptyUser: User = {'connectionId': '', 'username': ''};
+    var emptyUser: User = { connectionId: '', username: '' };
     this.lobbyService.setThisUser(emptyUser);
   }
 

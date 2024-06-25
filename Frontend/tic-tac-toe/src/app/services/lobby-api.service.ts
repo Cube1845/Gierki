@@ -22,6 +22,7 @@ export class LobbyApiService {
       .withUrl(this.apiUrl, {
         skipNegotiation: true,
         transport: HttpTransportType.WebSockets,
+        accessTokenFactory: () => localStorage.getItem("token")!
       })
       .build();
 

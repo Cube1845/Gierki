@@ -1,4 +1,5 @@
 ﻿using Games.Application.TicTacToe.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,7 @@ namespace Games.Application.TicTacToe.Hubs
 
         private readonly string _waitingPlayers = "WaitingPlayers";
 
+        [Authorize]
         public async Task GetConnectionId()
         {
             await Clients.Caller.SendAsync("GetConnectionId", Context.ConnectionId);

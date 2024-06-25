@@ -24,6 +24,7 @@ namespace Games.Application.TicTacToe.Services
         public async Task<Result<List<User>>> AddPlayerToWaitingList(string username, string connectionId)
         {
             var waitingPlayers = await GetUsersFromDatabase();
+
             if (waitingPlayers.Any(p => p.ConnectionId == connectionId))
             {
                 return Result<List<User>>.Error("Client already in");
@@ -39,6 +40,7 @@ namespace Games.Application.TicTacToe.Services
             await _context.SaveChangesAsync();
 
             waitingPlayers = await GetUsersFromDatabase();
+
             if (waitingPlayers.Count < 2)
             {
                 return Result<List<User>>.Success(await GetUsersFromDatabase(), "Added user to waiting list");
@@ -55,16 +57,19 @@ namespace Games.Application.TicTacToe.Services
         public async Task<Result<List<User>>> RemovePlayerFromWaitingList(string connectionId)
         {
             var usersDb = await GetUsersFromDatabase();
+
             if (usersDb == null)
             {
                 return Result<List<User>>.Error("List empty");
             }
 
             var user = await _context.Users.FindAsync(connectionId);
+
             if (user == null)
             {
                 return Result<List<User>>.Error("User not found");
             }
+
             _context.Users.Remove(user!);
             await _context.SaveChangesAsync();
 
@@ -82,6 +87,7 @@ namespace Games.Application.TicTacToe.Services
 
             var usersFromDb = await _context.Users.ToListAsync();
             var users = new List<User>();
+
             foreach (var user in usersFromDb)
             {
                 users.Add(new User()

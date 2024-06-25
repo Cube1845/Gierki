@@ -21,14 +21,12 @@ export class AuthApiService {
     return this.http.post<Result>(this.apiUrl + '/RegisterUser', user);
   }
 
-  isUserAuthenticated(): Observable<boolean> {
-    var token = localStorage.getItem("token")!;
-
+  isUserAuthenticated(token: string): Observable<boolean> {
     var header = new HttpHeaders().set(
       "Authorization",
-       localStorage.getItem(token)!
+      "Bearer " + token
     );
-
+    
     return this.http.get<boolean>(this.apiUrl + '/IsUserAuthorized', { headers: header });
   }
 }

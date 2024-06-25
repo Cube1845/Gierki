@@ -28,8 +28,8 @@ export class LoginPanelComponent {
   }
 
   goToLobby(token: string) {
-    this.router.navigateByUrl('lobby');
     localStorage.setItem('token', token);
+    this.router.navigateByUrl('lobby');
   }
 
   goToRegister(): void {
