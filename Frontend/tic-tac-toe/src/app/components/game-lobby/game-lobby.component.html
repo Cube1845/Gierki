@@ -12,12 +12,7 @@
     </div>
 
     @if (!isUserWaiting()) {
-        <form class="username-typein">
-            <label class="description-text">Choose username</label>
-            <input type="text" class="username-form" placeholder="Username" [formControl]="username"/>
-        </form>
-
-        <button type="button" class="join-leave-button" (click)="joinButtonClick()" [disabled]="username.invalid">Join</button>
+        <button type="button" class="join-leave-button" (click)="joinButtonClick()">Join</button>
     } @else {
         <h1 class="color">You are looking for someone to play with...</h1>
         <button type="button" class="join-leave-button"  (click)="stopWaitingButtonClick()">Stop waiting</button>

@@ -1,4 +1,5 @@
-﻿using Games.Application.TicTacToe.Services;
+﻿using Games.Application.TicTacToe.Models;
+using Games.Application.TicTacToe.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 using System;
@@ -15,17 +16,38 @@ namespace Games.Application.TicTacToe.Hubs
 
         private readonly string _waitingPlayers = "WaitingPlayers";
 
-        [Authorize]
-        public async Task GetConnectionId()
+        public async override Task OnDisconnectedAsync(Exception? exception)
         {
-            await Clients.Caller.SendAsync("GetConnectionId", Context.ConnectionId);
+            User user = new User()
+            {
+                Username = Context.User.Claims.ToList()[2].Value,
+                GUID = Context.User.Claims.ToList()[1].Value
+            };
+
+            _lobbyService.RemoveUserFromWaitingPlayers(user);
+
+            await Groups.RemoveFromGroupAsync(Context.ConnectionId, _waitingPlayers);
         }
 
-        public async Task JoinToWaitingPlayers(string username)
+        [Authorize]
+        public async Task AddUserToWaitingPlayers()
         {
             await Groups.AddToGroupAsync(Context.ConnectionId, _waitingPlayers);
 
-            var response = await _lobbyService.AddPlayerToWaitingList(username, Context.ConnectionId);
+            User user = new User() 
+            { 
+                Username = Context.User.Claims.ToList()[2].Value,
+                GUID = Context.User.Claims.ToList()[1].Value 
+            };
+
+            var response = await _lobbyService.AddUserToWaitingPlayers(user);
+
+            if (!response.IsSuccess)
+            {
+                await Clients.Caller.SendAsync("Error", response.Message);
+                return;
+            }
+
             if (response.Message == "Start game")
             {
                 await Clients.Group(_waitingPlayers).SendAsync("StartGame", response);
@@ -36,28 +58,36 @@ namespace Games.Application.TicTacToe.Hubs
             }
         }
 
-        public async Task RemovePlayerFromWaitingList(string userId, bool useParameter)
-        {
-            if (useParameter)
-            {
-                await Groups.RemoveFromGroupAsync(userId, _waitingPlayers);
-
-                var response = await _lobbyService.RemovePlayerFromWaitingList(userId);
-                await Clients.All.SendAsync("WaitingListUpdated", response);
-            }
-            else
-            {
-                await Groups.RemoveFromGroupAsync(Context.ConnectionId, _waitingPlayers);
-
-                var response = await _lobbyService.RemovePlayerFromWaitingList(Context.ConnectionId);
-                await Clients.All.SendAsync("WaitingListUpdated", response);
-            }
-        }
-
+        [Authorize]
         public async Task GetWaitingList()
         {
-            var response = await _lobbyService.GetWaitingList();
+            var response = _lobbyService.GetWaitingUsers();
             await Clients.Caller.SendAsync("WaitingListUpdated", response);
+        }
+
+        [Authorize]
+        public async Task GetThisUserData()
+        {
+            User user = new User()
+            {
+                Username = Context.User.Claims.ToList()[2].Value,
+                GUID = Context.User.Claims.ToList()[1].Value
+            };
+
+            await Clients.Caller.SendAsync("GetThisUserData", user);
+        }
+
+        [Authorize]
+        public async Task RemoveUserFromWaitingPlayers()
+        {
+            User user = new User()
+            {
+                Username = Context.User.Claims.ToList()[2].Value,
+                GUID = Context.User.Claims.ToList()[1].Value
+            };
+
+            var response = _lobbyService.RemoveUserFromWaitingPlayers(user);
+            await Clients.All.SendAsync("WaitingListUpdated", response);
         }
     }
 }

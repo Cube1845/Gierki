@@ -14,7 +14,6 @@ import { Position } from '../models/position';
 export class BoardApiService {
   private apiUrl = 'https://localhost:7047/tictactoehub';
   private hubConnection!: HubConnection;
-  private connectionId!: string;
 
   private moveMadeSubject = new Subject<any>();
   moveMade$ = this.moveMadeSubject.asObservable();
@@ -22,11 +21,15 @@ export class BoardApiService {
   private dataLoadedSubject = new Subject<any>();
   dataLoaded$ = this.dataLoadedSubject.asObservable();
 
+  private getThisUserDataSubject = new Subject<any>();
+  getThisUserData$ = this.getThisUserDataSubject.asObservable();
+
   async startConnection(): Promise<void> {
     this.hubConnection = new HubConnectionBuilder()
       .withUrl(this.apiUrl, {
         skipNegotiation: true,
         transport: HttpTransportType.WebSockets,
+        accessTokenFactory: () => localStorage.getItem("token")!
       })
       .build();
 
@@ -38,8 +41,8 @@ export class BoardApiService {
       this.dataLoadedSubject.next(data)
     );
 
-    this.hubConnection.on('GetConnectionId', (data) =>
-      this.connectionId = data
+    this.hubConnection.on('GetThisUserData', (data) =>
+      this.getThisUserDataSubject.next(data)
     );
 
     await this.hubConnection
@@ -49,22 +52,18 @@ export class BoardApiService {
       })
       .catch((err) => console.log('Error: ' + err));
 
-    this.hubConnection.invoke('GetConnectionId');
+    this.hubConnection.invoke('GetThisUserData');
   }
 
   stopConnection(): void {
     this.hubConnection.stop();
   }
 
-  getConnectionId(): string {
-    return this.connectionId;
-  }
-
   makeMoveAndGetGameStatus(move: Move): void {
     this.hubConnection.invoke('MakeMoveAndGetGameData', move);
   }
 
-  loadGameDataAndUpdateConnectionId(oldConnectionId: string): void {
-    this.hubConnection.invoke('LoadGameData', oldConnectionId);
+  loadGameData(): void {
+    this.hubConnection.invoke('LoadGameData');
   }
 }

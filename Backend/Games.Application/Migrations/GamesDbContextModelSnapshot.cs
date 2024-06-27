@@ -86,20 +86,6 @@ namespace Games.Application.Migrations
 
                     b.ToTable("TicTacToe");
                 });
-
-            modelBuilder.Entity("Games.Application.Persistence.Users", b =>
-                {
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("UserId");
-
-                    b.ToTable("Users");
-                });
 #pragma warning restore 612, 618
         }
     }

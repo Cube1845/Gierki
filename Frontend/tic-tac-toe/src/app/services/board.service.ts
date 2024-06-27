@@ -2,12 +2,14 @@ import { Injectable } from '@angular/core';
 import { BoardApiService } from './board-api.service';
 import { GameData } from '../models/gameData';
 import { Position } from '../models/position';
+import { User } from '../models/user';
 
 @Injectable({
   providedIn: 'root',
 })
 export class BoardService {
   gameData: GameData = new GameData();
+  thisUser: User = {username: '', guid: ''};
 
   constructor(private readonly boardApiService: BoardApiService) {}
 
@@ -19,21 +21,26 @@ export class BoardService {
 
   makeMoveAndGetGameStatus(pos: Position): void {
     var move = {
-      "symbol": this.gameData.turn,
-      "position": pos
+      symbol: this.gameData.turn,
+      position: pos
     };
     this.boardApiService.makeMoveAndGetGameStatus(move);
   }
 
   getThisUsersTurn(): string {
     var symbol = "";
+
     this.gameData.players.forEach(userRole => {
-      if (userRole.user.connectionId == this.boardApiService.getConnectionId()) {
+      if (userRole.user.username == this.thisUser.username) {
         symbol = userRole.symbol;
       }
     });
 
     return symbol;
+  }
+
+  setThisUser(user: User): void {
+    this.thisUser = user;
   }
 
   getWinner(): string | null {

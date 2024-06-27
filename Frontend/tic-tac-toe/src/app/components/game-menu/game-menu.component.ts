@@ -3,34 +3,33 @@ import { BoardApiService } from '../../services/board-api.service';
 import { BoardService } from '../../services/board.service';
 import { NgIf } from '@angular/common';
 import { BoardComponent } from '../board/board.component';
-import { ActivatedRoute, Router, } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { LobbyApiService } from '../../services/lobby-api.service';
 
 @Component({
   selector: 'app-game-menu',
   standalone: true,
-  imports: [ NgIf, BoardComponent ],
+  imports: [NgIf, BoardComponent],
   templateUrl: './game-menu.component.html',
-  styleUrl: './game-menu.component.scss'
+  styleUrl: './game-menu.component.scss',
 })
-
 export class GameMenuComponent implements OnInit {
-  private connectionId!: string;
-
-  constructor(private readonly boardApiService: BoardApiService, private readonly boardService: BoardService, private readonly route: ActivatedRoute, private readonly router: Router,private readonly lobbyApiService: LobbyApiService) {
-    this.connectionId = this.route.snapshot.params['name'];
-  }
+  constructor(
+    private readonly boardApiService: BoardApiService,
+    private readonly boardService: BoardService,
+    private readonly router: Router,
+  ) {}
 
   async ngOnInit(): Promise<void> {
     await this.boardApiService.startConnection();
-    this.boardApiService.loadGameDataAndUpdateConnectionId(this.connectionId);
+    this.boardApiService.loadGameData();
   }
 
-  getWinner(): string | null{
+  getWinner(): string | null {
     if (this.boardService.getWinner() != null) {
       return this.boardService.getWinner();
     } else {
-      return "";
+      return '';
     }
   }
 

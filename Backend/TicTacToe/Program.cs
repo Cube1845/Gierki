@@ -27,6 +27,8 @@ builder.Services.AddScoped<LobbyService>();
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<JwtService>();
 
+builder.Services.AddSingleton<WaitingUsers>(WaitingUsers.Instance);
+
 builder.Services.AddDbContext<GamesDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer"));

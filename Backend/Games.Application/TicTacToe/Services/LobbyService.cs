@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -16,88 +17,37 @@ namespace Games.Application.TicTacToe.Services
 
         private readonly TicTacToeService _ticTacToe = ticTacToe;
         
-        public async Task<Result<List<User>>> GetWaitingList()
+        public Result<List<User>> GetWaitingUsers()
         {
-            return Result<List<User>>.Success(await GetUsersFromDatabase(), "List sent");
+            return Result<List<User>>.Success(WaitingUsers.Instance.GetUsers(), "");
         }
 
-        public async Task<Result<List<User>>> AddPlayerToWaitingList(string username, string connectionId)
+        public async Task<Result<List<User>>> AddUserToWaitingPlayers(User user)
         {
-            var waitingPlayers = await GetUsersFromDatabase();
-
-            if (waitingPlayers.Any(p => p.ConnectionId == connectionId))
+            if (WaitingUsers.Instance.GetUsers().Contains(user))
             {
-                return Result<List<User>>.Error("Client already in");
+                return Result<List<User>>.Error("This user is already waiting");
             }
 
-            var user = new Persistence.Users()
+            WaitingUsers.Instance.AddUser(user);
+
+            if (WaitingUsers.Instance.GetUsers().Count > 1)
             {
-                Name = username,
-                UserId = connectionId
-            };
+                var users = WaitingUsers.Instance.GetUsers();
+                WaitingUsers.Instance.ClearUsers();
 
-            await _context.Users.AddAsync(user);
-            await _context.SaveChangesAsync();
+                await _ticTacToe.StartGame(users);
 
-            waitingPlayers = await GetUsersFromDatabase();
-
-            if (waitingPlayers.Count < 2)
-            {
-                return Result<List<User>>.Success(await GetUsersFromDatabase(), "Added user to waiting list");
+                return Result<List<User>>.Success(users, "Start game");
             }
-            
-            await RemovePlayerFromWaitingList(waitingPlayers[0].ConnectionId);
-            await RemovePlayerFromWaitingList(waitingPlayers[1].ConnectionId);
 
-            await _ticTacToe.StartGame(new List<User>() { waitingPlayers[0], waitingPlayers[1] });
-
-            return Result<List<User>>.Success(waitingPlayers, "Start game");
+            return Result<List<User>>.Success(WaitingUsers.Instance.GetUsers(), "User added to waiting players");
         }
 
-        public async Task<Result<List<User>>> RemovePlayerFromWaitingList(string connectionId)
+        public Result<List<User>> RemoveUserFromWaitingPlayers(User user)
         {
-            var usersDb = await GetUsersFromDatabase();
-
-            if (usersDb == null)
-            {
-                return Result<List<User>>.Error("List empty");
-            }
-
-            var user = await _context.Users.FindAsync(connectionId);
-
-            if (user == null)
-            {
-                return Result<List<User>>.Error("User not found");
-            }
-
-            _context.Users.Remove(user!);
-            await _context.SaveChangesAsync();
-
-            return Result<List<User>>.Success(await GetUsersFromDatabase(), "Successfully removed user from list");
-        }
-
-        private async Task<List<User>> GetUsersFromDatabase()
-        {
-            var usersDb = await _context.Users.FirstOrDefaultAsync();
-
-            if (usersDb == null)
-            {
-                return new List<User>();
-            }
-
-            var usersFromDb = await _context.Users.ToListAsync();
-            var users = new List<User>();
-
-            foreach (var user in usersFromDb)
-            {
-                users.Add(new User()
-                {
-                    Username = user.Name,
-                    ConnectionId = user.UserId
-                });
-            }
-
-            return users;
+            WaitingUsers.Instance.RemoveUser(user);
+            return Result<List<User>>.Success(WaitingUsers.Instance.GetUsers(), "User removed from waiting players");
         }
     }
 }

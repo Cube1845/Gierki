@@ -7,7 +7,7 @@ import { RegisterPanelComponent } from './components/register-panel/register-pan
 export const routes: Routes = [
     { 'path': 'login', 'component': LoginPanelComponent },
     { 'path': 'register', 'component': RegisterPanelComponent },
-    { 'path': 'game/:name', 'component': GameMenuComponent },
+    { 'path': 'game', 'component': GameMenuComponent },
     { 'path': 'lobby', 'component': GameLobbyComponent },
     { 'path': '**', 'redirectTo': 'lobby', 'pathMatch': 'full'},
 ];

@@ -7,7 +7,7 @@ import { User } from '../models/user';
 export class LobbyService {
   waitingUsers: User[] = [];
   isUserWaiting: boolean = false;
-  thisUser: User = {'connectionId': '', 'username': ''};
+  thisUser: User = {'guid': '', 'username': ''};
 
   getWaitingUsernames(): string[] {
     var users: string[] = [];
@@ -24,6 +24,10 @@ export class LobbyService {
 
   setThisUser(user: User): void {
     this.thisUser = user;
+  }
+
+  getThisUser(): User {
+    return this.thisUser;
   }
 
   isThisUserWaiting(): boolean {

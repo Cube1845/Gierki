@@ -22,7 +22,6 @@ export class GameLobbyComponent implements OnInit {
     private readonly lobbyApiService: LobbyApiService,
     private readonly lobbyService: LobbyService,
     private readonly router: Router,
-    private readonly boardApiService: BoardApiService,
     private readonly authApiService: AuthApiService,
     @Inject(DOCUMENT) private document: Document
   ) {
@@ -33,9 +32,11 @@ export class GameLobbyComponent implements OnInit {
     this.lobbyApiService.gameStarted$
       .pipe(takeUntilDestroyed())
       .subscribe((response) => this.startGame(response.value));
-  }
 
-  username = new FormControl('', Validators.required);
+    this.lobbyApiService.getUserData$
+      .pipe(takeUntilDestroyed())
+      .subscribe((response) => this.setThisUser(response));
+  }
 
   async ngOnInit(): Promise<void> {
     const localStorage = this.document.defaultView?.localStorage;
@@ -78,55 +79,40 @@ export class GameLobbyComponent implements OnInit {
   }
 
   removeUserFromList(event: any): void {
-    this.lobbyApiService.removeFromWaitingUsers(null);
+    this.lobbyApiService.removeFromWaitingUsers();
+  }
+
+  setThisUser(user: User): void {
+    this.lobbyService.setThisUser(user);
   }
 
   startGame(users: User[]): void {
-    var isThisCorrectGame: boolean = false;
-    users.forEach((user) => {
-      if (user.connectionId == this.lobbyApiService.getUserConnectionId()) {
-        isThisCorrectGame = true;
+    var isGameCorrect: boolean = false;
+
+    users.forEach(user => {
+      if (user.username == this.lobbyService.getThisUser().username) {
+        isGameCorrect = true;
       }
     });
 
-    if (isThisCorrectGame) {
-      users.forEach((user) =>
-        this.lobbyApiService.removeFromWaitingUsers(user.connectionId)
-      );
-      this.router.navigateByUrl(
-        '/game/' + this.lobbyApiService.getUserConnectionId()
-      );
+    if (isGameCorrect) {
+      this.lobbyApiService.stopConnection();
+      this.router.navigateByUrl('game');
     }
   }
 
   joinButtonClick(): void {
-    // this.lobbyApiService.joinWaitingUsers(this.username.value!);
-
-    // var user = {
-    //   'connectionId': this.lobbyApiService.getUserConnectionId(),
-    //   'username': this.username.value!
-    // };
-    // this.lobbyService.setThisUser(user);
-
-    // this.username.reset();
-    // this.lobbyService.setThisUserWaiting(true);
-
-    var token = localStorage.getItem('token')!;
-    this.authApiService.isUserAuthenticated(token).subscribe(
-      () => {},
-      (err: HttpErrorResponse) => console.log(err)
-    );
+    this.lobbyApiService.joinWaitingUsers();
+    this.lobbyService.setThisUserWaiting(true);
   }
 
   stopWaitingButtonClick(): void {
     this.removeUserFromList(null);
     this.lobbyService.setThisUserWaiting(false);
-
-    var emptyUser: User = { connectionId: '', username: '' };
-    this.lobbyService.setThisUser(emptyUser);
   }
 
   setWaitingUsers(users: User[]): void {
+    console.log(users);
     if (users != null) {
       this.lobbyService.setWaitingUsers(users);
     }

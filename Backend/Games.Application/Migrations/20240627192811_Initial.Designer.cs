@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Games.Application.Migrations
 {
     [DbContext(typeof(GamesDbContext))]
-    [Migration("20240622134119_Initial")]
+    [Migration("20240627192811_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -88,20 +88,6 @@ namespace Games.Application.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("TicTacToe");
-                });
-
-            modelBuilder.Entity("Games.Application.Persistence.Users", b =>
-                {
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("UserId");
-
-                    b.ToTable("Users");
                 });
 #pragma warning restore 612, 618
         }

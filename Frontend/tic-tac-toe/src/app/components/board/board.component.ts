@@ -8,6 +8,7 @@ import { Position } from '../../models/position';
 import { stringify } from 'querystring';
 import { Board } from '../../models/board';
 import { GameData } from '../../models/gameData';
+import { User } from '../../models/user';
 
 @Component({
   selector: 'app-board',
@@ -30,18 +31,28 @@ export class BoardComponent {
     this.boardApiService.dataLoaded$?.pipe(takeUntilDestroyed()).subscribe((data) => {
       this.updateGameData(data.value);
     });
+
+    this.boardApiService.getThisUserData$?.pipe(takeUntilDestroyed()).subscribe((data) => {
+      this.setThisUser(data);
+    });
   }
 
   updateGameData(data: GameData | null): void {
-    if (data != null) {
-      if (this.isGameWinned(data)) {
-        this.displayOnlyWinningTiles(data);
-        this.boardService.setGameData(data);
-      } else {
-        this.board = (data.board); 
-        this.boardService.setGameData(data);
-      }
+    if (data == null) {
+      return;
     }
+
+    if (this.isGameWinned(data)) {
+      this.displayOnlyWinningTiles(data);
+      this.boardService.setGameData(data);
+    } else {
+      this.board = (data.board); 
+      this.boardService.setGameData(data);
+    }
+  }
+
+  setThisUser(user: User): void {
+    this.boardService.setThisUser(user);
   }
 
   isCurrentTurnThisUsers(): boolean {

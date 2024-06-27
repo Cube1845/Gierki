@@ -1,6 +1,8 @@
 ﻿using Games.Application.Infrastructure;
+using Games.Application.Persistence;
 using Games.Application.TicTacToe.Models;
 using Games.Application.TicTacToe.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 using System;
 using System.Collections.Generic;
@@ -14,25 +16,55 @@ namespace Games.Application.TicTacToe.Hubs
     {
         private readonly TicTacToeService _ticTacToeService = ticTacToeService;
 
+        public async override Task OnDisconnectedAsync(Exception? exception)
+        {
+            User user = new User()
+            {
+                Username = Context.User.Claims.ToList()[2].Value,
+                GUID = Context.User.Claims.ToList()[1].Value
+            };
+
+            await _ticTacToeService.RemoveGameDataFromDatabase(user);
+        }
+
+        [Authorize]
         public async Task MakeMoveAndGetGameData(Move move)
         {
+            User user = new User()
+            {
+                Username = Context.User.Claims.ToList()[2].Value,
+                GUID = Context.User.Claims.ToList()[1].Value
+            };
+
             await Clients.All.SendAsync(
                 "MoveMade",
-                await _ticTacToeService.MakeMoveAndGetGameData(move, Context.ConnectionId));
+                await _ticTacToeService.MakeMoveAndGetGameData(move, user));
         }
 
-        public async Task LoadGameData(string oldConnectionId) 
+        [Authorize]
+        public async Task LoadGameData() 
         {
+            User user = new User()
+            {
+                Username = Context.User.Claims.ToList()[2].Value,
+                GUID = Context.User.Claims.ToList()[1].Value
+            };
+
             await Clients.Caller.SendAsync(
                 "DataLoaded",
-                await _ticTacToeService.LoadGameDataAndUpdateConnectionIds(oldConnectionId, Context.ConnectionId));
+                await _ticTacToeService.LoadGameData(user));
         }
 
-        public async Task GetConnectionId()
+        [Authorize]
+        public async Task GetThisUserData()
         {
-            await Clients.Caller.SendAsync(
-                "GetConnectionId",
-                Context.ConnectionId);
+            User user = new User()
+            {
+                Username = Context.User.Claims.ToList()[2].Value,
+                GUID = Context.User.Claims.ToList()[1].Value
+            };
+
+            await Clients.Caller.SendAsync("GetThisUserData", user);
         }
     }
 }
